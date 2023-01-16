@@ -16,13 +16,25 @@
           url: '/',
           templateUrl: './html/home.html'
         })
-        .state('blog', {
-          url: '/blog',
-          templateUrl: './html/blog.html'
+        .state('order', {
+          url: '/order',
+          templateUrl: './html/order.html'
+        })
+        .state('about', {
+          url: '/about',
+          templateUrl: './html/about.html'
         })
         .state('contact', {
           url: '/contact',
           templateUrl: './html/contact.html'
+        })
+        .state('blog', {
+          url: '/blog',
+          templateUrl: './html/blog.html'
+        })
+        .state('restaurant', {
+          url: '/restaurant',
+          templateUrl: './html/restaurant.html'
         });
       
       $urlRouterProvider.otherwise('/');
