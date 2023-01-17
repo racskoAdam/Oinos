@@ -192,6 +192,8 @@ a:hover { text-decoration: none }
     border: 3px none #ffffff;
   }
 /*BANNER*/
+
+/*FOOTER*/
 ul {
   margin: 0px;
   padding: 0px;
@@ -258,10 +260,9 @@ position: relative;
 .footer-widget-heading h3::before {
 content: "";
 position: absolute;
-left: 0;
 bottom: -15px;
 height: 2px;
-width: 50px;
+width: 125px;
 background: #f8f2ef;
 }
 .footer-widget ul li {
@@ -275,30 +276,6 @@ color: #f8f2ef;
 .footer-widget ul li a {
 color: #878787;
 text-transform: capitalize;
-}
-.subscribe-form {
-position: relative;
-overflow: hidden;
-}
-.subscribe-form input {
-width: 100%;
-padding: 14px 28px;
-background: #2E2E2E;
-border: 1px solid #2E2E2E;
-color: #fff;
-}
-.subscribe-form button {
-  position: absolute;
-  right: 0;
-  background: #f8f2ef;
-  padding: 13px 20px;
-  border: 1px solid #f8f2ef;
-  top: 0;
-}
-.subscribe-form button i {
-color: #fff;
-font-size: 22px;
-transform: rotate(-6deg);
 }
 .copyright-area{
 background: #202020;
