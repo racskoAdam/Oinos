@@ -96,6 +96,7 @@ body:not(.bannerText){
 
 /* end of banner */
 
+
  
 
 /*menu-card*/
@@ -108,10 +109,18 @@ body:not(.bannerText){
 }
 
 a:hover { text-decoration: none }
-.feature-card{
-	background-image: url(https://picsum.photos/950/800);
+.home-card{
 }
-.feature-card {
+.card-left{
+	background-image: url("../img/burger-1835192_1920.jpg");
+
+}
+.card-right{
+	background-image: url("../img/platting-4282016_1920.jpg");
+
+}
+
+.home-card {
     width: 100%;
     height: 50rem;
     background-position: center top;
@@ -120,7 +129,7 @@ a:hover { text-decoration: none }
     position: relative;
     box-shadow: inset 0 0 10px #000;
 }
-.feature-card-deatails {
+.home-card-details {
     position: absolute;
     bottom: -500px;
     left: 0;
@@ -132,7 +141,7 @@ a:hover { text-decoration: none }
     color: #fff;
 }
 
-.feature-card-tilte {
+.home-card-title {
     position: absolute;
     left: 0;
     text-align: center;
@@ -143,22 +152,22 @@ a:hover { text-decoration: none }
     padding: 20px;
 }
 
-.feature-card-tilte h3 {
+.home-card-title h3 {
     font-size: 22px;
     font-weight: 700;
     color: #fff;
 }
 
-.feature-card:hover .feature-card-tilte {
+.home-card:hover .home-card-title {
     bottom: -67px;
 }
 
-.feature-card-deatails i {
+.home-card-details i {
     font-size: 35px;
     color: #fff;
 }
 
-.feature-card-deatails h4 {
+.home-card-details h4 {
     font-size: 20px;
     color: #fff;
     margin: 15px 0;
@@ -166,7 +175,7 @@ a:hover { text-decoration: none }
     text-align: center;
 }
 
-.feature-card:hover .feature-card-deatails {
+.home-card:hover .home-card-details {
     bottom: 0;
 }
 /*end of menu card*/
@@ -192,7 +201,6 @@ a:hover { text-decoration: none }
     border-radius: 10px;
     border: 3px none #ffffff;
   }
-/*BANNER*/
 
 /*FOOTER*/
 ul {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title data-lang-key="moonlight_travel">Oinos Étterem</title>
+  <title data-lang-key="Oinos_restaurant">Oinos Étterem</title>
 
   <!-- Application components -->
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
@@ -12,6 +12,8 @@
   <link rel="stylesheet" href="../../components/font-awesome/6.2.0/css/all.min.css">
   <link rel="stylesheet" href="../../components/jquery-ui/1.13.2/css/jquery-ui.min.css">
   <link rel="stylesheet" href="../../common/css/animations.css">
+  <link rel="stylesheet" href="../../components/aos/aos.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <link rel="stylesheet" href="./css/app.css">
 </head>
 <body ng-app="app" class="top-shadow bg-dark">
@@ -31,7 +33,11 @@
     <script src="../../components/angular-js/angular-filter/0.5.17/js/angular-filter.min.js"></script>
     <script src="../../components/popperjs/2.11.6/js/popper.min.js"></script>
     <script src="../../components/bootstrap/5.2.2/js/bootstrap.min.js"></script>
-    <script src="./js/app.js"></script>
+    <script src="../../components/aos/aos.js"></script>
+<script src="./js/app.js">
+          AOS.init();
+    </script>
+
   </div>
 </body>
 </html>
