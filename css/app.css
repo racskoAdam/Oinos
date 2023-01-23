@@ -46,6 +46,7 @@
 /* Body changes */
 body:not(.bannerText){
     font-family: 'Poppins', sans-serif;
+    color: white;
 }
 /* END OF Body changes */
 
@@ -81,6 +82,9 @@ body:not(.bannerText){
   animation-name: slideIn;
 }
 
+.cart{
+  color: #fff;
+}
 
 /* END OF Navbar */
 
@@ -109,8 +113,7 @@ body:not(.bannerText){
 }
 
 a:hover { text-decoration: none }
-.home-card{
-}
+
 .card-left{
 	background-image: url("../img/burger-1835192_1920.jpg");
 
@@ -310,3 +313,21 @@ font-size: 14px;
 color: #878787;
 }
 /*END OF BANNER*/ 
+
+.shoppingCart{
+  background-color: #e8e8e8;
+  min-height: 10rem;
+}
+
+.orderBtn{
+  font-size: 2rem;
+}
+
+.price{
+  font-size: 3rem;
+}
+
+.card{
+  width: 10rem;
+  height: 10rem;
+}
