@@ -331,3 +331,18 @@ color: #878787;
   width: 10rem;
   height: 10rem;
 }
+
+.card:hover{
+  cursor: pointer;
+  transform: scale(1.05);
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier();
+}
+
+.categoryIcon{
+  font-size: 4rem;
+}
+
+.categoryText{
+  font-size: 1rem;
+}

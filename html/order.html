@@ -1,5 +1,5 @@
 <div ng-include src="'./html/navigate.html'"></div>
-<h1>Kosár</h1>
+<h1 class="mt-2">Kosár</h1>
 <div class="d-flex shoppingCart mx-md-5">
     <div class="m-auto">
         <i class="fa-solid fa-cart-shopping fa-xl text-dark"></i>
@@ -18,13 +18,31 @@
 
 <div class=" categories mt-5">
 <h2 class="text-center">Kategóriák</h2>
-<div class="d-flex justify-content-center row w-100 m-auto">
-    <div class="card rounded-2 col-2 m-2">rákos</div>
-    <div class="card rounded-2 col-2 m-2">rákos</div>
-    <div class="card rounded-2 col-2 m-2">rákos</div>
-    <div class="card rounded-2 col-2 m-2">rákos</div>
-    <div class="card rounded-2 col-2 m-2">rákos</div>
-    <div class="card rounded-2 col-2 m-2">rákos</div>
+<div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
+    <div class="card rounded-2 col-2 m-2">
+        <i class="fa-solid fa-pizza-slice m-auto categoryIcon"></i>
+        <span class="text-center categoryText">Pizzák</span>
+    </div>
+    <div class="card rounded-2 col-2 m-2">
+        <i class="fa-solid fa-burger m-auto categoryIcon"></i>
+        <span class="text-center categoryText">Hamburgerek</span>
+    </div>
+    <div class="card rounded-2 col-2 m-2">
+        <i class="fa-solid fa-glass-water m-auto categoryIcon"></i>
+        <span class="text-center categoryText">Italok</span>
+    </div>
+    <div class="card rounded-2 col-2 m-2">
+        <i class="fa-solid fa-bowl-food m-auto categoryIcon"></i>
+        <span class="text-center categoryText">StreetFood</span>
+    </div>
+    <div class="card rounded-2 col-2 m-2">
+        <i class="fa-solid fa-cookie-bite m-auto categoryIcon"></i>
+        <span class="text-center categoryText">Desszertek</span>
+    </div>
+    <div class="card rounded-2 col-2 m-2">
+        <i class="fa-solid fa-bowl-rice m-auto categoryIcon"></i>
+        <span class="text-center categoryText">Köretek</span>
+    </div>
 </div>
 </div>
 <div ng-include src="'./html/footer.html'"></div>
