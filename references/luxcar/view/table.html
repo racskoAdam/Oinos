@@ -1,0 +1,46 @@
+<div class="page-container d-conditional" ng-change-state>
+
+	<!-- table container -->
+  <div class="table-container">
+
+    <!-- Main -->
+    <main id="top-page" class="position-absolute w-100">
+
+      <!-- Container -->
+      <div class="container-fluid mt-2 mb-4">
+
+        <!-- Row -->
+        <div class="row text-center mt-4">
+
+					<!-- Table -->
+					<table class="table table-sm shadow caption-top table-bordered table-striped table-hover w-auto mx-auto">
+
+						<!-- Caption -->
+						<caption class="display-6 text-center mb-2">{{data.name}}</caption>
+
+						<!-- Head -->
+						<thead class="table-light" ng-if="data.label.length">
+							<tr>
+								<th ng-repeat="key in data.label track by $index">{{key}}</th>
+							</tr>
+						</thead>
+
+						<!-- Body -->
+						<tbody ng-if="data.rows.length">
+							<tr ng-repeat="row in data.rows track by $index">
+								<td ng-repeat="v in row track by $index">{{v}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</main>
+	</div>
+	
+	<!-- Header -->
+	<header class="w-100 position-fixed" ng-include src="'./html/navigate.html'"></header>
+
+	<!-- Footer -->
+	<footer class="table-footer bg-light" ng-include src="'./html/table-footer.html'"></footer>
+		
+</div>

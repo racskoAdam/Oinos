@@ -1,0 +1,388 @@
+<!-- Fieldset -->
+<fieldset>
+
+	<!-- Title -->
+	<legend class="w-100 text-center my-3">
+		<h4 >
+			<span><i class="fas fa-users ms-5"></i></span>
+			<span>Regisztráció</span>
+		</h4>
+	</legend>
+
+	<!-- Register form -->
+	<form class="w-50 d-inline-block mt-3" action="#">
+
+		<!-- User prefix name -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-prefixName" 
+							 class="col-form-label">
+					Előtag:
+				</label>
+			</div>
+		
+			<!-- Input user prefix name -->
+			<input id="register-prefixName" 
+						 type="text" 
+						 class="form-control col-12 col-lg-6"
+						 placeholder="előtag"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 maxlength="20"
+						 ng-model="model.register.prefixName"
+						 ng-clear-icon
+						 ng-white-space>
+		</div>
+	
+		<!-- User first name -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-firstName" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Keresztnév:</span>
+				</label>
+			</div>
+		
+			<!-- Input user first name -->
+			<input id="register-firstName" 
+						 type="text" 
+						 class="form-control col-12 col-lg-6"
+						 placeholder="keresztnév"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 required
+						 maxlength="50"
+						 ng-model="model.register.firstName" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+	
+		<!-- User middle name -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-middleName" 
+							 class="col-form-label">
+					Középsőnév:
+				</label>
+			</div>
+		
+			<!-- Input user middle name -->
+			<input id="register-middleName" 
+						 type="text" 
+						 class="form-control col-12 col-lg-6" 
+						 placeholder="középsőnév" 
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 maxlength="50"
+						 ng-model="model.register.middleName" 
+						 ng-clear-icon
+						 ng-white-space>
+		</div>
+	
+		<!-- User last name -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-lastName" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Vezetéknév:</span>
+				</label>
+			</div>
+		
+			<!-- Input user last name -->
+			<input id="register-lastName" 
+						 type="text" 
+						 class="form-control col-12 col-lg-6"
+						 placeholder="vazetéknév"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 required
+						 maxlength="50"
+						 ng-model="model.register.lastName" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+	
+		<!-- User postfix name -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-postfixName" 
+							 class="col-form-label">
+					Utótag:
+				</label>
+			</div>
+		
+			<!-- Input user postfix name -->
+			<input id="register-postfixName" 
+						 type="text" 
+						 class="form-control col-12 col-lg-6"
+						 placeholder="utótag" 
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 maxlength="20"
+						 ng-model="model.register.postfixName"
+						 ng-clear-icon
+						 ng-white-space>
+		</div>
+		<hr>
+	
+		<!-- User gender -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Neme:</span>
+				</label>
+			</div>
+		
+			<!-- checkbox -->
+			<div class="col-auto mt-2">
+				<input class="form-check-input" 
+							 type="radio" 
+							 id="register-mail"  
+							 name="register-gender"
+							 ng-model="model.register.gender"
+							 ng-change="change('register')"
+							 value="M">
+				<label class="form-check-label ms-1" 
+							 for="register-mail">
+					Férfi
+				</label>
+			</div>
+		
+			<!-- checkbox -->
+			<div class="col-auto mt-2 ps-3">
+				<input id="register-gender"
+							 class="form-check-input" 
+							 type="radio" 
+							 id="register-femail"          
+							 name="register-gender"
+							 ng-model="model.register.gender"
+							 ng-change="change('register')"
+							 value="F"
+							 required
+							 ng-checkmark>
+				<label class="form-check-label ms-1" 
+							 for="register-femail">
+					Nő
+				</label>
+			</div>
+		</div>
+	
+		<!-- User born -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-born" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Született:</span>
+				</label>
+			</div>
+		
+			<!-- Input born date -->
+			<input id="register-born" 
+						 type="date" 
+						 class="form-control col-12 col-lg-6"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 required
+						 ng-model="model.register.born" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+		<hr>
+
+		<!-- Email -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-email" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Email:</span>
+				</label>
+			</div>
+		
+			<!-- Input email -->
+			<input id="register-email" 
+						 type="text" 
+						 class="form-control input-email col-12 col-lg-6"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 placeholder="email"
+						 ng-trim="false" 
+						 required
+						 maxlength="50"
+						 ng-model="model.register.email" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+
+		<!-- Email again -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-email2" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Email mégegyszer:</span>
+				</label>
+			</div>
+		
+			<!-- Input email -->
+			<input id="register-email2" 
+						 type="text" 
+						 class="form-control input-email col-12 col-lg-6"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 placeholder="email mégegyszer"
+						 ng-trim="false" 
+						 required
+						 maxlength="50"
+						 ng-model="model.register.email2" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+		<hr>
+
+		<!-- Password -->
+		<div class="input-item input-group input-row mb-3">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-password" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Jelszó:</span>
+				</label>
+			</div>
+		
+			<!-- Input password -->
+			<input id="register-password" 
+						 type="password" 
+						 class="form-control input-password col-12 col-lg-6" 
+						 placeholder="jelszó"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 required
+						 maxlength="20"
+						 ng-model="model.register.password" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+
+		<!-- Password again -->
+		<div class="input-item input-group input-row mb-2">
+
+			<!-- Label -->
+			<div class="col-12 col-lg-6 text-start text-lg-end px-0 px-lg-3">
+				<label for="register-password2" 
+							 class="col-form-label">
+					<span class="text-danger fw-bold">*</span>
+					<span>Jelszó mégegyszer:</span>
+				</label>
+			</div>
+		
+			<!-- Input password -->
+			<input id="register-password2" 
+						 type="password" 
+						 class="form-control input-password col-12 col-lg-6" 
+						 placeholder="jelszó mégegyszer"
+						 spellcheck="false" 
+						 autocomplete="off" 
+						 ng-trim="false"
+						 required
+						 maxlength="20"
+						 ng-model="model.register.password2" 
+						 ng-change="change('register')"
+						 ng-clear-icon
+						 ng-checkmark
+						 ng-white-space>
+		</div>
+
+		<!-- Show/Hide password -->
+		<div class="row mb-3">
+
+			<!-- Empty col -->
+			<div class="col-6"></div>
+
+			<!-- Checkbox -->
+			<div class="col-lg-6 ps-0">
+				<div class="form-check text-start">
+					<input id="register-display-password" 
+								 class="form-check-input" 
+								 type="checkbox" 
+								 value=""
+								 ng-display-password>
+
+					<!-- Label -->
+					<label class="form-check-label" 
+								 for="register-display-password">
+						jelszót megjelenít
+					</label>
+				</div>
+			</div>
+		</div>
+		<hr>
+		
+		<!-- Test code -->
+		<ng-test-code ng-model="model.register" change-fn="change(type)" type="register"></ng-test-code>
+
+		<!-- Buttons -->
+		<div class="btn-group mt-4 justify-content-center w-100">
+		
+			<!-- Accept button -->
+			<button id="register-accept" 
+							type="button" 
+							class="btn btn-primary shadow-sm btn-common btnClickEffect mx-1"
+							ng-click="accept('register')"
+							disabled>
+				Elküld
+			</button>
+
+			<!-- Reset button -->
+			<button id="register-reset" 
+							type="button" 
+							class="btn btn-secondary shadow-sm btn-common btnClickEffect mx-1"
+							ng-click="reset('register')">
+				Mégsem
+			</button>
+		</div>
+	</form>
+</fieldset>

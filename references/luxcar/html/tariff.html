@@ -1,0 +1,32 @@
+<!-- Price list -->
+<div class="row mt-4">
+	<div id="price-list"
+			 class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-6 mx-auto">
+
+		<!-- Table -->
+		<table class="table table-sm shadow caption-top
+									table-bordered table-striped table-hover">
+
+			<!-- Caption -->
+			<caption class="display-6 text-center">Árjegyzék</caption>
+
+			<!-- Head -->
+			<thead class="table-light">
+				<tr>
+					<th class="text-end">#</th>
+					<th class="text-start">Név</th>
+					<th class="text-end">Ft/Nap</th>
+				</tr>
+			</thead>
+
+			<!-- Body -->
+			<tbody>
+				<tr ng-repeat="car in cars track by $index">
+					<td class="text-end">{{$index+1}}</td>
+					<td class="text-start">{{car.name}}</td>
+					<td class="text-end">{{car.tariff | numSep}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

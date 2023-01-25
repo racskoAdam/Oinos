@@ -1,0 +1,186 @@
+<div class="page-container d-conditional" ng-change-state>
+
+  <!-- Scrollable container -->
+  <div class="scrollable-container">
+
+    <!-- Main -->
+    <main id="top-page" class="position-absolute w-100">
+
+      <!-- Container -->
+      <div class="container">
+
+        <!-- Row title -->
+        <div class="row mt-4 text-center">
+
+          <!-- Grid -->
+          <div class="col-11 col-md-10 col-xl-8 mx-auto">
+          
+            <!-- Title -->
+            <h6 class="fst-italic text-uppercase display-6">
+              Bérelje ki álmai autóját!
+            </h6>
+
+            <!-- Content -->
+            <p class="text-muted fs-5 fst-italic px-4 mt-3">          	
+              Autót bérelni csak regisztrált felhasználóknak lehet. Ha van már felhasználói fiókja, jelentkezzen be, ha nincs, kérjük regisztráljon!
+            </p>
+          </div>
+        </div>
+
+        <!-- Row tab buttons -->
+        <div class="row mt-3">
+          <hr>
+
+          <!-- Tab buttons -->
+          <ul id="form-tab"
+              class="nav nav-pills justify-content-center mt-3" 
+              role="tablist">
+
+            <!-- Tariff -->
+            <li class="nav-item nav-item-tab mx-2 pb-1 col-12 col-md-6 col-lg-auto text-center"
+                role="presentation">
+
+              <!-- Button -->
+              <button id="form-tariff-tab" 
+                      class="btn btn-outline-secondary ms-2 mb-2 btn-common btnClickEffect active"
+                      data-bs-toggle="pill"
+                      data-bs-target="#form-tariff"
+                      role="tab" 
+                      type="button" 
+                      aria-controls="form-tariff"
+                      aria-selected="true">
+                Árjegyzék
+              </button>
+            </li>
+
+            <!-- Rent a car -->
+            <li class="nav-item nav-item-tab mx-2 pb-1 col-12 col-md-6 col-lg-auto text-center"
+                role="presentation"
+                ng-if="user.id">
+
+              <!-- Button -->
+              <button id="form-rent-tab" 
+                      class="btn btn-outline-secondary ms-2 mb-2 btn-common btnClickEffect"
+                      data-bs-toggle="pill"
+                      data-bs-target="#form-rent"
+                      role="tab" 
+                      type="button" 
+                      aria-controls="form-rent"
+                      aria-selected="true">
+                Ató bérlése
+              </button>
+            </li>
+
+            <!-- Login -->
+            <li class="nav-item nav-item-tab mx-2 pb-1 col-12 col-md-6 col-lg-auto text-center"
+                role="presentation">
+
+              <!-- Button -->
+              <button id="form-login-tab" 
+                      class="btn btn-outline-secondary ms-2 mb-2 btn-common btnClickEffect"
+                      data-bs-toggle="pill"
+                      data-bs-target="#form-login"
+                      role="tab" 
+                      type="button" 
+                      aria-controls="form-login"
+                      aria-selected="false">
+                {{user.id ? "Felhasználó" : "Bejelenkezés"}}
+              </button>
+            </li>
+
+            <!-- Register -->
+            <li class="nav-item nav-item-tab mx-2 pb-1 col-12 col-md-6 col-lg-auto text-center"
+                role="presentation"
+                ng-if="!user.id">
+
+              <!-- Button -->
+              <button id="form-register-tab" 
+                      class="btn btn-outline-secondary ms-2 mb-2 btn-common btnClickEffect"
+                      data-bs-toggle="pill"
+                      data-bs-target="#form-register"
+                      role="tab" 
+                      type="button" 
+                      aria-controls="form-register"
+                      aria-selected="false">
+                Regisztráció
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Row tab content -->
+        <div class="row mt-3">
+
+          <!-- Tab content -->
+          <div class="tab-content">
+
+            <!-- Tariff panel -->
+            <div id="form-tariff" 
+                 class="tab-pane fade p-3 text-center show active"
+                 role="tabpanel"
+                 aria-labelledby="form-tariff-tab"
+                 ng-include src="'./html/tariff.html'">
+            </div>
+
+            <!-- Rent a car panel -->
+            <div id="form-rent" 
+                 class="tab-pane fade p-3 text-center"
+                 role="tabpanel"
+                 aria-labelledby="form-rent-tab"
+                 ng-include src="'./html/form-rent.html'">
+            </div>
+
+            <!-- Login panel -->
+            <div id="form-login" 
+                 class="tab-pane fade p-3 text-center"
+                 role="tabpanel"
+                 aria-labelledby="form-login-tab"
+                 ng-include src="'./html/form-login.html'">
+            </div>
+
+            <!-- Register panel -->
+            <div id="form-register" 
+                 class="tab-pane fade p-3 text-center"
+                 role="tabpanel"
+                 aria-labelledby="form-register-tab"
+                 ng-include src="'./html/form-register.html'">
+            </div>
+          </div>
+        </div>
+
+        <!-- Club -->
+        <div class="row mt-3 text-center">
+          <hr>
+          
+          <!-- Grid -->
+          <div class="col-11 col-md-10 col-xl-8 mx-auto mt-3">
+            
+            <!-- Image -->
+            <img class="club-member-img mb-2" 
+                 src="./image/club-member.png" 
+                 alt="club member">
+
+            <!-- Title -->
+            <h6 id="club-member-title" 
+                class="fst-italic text-uppercase display-6">
+              Legyen klubtag
+            </h6>
+          
+            <!-- Content -->
+            <p class="text-muted fs-5 fst-italic px-4 mt-3">          	
+              Mostantól kihasználhatja vadonatúj tagsági programunkat. Gyűjtsön pontokat minden egyes autó bérlése után. Szerezzen kedvezményeket és exkluzív kiváltságokat. A részletekről érdeklődjön munkatársainktól!
+            </p>
+          </div>
+          <hr class="mt-3">
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer ng-include src="'./html/footer.html'"></footer>
+    </main>
+  </div>
+
+  <!-- Header -->
+  <header ng-include src="'./html/navigate.html'"></header>
+
+</div>

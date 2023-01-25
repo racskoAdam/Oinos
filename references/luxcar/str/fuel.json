@@ -1,0 +1,10 @@
+{
+  "name": "Üzemanyag típus",
+  "db": "luxcar",
+  "tbl": "fuel",
+  "query": "SELECT `id`, `name` FROM `fuel` ORDER BY `id`",
+  "label": [
+    "Azonosító",
+    "Név"
+  ]
+}

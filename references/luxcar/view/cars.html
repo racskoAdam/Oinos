@@ -1,0 +1,54 @@
+<div class="page-container d-conditional" ng-change-state>
+
+  <!-- Scrollable container -->
+  <div class="scrollable-container">
+
+    <!-- Main -->
+    <main id="top-page" class="position-absolute w-100">
+
+      <!-- Cars -->
+      <div class="container py-5">
+
+        <!-- Row -->
+        <div class="row">
+
+          <!-- Title -->
+          <div class="col-12">
+            <h2 class="display-6 text-muted">
+              Tekintse meg autóink széles választékát:
+            </h2>
+          </div>
+
+          <!-- Cars -->
+          <div class="card-car col-12 col-md-6 col-lg-4 mx-auto mt-3"
+               ng-repeat="car in cars">
+
+            <!-- Card -->
+            <div class="card-box float-start border rounded-3 shadow p-3 me-3"
+                 id="{{car.nameID}}">
+
+              <!-- Image -->
+              <div class="card-thumbnail rounded-3">
+                <img ng-src="./image/cars/{{car.nameID}}.webp" 
+                     class="img-fluid" 
+                     alt="car">
+              </div>
+
+              <!-- Name -->
+              <h5 class="my-3 text-primary fw-bold">
+                {{car.name}}
+              </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer ng-include src="'./html/footer.html'"></footer>
+    </main>
+  </div>
+
+  <!-- Header -->
+  <header ng-include src="'./html/navigate.html'"></header>
+
+</div>

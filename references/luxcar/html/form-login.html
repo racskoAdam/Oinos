@@ -1,0 +1,140 @@
+<!-- Fieldset -->
+<fieldset>
+
+	<!-- Title -->
+	<legend class="w-100 text-center my-3">
+		<h4>
+			<span><i class="fas" ng-class="user.id ? 'fa-user' : 'fa-users'"></i></span>
+			<span class="ms-2">{{user.id ? "Felhasználó" : "Bejelenkezés"}}</span>
+		</h4>
+	</legend>
+
+	<!-- Login form -->
+	<form class="w-25 d-inline-block" action="#">
+
+		<!-- User name -->
+		<legend class="letter-spacing-2 fst-italic display-6"
+						ng-if="user.id">
+			{{user.name}}
+		</legend>
+
+		<!-- Container -->
+		<div class="mt-3" ng-if="!user.id">
+
+			<!-- User email -->
+			<div class="input-group input-row mb-3">
+
+				<!-- Icon -->
+				<div class="input-group-prepend">
+					<span class="input-group-text h-100">
+						<i class="fa-solid fa-envelope"></i>
+					</span>
+				</div>
+			
+				<!-- User email -->
+				<input id="login-email"
+							type="text" 
+							class="form-control input-email" 
+							spellcheck="false" 
+							autocomplete="off" 
+							placeholder="email"
+							ng-trim="false" 
+							required
+							maxlength="50"
+							ng-model="model.login.email" 
+							ng-change="change('login')"
+							ng-clear-icon
+							ng-checkmark
+							ng-white-space>
+			</div>
+		
+			<!-- User password -->
+			<div class="input-group input-row mb-2">
+
+				<!-- Icon -->
+				<div class="input-group-prepend">
+						<span class="input-group-text h-100">
+							<i class="fas fa-key"></i>
+						</span>
+				</div>
+			
+				<!-- Input password -->
+				<input id="login-password"
+							type="password" 
+							class="form-control input-password" 
+							spellcheck="false" 
+							autocomplete="off" 
+							placeholder="jelszó" 
+							ng-trim="false"
+							required
+							maxlength="20"
+							ng-model="model.login.password" 
+							ng-change="change('login')"
+							ng-clear-icon
+							ng-checkmark
+							ng-white-space>
+			</div>
+
+			<!-- Show/Hide password -->
+			<div class="row mb-3">
+				<div class="col">
+					<div class="form-check text-start">
+						<input id="login-display-password" 
+									class="form-check-input" 
+									type="checkbox" 
+									value=""
+									ng-display-password>
+						<label class="form-check-label" 
+									for="login-display-password">
+							jelszót megjelenít
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<!-- Test code -->
+			<ng-test-code ng-model="model.login" change-fn="change(type)" type="login"></ng-test-code>
+		</div>
+
+		<!-- Buttons -->
+		<div class="btn-group mt-4 justify-content-center w-100">
+		
+			<!-- Accept button -->
+			<button id="login-accept" 
+							type="button" 
+							class="btn btn-primary shadow-sm btn-common btnClickEffect mx-1"
+							ng-click="accept('login')"
+							disabled
+							ng-if="!user.id">
+				Bejelentkezés
+			</button>
+
+			<!-- Reset button -->
+			<button id="login-reset" 
+							type="button" 
+							class="btn btn-secondary shadow-sm btn-common btnClickEffect mx-1"
+							ng-click="reset('login')"
+							ng-if="!user.id">
+				Mégsem
+			</button>
+
+			<!-- Check-Out button -->
+			<button id="login-checkout" 
+							type="button" 
+							class="btn btn-primary shadow-sm btn-common btnClickEffect mx-1"
+							ng-click="checkout()"
+							ng-if="user.id">
+				Kijelentkezés
+			</button>
+
+			<!-- Profile button -->
+			<button id="login-profile" 
+							type="button" 
+							class="btn btn-primary shadow-sm btn-common btnClickEffect mx-1"
+							ng-click="profil()"
+							ng-if="user.id">
+				Profil
+			</button>
+		</div>
+	</form>
+</fieldset>

@@ -1,0 +1,12 @@
+{
+    "name": "Árjegyzék",
+    "db": "luxcar",
+    "tbl": "car_tariff",
+    "query": "SELECT car_tariff.id,carID,tariff,car_tariff.valid FROM car_tariff",
+    "label": [
+      "Azonosító",
+      "AutóID",
+      "Ár",
+      "Érvényes"
+    ]
+  }

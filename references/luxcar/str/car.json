@@ -1,0 +1,24 @@
+{
+  "name": "Autók",
+  "db": "luxcar",
+  "tbl": "car",
+  "query": "SELECT `car`.`id`, `car`.`name`, `car`.`nameID`,`car`.`year`, `car`.`colorID`,`color`.`name`, `car`.`engine`, `car`.`fuelID`,`fuel`.`name`, `car`.`horsepower`, `car`.`torque`, `car`.`acceleration`, `car`.`topspeed`, `car`.`price`, `car`.`manufactured`, `car`.`km` FROM `car` INNER JOIN `color` ON `car`.`colorID` = `color`.`id` INNER JOIN `fuel` ON `car`.`fuelID` = `fuel`.`id` WHERE `car`.`valid` = 1 ORDER BY `car`.`id`;",
+  "label": [
+    "Azonosító",
+    "Név",
+    "Név azonosító",
+    "Évjárat",
+    "Szín azon.",
+    "Szín",
+    "Motor",
+    "Üzemanyag azon.",
+    "Üzemanyag",
+    "Lóerő",
+    "Nyomaték",
+    "Gyorsulás",
+    "Végsebesség",
+    "Ár",
+    "Gyártva",
+    "Km állás"
+  ]
+}

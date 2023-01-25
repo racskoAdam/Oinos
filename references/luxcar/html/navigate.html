@@ -1,0 +1,144 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <!-- Container -->
+  <div class="container-fluid">
+    <!-- Title -->
+    <a
+      class="navbar-brand fs-6 fw-bold fst-italic text-muted px-2 cursor-pointer"
+      ng-scroll-to="#top-page"
+    >
+      <span id="lux-name" class="fs-5 me-1">LUX</span>
+      <span>Autó</span>
+    </a>
+
+    <!-- Hamburger icon -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mt-2 mt-sm-0">
+        <!-- Home menu item -->
+        <li class="nav-item px-2" ng-if="state.id!=='home'">
+          <a class="nav-link" ui-sref="home">
+            <i class="fas fa-home fs-5 me-1"></i>
+            <span>Kezdőlap</span>
+          </a>
+        </li>
+
+        <!-- Cars menu item -->
+        <li class="nav-item px-2" ng-if="state.id!=='cars'">
+          <a class="nav-link" ui-sref="cars">
+            <i class="fas fa-car fs-5 me-1"></i>
+            <span>Autóink</span>
+          </a>
+        </li>
+
+        <!-- Cars menu dropdown item -->
+        <li class="nav-item dropdown px-2" ng-if="state.id==='cars'">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarCars"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-car fs-5 me-1"></i>
+            <span>Autók</span>
+          </a>
+
+          <!-- Cars -->
+          <ul class="dropdown-menu" aria-labelledby="navbarCars">
+            <li ng-repeat="car in cars">
+              <a
+                class="dropdown-item cursor-pointer"
+                ng-scroll-to="#{{car.nameID}}"
+              >
+                {{car.name}}
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Rent menu item -->
+        <li class="nav-item px-2" ng-if="state.id!=='rent'">
+          <a class="nav-link" ui-sref="rent">
+            <i class="fas fa-address-card fs-5 me-1"></i>
+            <span>Bérlés</span>
+          </a>
+        </li>
+
+        <!-- Databse menu item -->
+        <li class="nav-item dropdown px-2" ng-if="user.id && user.type==='A'">
+          <a
+            id="navbarDatabase"
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="fas fa-database fs-5 me-1"></i>
+            Adatbázis
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDatabase">
+            <li ng-if="state.id!=='table' || tblName !== 'car'">
+              <a class="dropdown-item" ui-sref="table({tblName:'car'})">
+                <i class="fa-solid fa-car w-icon me-2"></i>
+                Autók
+              </a>
+            </li>
+            <li ng-if="state.id!=='table' || tblName !== 'car_tariff'">
+              <a class="dropdown-item" ui-sref="table({tblName:'car_tariff'})">
+                <i class="fa-solid fa-money-bill-1 w-icon me-2"></i>
+                Árjegyzék
+              </a>
+            </li>
+            <li ng-if="state.id!=='table' || tblName !== 'color'">
+              <a class="dropdown-item" ui-sref="table({tblName:'color'})">
+                <i class="fa-solid fa-brush w-icon me-2"></i>
+                Színek
+              </a>
+            </li>
+            <li ng-if="state.id!=='table' || tblName !== 'fuel'">
+              <a class="dropdown-item" ui-sref="table({tblName:'fuel'})">
+                <i class="fa-solid fa-gas-pump w-icon me-2"></i>
+                Üzemanyag
+              </a>
+            </li>
+            <li ng-if="state.id!=='table' || tblName !== 'user'">
+              <a class="dropdown-item" ui-sref="table({tblName:'user'})">
+                <i class="fas fa-users w-icon me-2"></i>
+                Felhasználók
+              </a>
+            </li>
+            <li ng-if="state.id!=='table' || tblName !== 'user-rent'">
+              <a class="dropdown-item" ui-sref="table({tblName:'user-rent'})">
+                <i class="fa-solid fa-cart-shopping w-icon me-2"></i>
+                Bérlések
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Menu item -->
+        <li class="nav-item px-2" ng-if="state.id!=='table'">
+          <a class="nav-link cursor-pointer" ng-scroll-to="#availability">
+            <i class="fas fa-map-marker-alt fs-5 me-1"></i>
+            <span>Elérhetőség</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

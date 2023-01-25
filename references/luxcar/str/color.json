@@ -1,0 +1,10 @@
+{
+  "name": "Autó szín",
+  "db": "luxcar",
+  "tbl": "color",
+  "query": "SELECT `id`, `name` FROM `color` ORDER BY `id`",
+  "label": [
+    "Azonosító",
+    "Név"
+  ]
+}
