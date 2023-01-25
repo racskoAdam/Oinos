@@ -1,0 +1,75 @@
+<title>Kezdőlap</title>
+<div ng-include src="'./html/navigate.html'"></div>
+      <div class="hero-image">
+        <div class="hero-text">
+          <h1>Üdvözöljük a FlyFast© utazási iroda webloldalán!</h1>
+          <p>Repüljön bárhova bármikor velünk!</p>
+          <div class="search-bar">
+            <input type="text" class="form-control" id="search" placeholder="Keressen egy országra itt!">
+        </div>
+        </div>
+      </div>
+
+    
+
+  
+<div class="content display1">
+    
+  <div class="container">    
+
+        <div id="output">
+        </div>
+        </div>
+        
+    </div>
+
+
+  </div>
+
+</div>
+  
+
+
+
+
+<div ng-include src="'./html/footer.html'"></div>
+
+
+
+<script type="text/javascript">
+$( ":text" ).keyup(function() {
+  if ( $(":text").val().length > 0 )
+  {
+  $( ".display1" ).fadeIn( "slow", function() {
+  });
+  }
+  
+});
+
+
+$( ":text" ).keyup(function() {
+
+  if ( $(":text").val().length == 0 )
+  {
+  $( ".display1" ).fadeOut( "slow", function() {
+  });
+  }
+});
+
+  $(document).ready(function(){
+    $("#search").keyup(function(){
+      $.ajax({
+        type:'POST',
+        url:'./php/search.php',
+        data:{
+          name:$("#search").val(),
+        },
+        success:function(data){
+          $("#output").html(data);
+        }
+      });
+    });
+  });
+</script>
+
+

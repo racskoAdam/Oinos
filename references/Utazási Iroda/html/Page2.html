@@ -1,0 +1,82 @@
+<div ng-include src="'./html/navigate.html'"></div>
+
+<div class="cards">
+  <div class="card mb-3 card-custom" ng-repeat="ut in page2 track by $index">
+    <div class="card__image-holder">
+      <img ng-src="./assets/img/{{ut.kep}}" class="img-fluid" alt="Ut" />
+    </div>
+    <div class="card-title">
+      <a href="#" class="toggle-info btn">
+        <span class="left"></span>
+        <span class="right"></span>
+      </a>
+      <h2>{{ut.orszag}}</h2>
+    </div>
+    <div class="card-flap flap1">
+      <div class="card-description">
+        Utazzon <span class="fw-bold">{{ut.orszag}}</span> területére,
+        <span class="fw-bold">{{ut.varos}}</span> városában/falujában! A(z)
+        <span class="fw-bold">{{ut.szallashelyneve}}</span> szálláshelyre!
+      </div>
+      <div class="card-description">Ár/Fő: {{ut.ar}}Ft - {{ut.tipus}}</div>
+      <div class="card-flap flap2">
+        <div class="card-actions">
+          <a data-id="{{$index}}" ui-sref="{{szallashelyneve}}" class="btn">Részletek </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="kimeno"></div>
+
+<div ng-include src="'./html/footer.html'"></div>
+
+<script>
+
+  // $.ajax({
+  //   type:'POST',
+  //   url:'./php/search1.php',
+  //   data:{
+  //     name:$("#search1").val(),
+  //   },
+  //   success:function(data){
+  //     $("#kimeno").html(data);
+  //   }
+  // });
+
+  $(document).ready(function () {
+    var zindex = 10;
+
+    $("div.card").click(function (e) {
+      e.preventDefault();
+
+      var isShowing = false;
+
+      if ($(this).hasClass("show")) {
+        isShowing = true;
+      }
+
+      if ($("div.cards").hasClass("showing")) {
+        // a card is already in view
+        $("div.card.show").removeClass("show");
+
+        if (isShowing) {
+          // this card was showing - reset the grid
+          $("div.cards").removeClass("showing");
+        } else {
+          // this card isn't showing - get in with it
+          $(this).css({ zIndex: zindex }).addClass("show");
+        }
+
+        zindex++;
+      } else {
+        // no cards in view
+        $("div.cards").addClass("showing");
+        $(this).css({ zIndex: zindex }).addClass("show");
+
+        zindex++;
+      }
+    });
+  });
+</script>

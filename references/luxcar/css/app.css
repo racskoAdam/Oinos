@@ -1,0 +1,93 @@
+body {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background-image: url("../image/background.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.scrollable-container,
+.table-container {
+  position: absolute;
+  top: 56px;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+.scrollable-container {
+  height: calc(100% - 56px);
+}
+.table-container {
+  height: calc(100% - 106px);
+}
+.table-container table {
+  min-width: 300px !important;
+  table-layout: fixed;
+  white-space: nowrap;
+}
+.table-footer {
+  position: absolute;
+  height: 50px;
+  bottom: 0;
+  width: 100%;
+}
+#lux-name {
+  letter-spacing: 3px;
+}
+footer .logo {
+  width: 70px;
+  height: 76px;
+}
+.w-icon {
+  width: 16px !important;
+}
+.navbar-brand:hover, 
+.dropdown-item:hover, 
+.nav-item:not(.nav-item-tab):hover {
+  background-color: lightcyan !important;
+}
+.card-thumbnail {
+  max-height: 200px;
+  overflow: hidden;
+  transition: 1s;
+  transition-delay: 1s;
+}
+.dropdown-menu {
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.card-thumbnail:hover {
+  transform: scale(1.05);
+}
+.currency:before { 
+  content:'HUF '; 
+}
+form {
+  min-width: 20rem !important;
+}
+button.btn-common {
+  min-width: 160px !important;
+  max-width: 200px !important;
+}
+.club-member-img {
+  height: 100px;
+  width: auto;
+}
+@media (min-width: 768px) {
+  form#register-form,
+  form#rent-form {
+    min-width: 30rem !important;
+  }
+  .club-member-img {
+    height: 125px;
+  }
+}
+@media (min-width: 1200px) {
+  .club-member-img {
+    height: 150px;
+  }
+}

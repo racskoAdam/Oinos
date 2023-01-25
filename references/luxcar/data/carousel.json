@@ -1,0 +1,22 @@
+[
+  {
+    "name"  : "Koenigsegg Jesko Absolut",
+    "nameID": "koenigsegg-jesko-absolut"
+  },
+  {
+    "name"  : "Hennessey Venom F5",
+    "nameID": "hennessey-venom-f5"
+  },
+  {
+    "name"  : "Bugatti Chiron Super Sport 300+",
+    "nameID": "bugatti-chiron-super-sport-300-plus"
+  },
+  {
+    "name"  : "Rimac Concept One",
+    "nameID": "rimac-concept-one"
+  },
+  {
+    "name"  : "Mercedes-AMG One",
+    "nameID": "mercedes-amg-one"
+  }
+]

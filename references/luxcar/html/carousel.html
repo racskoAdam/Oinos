@@ -1,0 +1,42 @@
+<!-- Carousel -->
+<div id="carouselCarCaptions" 
+		 class="carousel slide" 
+		 data-bs-ride="carousel">
+
+	<!--- Indicators -->
+	<div class="carousel-indicators">
+		<button type="button" 
+			 			data-bs-target="#carouselCarCaptions" 
+			 			data-bs-slide-to="{{$index}}" 
+			 			class="active" 
+			 			aria-current="true" 
+			 			aria-label="Slide {{$index+1}}"
+			 			ng-repeat="item in carousel track by $index"
+			 			ng-class="{'active': $index == 0}">
+		</button>
+	</div>
+
+	<!-- Carousel images -->
+	<div class="carousel-inner">
+		<div class="carousel-item" 
+				 ng-repeat="item in carousel track by $index"
+				 ng-class="{'active': $index == 0}">
+ 			<img ng-src="./image/carousel/{{item.nameID}}.webp"
+					 class="d-block w-100" 
+					 alt="img">
+ 			<div class="carousel-caption d-none d-md-block">
+	 			<h5 class="mb-4">{{item.name}}</h5>
+ 			</div>
+		</div>
+	</div>
+
+	<!-- Buttons -->
+	<button class="carousel-control-{{item}}" 
+		 			type="button" 
+		 			data-bs-target="#carouselCarCaptions" 
+		 			data-bs-slide="{{item}}"
+		 			ng-repeat="item in ['prev','next']">
+		<span class="carousel-control-{{item}}-icon" aria-hidden="true"></span>
+		<span class="visually-hidden">{{item}}</span>
+	</button>
+</div>
