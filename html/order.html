@@ -21,7 +21,9 @@
 <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
     <div class="card rounded-2 col-2 m-2" id="{{item.id}}"
          ng-repeat="item in categories track by $index"
-         ng-click="orderFilter($event)">
+         ng-click="orderFilter($event)"
+         ng-class="{'catSelected': item.id==filter}"
+         >
         <i class="m-auto categoryIcon"
            ng-class="item.icon"></i>
         <span class="text-center categoryText">{{item.name}}</span>

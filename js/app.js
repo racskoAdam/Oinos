@@ -125,7 +125,6 @@
       let element = event.currentTarget;
       $scope.filter = element.id;
       $scope.$applyAsync();
-
     };
   })
   .catch((e) => console.log(e));

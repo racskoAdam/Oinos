@@ -346,5 +346,9 @@ color: #878787;
   font-size: 1rem;
 }
 
+.catSelected{
+  background-color: #ffc107 !important;
+}
+
 /*END OF ORDER*/
 
