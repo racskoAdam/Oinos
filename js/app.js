@@ -85,7 +85,13 @@
   },
 ])
 
-// Page2 controller
 })(window, angular);
+
+let pizza = $('#Food-1');
+let burger = $('#Food-2');
+let bevs = $('#Food-3');
+let streetfood = $('#Food-4');
+let desserts = $('#Food-5');
+let sides = $('#Food-6');
 
 
