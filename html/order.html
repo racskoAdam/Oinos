@@ -45,4 +45,14 @@
     </div>
 </div>
 </div>
+<div class="cards">
+    <div class="card mb-3 card-custom" ng-repeat="food in order track by $index">
+        <img ng-src="./img/{{food.image}}" class="img-fluid"/>
+      <div class="card-title text-dark">
+        <a href="#" class="toggle-info btn">
+            <h4>{{food.Name}}</h4>
+        </a>
+      </div>
+    </div>
+  </div>
 <div ng-include src="'./html/footer.html'"></div>

@@ -18,7 +18,7 @@
         })
         .state('order', {
           url: '/order',
-          templateUrl: './html/order.html'
+          templateUrl: './html/order.html',
         })
         .state('about', {
           url: '/about',
@@ -41,6 +41,51 @@
     }
   ])
 
+
+//app run
+.run([
+  "$rootScope",
+  "$transitions",
+  "$timeout",
+  "http",
+  function ($rootScope, $transitions, $timeout, http) {
+    // On before transaction
+    let isFirstRun = true;
+    $transitions.onBefore({}, function (transition) {
+      return $timeout(function () {
+        if (isFirstRun) {
+          isFirstRun = false;
+          if (transition.to().name !== "home")
+            return transition.router.stateService.target("home");
+        }
+        return true;
+      }).catch((e) => console.log(e));
+    });
+
+    // Set global variables
+    $rootScope.state = { id: null, prev: null };
+    $rootScope.user = { id: null, type: null, name: null };
+
+    // Get Flies
+    http
+      .request({
+        url: "./php/get.php",
+        method: "POST",
+        data: {
+          db: "opd",
+          query: "SELECT * FROM `menu`;",
+          isAssoc: true,
+        },
+      })
+      .then((data) => {
+        $rootScope.order = data;
+        $rootScope.$applyAsync();
+      })
+      .catch((e) => console.log(e));
+  },
+])
+
+// Page2 controller
 })(window, angular);
 
 
