@@ -9,7 +9,7 @@
 
 <div class="d-flex mx-md-5">
     <div>
-        <span class="price">15000 Ft</span>
+        <span class="price">Geci Ft</span>
     </div>
     <div class="ms-auto">
         <button type="button" class="btn btn-warning rounded-0 orderBtn h-100" disabled>Rendelés</button>
@@ -19,34 +19,19 @@
 <div class=" categories mt-5">
 <h2 class="text-center">Kategóriák</h2>
 <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
-    <div class="card rounded-2 col-2 m-2">
-        <i class="fa-solid fa-pizza-slice m-auto categoryIcon"></i>
-        <span class="text-center categoryText">Pizzák</span>
-    </div>
-    <div class="card rounded-2 col-2 m-2">
-        <i class="fa-solid fa-burger m-auto categoryIcon"></i>
-        <span class="text-center categoryText">Hamburgerek</span>
-    </div>
-    <div class="card rounded-2 col-2 m-2">
-        <i class="fa-solid fa-glass-water m-auto categoryIcon"></i>
-        <span class="text-center categoryText">Italok</span>
-    </div>
-    <div class="card rounded-2 col-2 m-2">
-        <i class="fa-solid fa-bowl-food m-auto categoryIcon"></i>
-        <span class="text-center categoryText">StreetFood</span>
-    </div>
-    <div class="card rounded-2 col-2 m-2">
-        <i class="fa-solid fa-cookie-bite m-auto categoryIcon"></i>
-        <span class="text-center categoryText">Desszertek</span>
-    </div>
-    <div class="card rounded-2 col-2 m-2">
-        <i class="fa-solid fa-bowl-rice m-auto categoryIcon"></i>
-        <span class="text-center categoryText">Köretek</span>
+    <div class="card rounded-2 col-2 m-2" id="{{item.id}}"
+         ng-repeat="item in categories track by $index"
+         ng-click="orderFilter($event)">
+        <i class="m-auto categoryIcon"
+           ng-class="item.icon"></i>
+        <span class="text-center categoryText">{{item.name}}</span>
     </div>
 </div>
 </div>
 <div class="cards">
-    <div class="card mb-3 card-custom" ng-repeat="food in order track by $index">
+    <div class="card mb-3 card-custom {{food.CategorieId}}" 
+         ng-repeat="food in order track by $index"
+         ng-if="food.CategorieId==filter">
         <img ng-src="./img/{{food.image}}" class="img-fluid"/>
       <div class="card-title text-dark">
         <a href="#" class="toggle-info btn">
