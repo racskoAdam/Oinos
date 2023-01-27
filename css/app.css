@@ -146,7 +146,11 @@ a:hover { text-decoration: none }
     font-size: 15px;
     color: #fff;
 }
-
+.card{
+  background-image: url("../waltuhn/cover2.jpg") !important;
+  background-repeat: no-repeat;
+  background-size: cover ;
+}
 .home-card-title {
     position: absolute;
     left: 0;
