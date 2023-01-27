@@ -345,6 +345,9 @@ color: #878787;
 .categoryText{
   font-size: 1rem;
 }
-
+.has-error{
+  background-color: #000;
+  color: #000;
+}
 /*END OF ORDER*/
 

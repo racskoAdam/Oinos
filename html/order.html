@@ -34,9 +34,8 @@
          ng-if="food.CategorieId==filter">
         <img ng-src="./img/{{food.image}}" class="img-fluid"/>
       <div class="card-title text-dark">
-        <a href="#" class="toggle-info btn">
-            <h4>{{food.Name}}</h4>
-        </a>
+        <span>{{food.Name}}</span>
+        <span>{{food.Description}}</span>
       </div>
     </div>
   </div>
