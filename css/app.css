@@ -345,17 +345,10 @@ color: #878787;
 .categoryText{
   font-size: 1rem;
 }
-<<<<<<< HEAD
-.has-error{
-  background-color: #000;
-  color: #000;
-}
-=======
 
 .catSelected{
   background-color: #ffc107 !important;
 }
 
->>>>>>> 6f95a12024801734ac089c6ba20dfefa015acfa7
 /*END OF ORDER*/
 
