@@ -1,4 +1,20 @@
 <div ng-include src="'./html/navigate.html'"></div>
+<h1 class="mainh1">Blog</h1>
+<div class="container">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="inputGroupSelect01">Rendezés:</label>
+    </div><select class="custom-select sort" id="inputGroupSelect01" onchange="loadblog()">
+      <option selected value="date:desc">
+        Dátum szerint csökkenő
+      </option>
+      <option value="date:asc">
+        Dátum szerint növekvő
+      </option>
+    </select>
+  </div>
+  <div id="articles" class="mb-5"></div>
+</div>
 <div ng-include src="'./html/footer.html'"></div>
 
 
