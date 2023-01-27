@@ -29,13 +29,13 @@
           url: '/contact',
           templateUrl: './html/contact.html'
         })
-        .state('blog', {
-          url: '/blog',
-          templateUrl: './html/blog.html'
+        .state('faq', {
+          url: '/faq',
+          templateUrl: './html/faq.html'
         })
-        .state('restaurant', {
-          url: '/restaurant',
-          templateUrl: './html/restaurant.html'
+        .state('restaurant-divider', {
+          url: '/restaurant-divider',
+          templateUrl: './html/restaurant-divider.html'
         });
       
       $urlRouterProvider.otherwise('/');
@@ -131,6 +131,33 @@
 }])
 
 })(window, angular);
+const data = {
+ 
+  bolgpostok: [
+    {
+      title: "SZERETNÉ KIFESTENI AZ OTTHONÁT?",
+      text:
+        "Ha egy kis frissességet, változatosságot szeretnénk varázsolni megfáradt otthonunkba, vagy ha új lakásba költözünk, a szobafestés gondolata mindenképpen felmerül bennünk többször életünk folyamán.",
+      date: new Date(2022, 5, 7),
+      link: "blogpost1.html",
+    },
+    {
+      title: "CSAPATÉPÍTŐI PROGRAMJAINK",
+      text:
+        "Mindig is fontos volt számunkra a dolgozói élmény, a munka mellett szüksége van mindenkinek valamiféle kikapcsolódásra",
+      date: new Date(2022, 9, 12),
+      link: "blogpost2.html",
+    },
+    {
+      title:
+        "HOGYAN VÁGJUNK KI EGY FÁT BIZTONSÁGOSAN ÉS PRECÍZEN? MUTATJUK HOGY",
+      text:
+        "A farmer, Simeon Fuchs megosztja velünk azokat a biztonságos és jól bevált technikákat, amelyeket az öreg svéd favágók használtak nagy fák kivágásához.",
+      date: new Date(2022, 1, 1),
+      link: "blogpost3.html",
+    },
+  ],
+};
 function loadblog() {
   let articles = document.getElementById("articles");
   let sortby = document.getElementById("inputGroupSelect01").value;
