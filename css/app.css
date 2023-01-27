@@ -326,12 +326,12 @@ color: #878787;
   font-size: 3rem;
 }
 
-.card{
+.catCard{
   width: 10rem;
   height: 10rem;
 }
 
-.card:hover{
+.catCard:hover{
   cursor: pointer;
   transform: scale(1.05);
   transition-duration: 300ms;
@@ -350,5 +350,9 @@ color: #878787;
   background-color: #ffc107 !important;
 }
 
+.menuItem{
+  background-color: #fff;
+  max-width: 50rem;
+}
 /*END OF ORDER*/
 

@@ -16,10 +16,10 @@
     </div>
 </div>
 
-<div class=" categories mt-5">
+<div class="categories mt-5">
 <h2 class="text-center">Kategóriák</h2>
 <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
-    <div class="card rounded-2 col-2 m-2" id="{{item.id}}"
+    <div class="card catCard rounded-2 col-2 m-2" id="{{item.id}}"
          ng-repeat="item in categories track by $index"
          ng-click="orderFilter($event)"
          ng-class="{'catSelected': item.id==filter}"
@@ -30,16 +30,25 @@
     </div>
 </div>
 </div>
-<div class="cards">
-    <div class="card mb-3 card-custom {{food.CategorieId}}" 
-         ng-repeat="food in order track by $index"
-         ng-if="food.CategorieId==filter">
-        <img ng-src="./img/{{food.image}}" class="img-fluid"/>
-      <div class="card-title text-dark">
-        <span>{{food.Name}}</span>
-        <span>{{food.Description}}</span>
-      </div>
-    </div>
+    <div class="row d-flex justify-content-center w-100 m-0">
+        <!--<div class="menuItem col-md-6 {{food.CategorieId}}" 
+        ng-repeat="food in order track by $index"
+        ng-if="food.CategorieId==filter">
+       <img ng-src="./img/{{food.image}}" class="img-fluid"/>
+            <div class="card-title text-dark">
+                <h4>{{food.Name}}</h4>
+            </div>
+        </div>-->
+        <div class="col-lg-6 d-flex justify-content-center my-2"
+                ng-repeat="food in order track by $index"
+                ng-if="food.CategorieId==filter">
+            <div class="menuItem">
+            <div class="card-title text-dark">
+                <h4>{{food.Name}}</h4>
+            </div>
+                <img ng-src="./img/{{food.image}}" class="img-fluid w-100"/>
+            </div>
+        </div>
   </div>
 
 <div ng-include src="'./html/footer.html'"></div>
