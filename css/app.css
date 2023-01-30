@@ -365,6 +365,10 @@ ul {
 .card-title {
   min-height: 200px;
 }
+*{
+  background-image: url("../img/osember.PNG");
+  object-fit: cover;
+}
 /*----------------------------END OF ORDER----------------------------*/
 
 /*----------------------------RESTAURANT-----------------------------*/
