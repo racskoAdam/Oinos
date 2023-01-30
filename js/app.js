@@ -33,9 +33,9 @@
           url: '/faq',
           templateUrl: './html/faq.html'
         })
-        .state('restaurant-divider', {
-          url: '/restaurant-divider',
-          templateUrl: './html/restaurant-divider.html'
+        .state('restaurant', {
+          url: '/restaurant',
+          templateUrl: './html/restaurant.html'
         });
       
       $urlRouterProvider.otherwise('/');
