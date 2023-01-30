@@ -372,11 +372,6 @@ ul {
   box-shadow: inset 0 0 10px #000;
 }
 
-.card {
-  background-image: url("../waltuhn/cover2.jpg") !important;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
 .divider-title {
   position: absolute;
   left: 0;
