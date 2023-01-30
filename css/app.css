@@ -349,11 +349,11 @@ ul {
   max-width: 50rem;
 }
 
-.imageContainer{
+.imageContainer {
   position: relative;
 }
 
-.imageContainer .cartBtn{
+.imageContainer .cartBtn {
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -362,39 +362,11 @@ ul {
   border-radius: 50%;
 }
 
-.card-title{
+.card-title {
   min-height: 200px;
 }
 /*----------------------------END OF ORDER----------------------------*/
 
-/*----------------------------RESTAURANT-DIVIDER----------------------------*/
-.divider-left {
-  background-image: url("../img/restaurant-divider-1.jpg");
-}
-.divider-right{
-  background-image: url("../img/restaurant-divider-2.jpg");
-}
+/*----------------------------RESTAURANT-----------------------------*/
 
-.divider-card {
-  width: 100%;
-  height: 50rem;
-  background-position: center top;
-  background-size: cover;
-  overflow: hidden;
-  position: relative;
-  box-shadow: inset 0 0 10px #000;
-}
-
-.divider-title {
-  position: absolute;
-  left: 0;
-  text-align: center;
-  bottom: 0;
-  width: 100%;
-  text-transform: uppercase;
-  transition: 0.3s ease-in-out;
-  padding: 20px;
-}
-
-/*----------------------------END OF RESTAURANT-DIVIDER----------------------------*/
-
+/*----------------------------END OF RESTAURANT----------------------------*/
