@@ -142,11 +142,7 @@ a:hover {
   font-size: 15px;
   color: #fff;
 }
-.card {
-  background-image: url("../waltuhn/cover2.jpg") !important;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+
 .home-card-title {
   position: absolute;
   left: 0;
@@ -351,6 +347,23 @@ ul {
 .menuItem {
   background-color: #fff;
   max-width: 50rem;
+}
+
+.imageContainer{
+  position: relative;
+}
+
+.imageContainer .cartBtn{
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+}
+
+.card-title{
+  min-height: 200px;
 }
 /*----------------------------END OF ORDER----------------------------*/
 

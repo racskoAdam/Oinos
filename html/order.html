@@ -36,14 +36,17 @@
                 ng-if="food.CategorieId==filter">
             <div class="menuItem rounded">
             <div class="card-title text-dark">
-                <div class="d-flex">
-                    <h4 class="flex-grow-1 px-2 my-auto fs-1">{{food.Name}}</h4>
-                    <span class="m-auto px-2 fs-2 fw-bold">{{food.Price}} Ft</span>
+                <div class="d-flex pt-3">
+                    <h4 class="flex-grow-1 px-2 fs-1">{{food.Name}}</h4>
+                    <span class="m-auto px-2 fs-2 fw-bold text-nowrap">{{food.Price}} Ft</span>
                 </div>
-                <hr>
-                <div class="fs-3 p-2">{{food.Description}}</div>
+                <hr class="m-0">
+                <div class="fs-3 px-2">{{food.Description}}</div>
             </div>
-                <img ng-src="./img/{{food.image}}" class="img-fluid rounded-bottom w-100"/>
+                <div class="imageContainer h-inherit">
+                    <img ng-src="./img/{{food.image}}" class="img-fluid rounded-bottom"/>
+                    <button type="button" class="btn btn-warning cartBtn"><i class="fa-solid fa-plus fa-xl"></i></button>
+                </div>
             </div>
         </div>
   </div>
