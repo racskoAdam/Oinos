@@ -35,7 +35,8 @@
         })
         .state('restaurant', {
           url: '/restaurant',
-          templateUrl: './html/restaurant.html'
+          templateUrl: './html/restaurant.html',
+          controller: "reservationController"
         });
       
       $urlRouterProvider.otherwise('/');
@@ -70,6 +71,29 @@
     
   },
 ])
+
+
+.controller('reservationController', function($scope, $http) {
+  $scope.formData = {};
+  
+  $scope.submitForm = function() {
+  var date_time = moment($scope.date + " " + $scope.time, "YYYY-MM-DD HH:mm").format();
+  $scope.formData.date_time = date_time;
+  $http({
+    method: 'POST',
+    url: './php/submit-form.php',
+    data: $.param($scope.formData),
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+  })
+  .then(function(data) {
+    console.log(data);
+  });
+};
+})  
+
+
+
+
 
 .controller('orderController', ['$scope', 'http', function($scope, http) {
   
@@ -130,4 +154,10 @@
   .catch((e) => console.log(e));
 }])
 
+
+
+
 })(window, angular);
+
+
+

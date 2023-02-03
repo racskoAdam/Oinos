@@ -365,9 +365,9 @@ ul {
 .card-title {
   min-height: 200px;
 }
-*{
-  background-image: url("../img/osember.PNG");
-  object-fit: cover;
+footer{
+  background-image: url("../img/osember.PNG") !important;
+  object-fit:cover;
 }
 /*----------------------------END OF ORDER----------------------------*/
 
