@@ -14,25 +14,30 @@
     <h1>Table Reservation Form</h1>
     <form ng-submit="submitForm()">
       <div class="form-group">
-        <label for="name">Name:</label>
+        <label for="name">Név:</label>
         <input type="text" class="form-control" id="name" ng-model="formData.name">
       </div>
       <div class="form-group">
-        <label for="email">Email:</label>
+        <label for="email">Email cím:</label>
         <input type="email" class="form-control" id="email" ng-model="formData.email">
       </div>
       <div class="form-group">
-        <label for="phone">Phone:</label>
+        <label for="phone">Telefonszám:</label>
         <input type="text" class="form-control" id="phone" ng-model="formData.phone">
       </div>
       <div class="form-group">
-        <label for="date">Date:</label>
-        <input type="date" class="form-control" id="date" ng-model="date" required>
-      </div>  
-      <div class="form-group">
-        <label for="time">Time:</label>
-        <input type="time" class="form-control" id="time" ng-model="time" required>
+        <label for="date">Dátum:</label>
+        <input type="date" class="form-control" id="date" ng-model="date" required
+          min="{{next10Days()}}" max="{{next10Days(10)}}" ng-change="validateDate()">
+        <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
+          Please select a date within the next 10 days.
+        </p>
       </div>
+      <div class="form-group">
+        <label for="time">Időpont:</label>
+        <select id="time" ng-model="time" ng-options="t for t in timeOptions" required>
+        </select>
+    </div>
           
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
