@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Jan 25. 13:01
+-- Létrehozás ideje: 2023. Jan 30. 11:20
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -44,7 +44,13 @@ INSERT INTO `categories` (`categorieId`, `categorieName`, `categorieDesc`) VALUE
 (3, 'Streetfood', 'Válasszon a streetfoodjaink közül!'),
 (4, 'Italok', 'Egészítse ki ételeit a FoodieVersumban kapható italok széles választékával'),
 (5, 'Desszertek', 'Válasszon a kellemes, könnyed desszertjeink közül!'),
-(6, 'Köretek | Szószok', 'Válasszon bármilyen szószt és köretet!');
+(6, 'Köretek | Szószok', 'Válasszon bármilyen szószt és köretet!'),
+(7, 'appetisers', 'Ízelítők'),
+(8, 'starters', 'Előételek'),
+(9, 'sides', 'Kiegészítő ételek'),
+(10, 'mains', 'Főételek'),
+(11, 'desserts_res', 'Desszertek'),
+(12, 'wines', 'Borok');
 
 -- --------------------------------------------------------
 
@@ -101,7 +107,7 @@ INSERT INTO `menu` (`Id`, `Name`, `Price`, `Description`, `CategorieId`, `image`
 (3, 'Klasszikus Hamburger', 2500, 'Marhahús, saláta, paradicsom, lilahagyma, savanyúság és klasszikus szósz\r\n', 2, 'Burger-Classic.jpg'),
 (4, 'Sajtburger', 2900, 'Marhahús, cheddar, saláta, paradicsom, lilahagyma, savanyúság és klasszikus szósz', 2, 'Burger-Cheese.jpg'),
 (5, 'Mexikó burger', 2750, 'Marhahús, jalapeño paprika, saláta, paradicsom, lilahagyma, savanyúság és csípős szósz', 2, 'Burger-Mexico.jpg'),
-(6, 'Margherita Pizza', 3000, 'Paradicsomszósz, egy nagy adag mozzarella', 1, 'Pizza-Margherita.jpg'),
+(6, 'Margherita Pizza', 3000, 'Paradicsomszósz, egy nagy adag mozzarella\r\n\r\n', 1, 'Pizza-Margherita.jpg'),
 (7, 'Vega Pizza', 3150, 'Paradicsomszósz, mozzarella, hagyma, zöldpaprika és kukorica', 1, 'Pizza-Vegetable-Mix.jpg'),
 (8, 'SoGoKu Pizza', 3150, 'Paradicsomszósz, egy nagy adag mozzarella, sonka és csiperkegomba\r\n', 1, 'Pizza-SoGoKu.jpg'),
 (9, 'Hawaii Pizza', 3150, 'Paradicsomszósz, egy nagy adag mozzarella, sonka és ananász', 1, 'Pizza-Hawaii.jpg'),
@@ -166,6 +172,72 @@ CREATE TABLE `reservation` (
   `email` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
   `phoneNumber` varchar(30) COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `restaurantmenu`
+--
+
+CREATE TABLE `restaurantmenu` (
+  `Id` smallint(4) NOT NULL,
+  `Name` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
+  `CategorieId` tinyint(2) NOT NULL,
+  `Price` int(6) NOT NULL,
+  `Description` text COLLATE utf8_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `restaurantmenu`
+--
+
+INSERT INTO `restaurantmenu` (`Id`, `Name`, `CategorieId`, `Price`, `Description`) VALUES
+(1, 'Házi olívaolajos keksz', 7, 1900, 'fűszeres kecskesajtmártással tálalva'),
+(2, 'Vegyes kalamata olajbogyó', 7, 1750, 'Egy tál vegyes kalamata olajbogyó és napraforgós paradicsom'),
+(3, 'Rozmaringos és tengeri sós focaccia', 7, 1650, 'Balzsamecettel és olívaolajjal tálalva'),
+(4, 'Fokhagymás ciabatta', 7, 1650, ''),
+(5, 'Fokhagymás ciabatta', 7, 1750, 'mozzarellával'),
+(6, 'Préselt csirke terrine konfitált csirkéből', 8, 2650, 'vadgombával, prosciutto sonkával és póréhagymával, valamint körtével, gyömbérrel és sáfránnyal ízesítve.'),
+(7, 'Tengeri herkentyűhal ’scampi’ ', 8, 3100, 'citromos majonézzel és téli gyökérrel zöldségsaláta'),
+(8, 'Sült kecskesajtos sajttorta ', 8, 2650, 'meleg sült kecskesajt és napraforgós paradicsom sajttorta, füge és áfonya chutney-vel'),
+(9, 'Homemade soup of the day', 8, 2200, 'frissen sült kenyérrel tálalva'),
+(10, 'Kéksajtos saláta', 8, 2450, 'bébi gyöngyszem, kék sajt, kandírozott dió, olajbogyó, fűszeres körtével és portói öntettel'),
+(11, 'Pulled bbq sertéshús', 8, 2650, 'mustáros káposztasalátával és rozmaringos focaccia-val tálalva'),
+(12, 'Sült mezei gomba', 8, 2650, 'brievel és lilahagymával tálalva, tetején fokhagymás és gyógynövényes morzsával'),
+(13, 'Füstölt makréla pástétom', 8, 2650, 'mangóval, lilahagymával és lime salsa-val, ciabatta pirítóssal'),
+(14, 'Kézzel vágott hasábburgonya', 9, 1300, ''),
+(15, 'Szezonális vegyes zöldség', 9, 1300, ''),
+(16, 'Szezonális kevert zöldönség fokhagymás vajjal', 9, 1300, ''),
+(17, 'Mézes, narancsos és köményes chantenay sárgarépa', 9, 1300, ''),
+(18, 'Bébi salátalevél, vörösboros öntettel', 9, 1400, ''),
+(19, 'Paradicsom, lilahagyma és parmezán saláta', 9, 1450, ''),
+(20, 'Wales-i bárányhús', 10, 7100, 'grillezett lilahagymával, paszternák és pancetta dauphinoise, kandírozott cékla, kapribogyó és menta mártással.'),
+(21, 'Ragacsos citromos-borsos csirke', 10, 6250, 'pirított paradicsommal butternut tök és parmezános gratin, grillezett cseresznyeparadicsom és chorizo'),
+(22, 'Házi halpite', 10, 5320, 'cheddar és petrezselyem morzsával, vajas kelkáposztával és kerti borsóval'),
+(23, 'Sült tőkehal karaj', 10, 7100, 'tormás kéreg, baconos sült újkrumpli és kagyló, köményes almamártással.'),
+(24, 'Serpenyőben sült tengeri sügér', 10, 7550, 'újhagymás pürével, pak choi-val és garnélarákkal'),
+(25, '25 dkg char grillált szirlószelet', 10, 8000, 'sült fokhagymás pürével, sült paszternák, sárgarépa, krémes mogyoróhagyma és vörösboros jus.'),
+(26, 'Zöldséges tagine', 10, 5300, 'édesburgonyából, sült paprikából, sárgabarackból és vajbabból készült tagine, grillezett lapos kenyérrel tálalva.'),
+(27, 'Kecskesajtos és zöldséges sütemény', 10, 5300, 'padlizsán, cukkini, kecskesajt és paradicsomos sütemény vajas kelkáposztával és zsenge szárú brokkolival.'),
+(28, 'Grillezett gammon steak', 10, 4000, 'szabadföldi tojással, kézzel vágott levegősütött hasábburgonyával , szőlőparadicsommal, ananásszal és mustáros pikalilivel tálalva'),
+(29, 'Pulled pork burger', 10, 4800, 'mustáros káposztasalátával, házi bbq-szósszal körítve, briós zsemlében, savanyúsággal és levegősütött hasábburgonyával tálalva.'),
+(30, 'Házi marhahúsburger ', 10, 4000, 'szalonnával és chipotle majonézzel, mustáros káposztasalátával, paradicsommal, bébi drágakővel, savanyúsággal és levegősütött hasábburgonyával tálalva. kéksajt vagy cheddar 1,00 € vagy pulled pork 2,00 € hozzáadásával'),
+(31, '25 dkg rib eye steak', 10, 8000, 'mezei gombával, szőlőparadicsommal és kézzel vágott levegősütött hasábburgonyával tálalva'),
+(32, '25 dkg szirlós steak', 10, 7550, 'mezei gombával, szőlőparadicsommal és kézzel vágott levegősütött hasábburgonyával tálalva'),
+(33, '25dkg migon filé', 10, 11000, 'mezei gombával, szőlőparadicsommal és kézzel vágott levegősütött hasábburgonyával tálalva'),
+(34, 'Balla úr specialitása', 10, 4000, 'mustáros püré vörösboros, kakukkfüves és hagymás mártással'),
+(35, 'Francia vágott szalonnaszelet', 10, 4750, 'sült alma, fekete puding, vadgomba, perl las kéksajtos püré, borsmártás'),
+(36, 'Grillezett szabad tartásból származó yorkshire-i csirkemell', 10, 6500, 'köménnyel fűszerezett sült új + édesburgonya, brokkoli és sárgarépa pakora, mentás joghurt, mangó szósz, savanyított lilahagyma'),
+(37, 'Thai vörös kókusz + édesburgonya', 10, 5800, 'ragacsos jázmin rizs, lapos kenyér, keleti zöldségcsíkok + 1500 ft csirke vagy király garnélarák'),
+(38, 'Dupla csokoládé torta', 11, 3500, 'szeder kompót, kókuszos sorbet'),
+(39, 'Mario luxus sorbetje - 2 gombóc', 11, 2200, 'prosecco + eper, kókuszdió, citrom'),
+(40, 'Jammie dodger + fehér csokoládé szöszi', 11, 2750, 'málnás tejszínhab'),
+(41, 'Sült szelídgesztenye torta', 11, 3000, 'mézeskalácsfagylalt, szeder'),
+(42, 'Meleg fűszeres ananász + diós piskóta', 11, 3950, 'karamellmártás, rumos jégkrém, rumos mazsolafagylalt'),
+(43, 'Mézeskalács, áfonya + narancsos crème brulée', 11, 2650, 'mézeskalács keksz'),
+(44, 'Kinger bueno, nutella + hobnob kekszes sajttorta', 11, 4000, 'pirított mogyoró'),
+(45, 'Doman du peras / sauvignon french', 12, 32500, ''),
+(46, 'Maison belleroche / malbec french', 12, 13500, '');
 
 -- --------------------------------------------------------
 
@@ -255,6 +327,12 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`orderId`);
 
 --
+-- A tábla indexei `restaurantmenu`
+--
+ALTER TABLE `restaurantmenu`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- A tábla indexei `user`
 --
 ALTER TABLE `user`
@@ -270,7 +348,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT a táblához `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categorieId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `categorieId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT a táblához `contact`
@@ -295,6 +373,12 @@ ALTER TABLE `menu`
 --
 ALTER TABLE `orders`
   MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `restaurantmenu`
+--
+ALTER TABLE `restaurantmenu`
+  MODIFY `Id` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `user`
