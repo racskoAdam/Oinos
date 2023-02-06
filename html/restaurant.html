@@ -11,35 +11,37 @@
 </div>
 
   <div class="container" ng-controller="reservationController">
-    <h1>Table Reservation Form</h1>
+    <h1>Foglalás</h1>
     <form ng-submit="submitForm()">
-      <div class="form-group">
-        <label for="name">Név:</label>
+      <div class="form-group my-3">
+        <label for="name" class="fs-4">Név:</label>
         <input type="text" class="form-control" id="name" ng-model="formData.name">
       </div>
-      <div class="form-group">
-        <label for="email">Email cím:</label>
+      <div class="form-group my-3">
+        <label for="email" class="fs-4">Email cím:</label>
         <input type="email" class="form-control" id="email" ng-model="formData.email">
       </div>
-      <div class="form-group">
-        <label for="phone">Telefonszám:</label>
+      <div class="form-group mt-3">
+        <label for="phone" class="fs-4">Telefonszám:</label>
         <input type="text" class="form-control" id="phone" ng-model="formData.phone">
       </div>
-      <div class="form-group">
-        <label for="date">Dátum:</label>
-        <input type="date" class="form-control" id="date" ng-model="date" required
-          min="{{next10Days()}}" max="{{next10Days(10)}}" ng-change="validateDate()">
-        <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
-          Please select a date within the next 10 days.
-        </p>
+      <div class="d-flex justify-content-between py-2">
+        <div class="form-group w-100 p-2">
+          <label for="date" class="fs-4">Dátum:</label>
+          <input type="date" class="form-control" id="date" ng-model="date" required
+            min="{{next10Days()}}" max="{{next10Days(10)}}" ng-change="validateDate()">
+          <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
+            Please select a date within the next 10 days.
+          </p>
+        </div>
+        <div class="form-group w-100 p-2">
+          <label for="time" class="fs-4">Időpont:</label>
+          <select id="time" class="w-100 timePicker" ng-model="time" ng-options="t for t in timeOptions" required>
+          </select>
       </div>
-      <div class="form-group">
-        <label for="time">Időpont:</label>
-        <select id="time" ng-model="time" ng-options="t for t in timeOptions" required>
-        </select>
     </div>
           
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary w-100 fs-1">Foglalás</button>
     </form>
   </div>
 
