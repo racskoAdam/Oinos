@@ -9,9 +9,30 @@
         </div>
     </div>
 </div>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>CategoriaId</th>
+    <th>Price</th>
+    <th>Description</th>
+  </tr>
+  <tr ng-repeat="item in data track by $index">
+    <td>{{item.Id}}</td>
+    <td>{{item.Name}}</td>
+    <td>{{item.CategoriaId}}</td>
+    <td>{{item.Price}}</td>
+    <td>{{item.Description}}</td>
+  </tr>
+</table>
+
+
+
+
+
+
 
   <div class="container" ng-controller="reservationController">
-    <h1>Table Reservation Form</h1>
     <form ng-submit="submitForm()">
       <div class="form-group">
         <label for="name">Név:</label>
@@ -30,7 +51,7 @@
         <input type="date" class="form-control" id="date" ng-model="date" required
           min="{{next10Days()}}" max="{{next10Days(10)}}" ng-change="validateDate()">
         <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
-          Please select a date within the next 10 days.
+          Kérjük, válasszon egy időpontot a következő 10 napon belül.
         </p>
       </div>
       <div class="form-group">

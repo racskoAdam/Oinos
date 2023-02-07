@@ -35,7 +35,9 @@
           .state("restaurant", {
             url: "/restaurant",
             templateUrl: "./html/restaurant.html",
+            controller: "menuController",
             controller: "reservationController",
+            
           });
 
         $urlRouterProvider.otherwise("/");
@@ -99,7 +101,7 @@
     
         let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         if (!emailRegex.test($scope.formData.email)) {
-          alert("Invalid email address.");
+          alert("Érvénytelen e-mail cím.");
           return;
         }
     
@@ -123,7 +125,6 @@
         });
       };
     })
-    
 
     .controller("orderController", [
       "$scope",
@@ -184,5 +185,7 @@
           })
           .catch((e) => console.log(e));
       },
-    ]);
+    ])
+
+
 })(window, angular);

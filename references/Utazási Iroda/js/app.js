@@ -42,9 +42,7 @@
     // Home Controller
     .controller("homeController", ["$scope", "$element", "$timeout", "http"])
 
-    .controller("cumGrenade", function ($scope,$routeParams) {
-      console.log($routeParams)
-    })
+
 
     //app run
     .run([
