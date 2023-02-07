@@ -6,6 +6,7 @@ $password = "";
 $db = "opd";
 
 $con = mysqli_connect($host, $user, $password, $db);
+$con -> set_charset("utf-8");
 
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
