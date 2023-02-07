@@ -146,23 +146,28 @@
     .controller("orderController", [
       "$scope", // AngularJS $scope service
       "http", // Custom HTTP service
-      function ($scope, http) { // Controller function
+      function ($scope, http) {
+        // Controller function
         // Get menu data from the server using the custom HTTP service
         http
-          .request({ // Sending a request
+          .request({
+            // Sending a request
             url: "./php/get.php", // Endpoint URL
             method: "POST", // HTTP request method
-            data: { // Request data
+            data: {
+              // Request data
               db: "opd",
               query: "SELECT * FROM `menu`", // SQL query
               isAssoc: true, // Result format flag
             },
           })
-          .then((data) => { // Handling successful response
+          .then((data) => {
+            // Handling successful response
             $scope.order = data; // Assigning response data to $scope.order
             $scope.$applyAsync(); // Applying changes to the view
             $scope.filter = null; // Initializing filter
-            $scope.categories = [ // Defining categories
+            $scope.categories = [
+              // Defining categories
               {
                 id: "1",
                 name: "Pizzák",
@@ -194,7 +199,8 @@
                 icon: "fa-solid fa-cookie-bite",
               },
             ];
-            $scope.orderFilter = (event) => { // Filter function
+            $scope.orderFilter = (event) => {
+              // Filter function
               let element = event.currentTarget;
               $scope.filter = element.id; // Setting the filter
               $scope.$applyAsync(); // Applying changes to the view
