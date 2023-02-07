@@ -144,25 +144,25 @@
 
     //Order Controller
     .controller("orderController", [
-      "$scope",
-      "http",
-      function ($scope, http) {
-        // Get Flies
+      "$scope", // AngularJS $scope service
+      "http", // Custom HTTP service
+      function ($scope, http) { // Controller function
+        // Get menu data from the server using the custom HTTP service
         http
-          .request({
-            url: "./php/get.php",
-            method: "POST",
-            data: {
+          .request({ // Sending a request
+            url: "./php/get.php", // Endpoint URL
+            method: "POST", // HTTP request method
+            data: { // Request data
               db: "opd",
-              query: "SELECT * FROM `menu`",
-              isAssoc: true,
+              query: "SELECT * FROM `menu`", // SQL query
+              isAssoc: true, // Result format flag
             },
           })
-          .then((data) => {
-            $scope.order = data;
-            $scope.$applyAsync();
-            $scope.filter = null;
-            $scope.categories = [
+          .then((data) => { // Handling successful response
+            $scope.order = data; // Assigning response data to $scope.order
+            $scope.$applyAsync(); // Applying changes to the view
+            $scope.filter = null; // Initializing filter
+            $scope.categories = [ // Defining categories
               {
                 id: "1",
                 name: "Pizzák",
@@ -194,13 +194,13 @@
                 icon: "fa-solid fa-cookie-bite",
               },
             ];
-            $scope.orderFilter = (event) => {
+            $scope.orderFilter = (event) => { // Filter function
               let element = event.currentTarget;
-              $scope.filter = element.id;
-              $scope.$applyAsync();
+              $scope.filter = element.id; // Setting the filter
+              $scope.$applyAsync(); // Applying changes to the view
             };
           })
-          .catch((e) => console.log(e));
+          .catch((e) => console.log(e)); // Handling error
       },
     ]);
 })(window, angular);
