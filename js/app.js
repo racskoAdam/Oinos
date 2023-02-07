@@ -37,14 +37,13 @@
             templateUrl: "./html/restaurant.html",
             controller: "menuController",
             controller: "reservationController",
-            
           });
 
         $urlRouterProvider.otherwise("/");
       },
     ])
 
-    //app run
+    //Application running
     .run([
       "$rootScope",
       "$transitions",
@@ -70,62 +69,71 @@
       },
     ])
 
-    .controller('reservationController', function($scope, $http) {
-      $scope.formData = {};
-      $scope.timeOptions = [];
-    
+    //Reservation Controller
+    .controller("reservationController", function ($scope, $http) {
+      $scope.formData = {}; // Initialize an object to store the form data
+      $scope.timeOptions = []; // Initialize an array to store the time options
+
+      // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
       for (let i = 6; i < 22; i++) {
         for (let j = 0; j < 2; j++) {
-          let hour = i >= 10 ? i : '0' + i;
-          let minute = j === 0 ? '00' : '30';
-          $scope.timeOptions.push(hour + ':' + minute);
+          let hour = i >= 10 ? i : "0" + i; // Format hour to include leading zero if necessary
+          let minute = j === 0 ? "00" : "30"; // Determine whether minute is 0 or 30
+          $scope.timeOptions.push(hour + ":" + minute); // Push formatted time to timeOptions array
         }
       }
-    
-      $scope.next10Days = function(days) {
-        let today = new Date();
-        today.setDate(today.getDate() + (days || 1));
-        return today.toISOString().substring(0, 10);
-      }
-      $scope.validateDate = function() {
-        if ($scope.date < $scope.next10Days() || $scope.date > $scope.next10Days(10)) {
-          $scope.date = null;
-        }
-      }
-    
-      $scope.submitForm = function() {
-        if (!$scope.formData.name || !$scope.formData.email || !$scope.formData.phone || !$scope.date || !$scope.time) {
-          alert("Kérem töltse ki az összes mezőt megfelelően");
-          return;
-        }
-    
-        let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-        if (!emailRegex.test($scope.formData.email)) {
-          alert("Érvénytelen e-mail cím.");
-          return;
-        }
-    
-        let date = moment($scope.date);
-        let now = moment();
-        if (date.isBefore(now, 'day')) {
-          // handle past date
-          return;
-        }
-        let time = moment($scope.time, 'HH:mm');
-        let date_time = date.format("YYYY-MM-DD") + ' ' + time.format("HH:mm") + ':00';
-        $scope.formData.date_time = date_time;
-        $http({
-          method: 'POST',
-          url: './php/submit-form.php',
-          data: $.param($scope.formData),
-          headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .then(function(data) {
-          console.log(data);
-        });
-      };
-    })
 
+      // Function to return the date 10 days from today (or from a specified number of days from today)
+      $scope.next10Days = function (days) {
+        let today = new Date(); // Get today's date
+        today.setDate(today.getDate() + (days || 1)); // Add specified number of days (default to 1) to today's date
+        return today.toISOString().substring(0, 10); // Return the date in ISO format and cut off the time portion
+      };
+      
+      $scope.validateDate = function () {
+        if (
+          $scope.date < $scope.next10Days() || // If selected date is before today or more than 10 days from today
+          $scope.date > $scope.next10Days(10)
+        ) {
+          $scope.date = null; // Reset selected date to null
+        }
+      };
+
+      // Function to submit the form
+  $scope.submitForm = function() {
+    if (!$scope.formData.name || !$scope.formData.email || !$scope.formData.phone || !$scope.date || !$scope.time) {
+      alert("Kérem töltse ki az összes mezőt megfelelően");  // Display error message if any of the required fields are missing
+      return;
+    }
+
+    let emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;  // Regular expression to validate email format
+    if (!emailRegex.test($scope.formData.email)) {  // If email format is invalid
+      alert("Érvénytelen e-mail cím.");  // Display error message
+      return;
+    }
+
+    let date = moment($scope.date);  // Use Moment.js library to format selected date
+    let now = moment();  // Get the current date and time
+    if (date.isBefore(now, 'day')) {  // If selected date is before today
+      // handle past date  // Code to handle past date
+      return;
+    }
+    let time = moment($scope.time, 'HH:mm');  // Use Moment.js library to format selected time
+    let date_time = date.format("YYYY-MM-DD") + ' ' + time.format("HH:mm") + ':00';  // Combine date and time into a single formatted string
+    $scope.formData.date_time = date_time;  // Add the combined date and time to the formData object
+    $http({
+      method: 'POST',  // Use HTTP POST method
+      url: './php/submit-form.php',  // URL to submit the form data to
+      data: $.param($scope.formData),  // Convert the formData object to URL-encoded string
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}  // Set header content type to application/x-www-form-urlencoded
+    })
+    .then(function(data) {
+      console.log(data);  // Log the response data to the console
+    });
+  };
+})
+
+    //Order Controller
     .controller("orderController", [
       "$scope",
       "http",
@@ -185,7 +193,5 @@
           })
           .catch((e) => console.log(e));
       },
-    ])
-
-
+    ]);
 })(window, angular);
