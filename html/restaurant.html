@@ -47,13 +47,19 @@
         <label for="phone" class="fs-4">Telefonszám:</label>
         <input type="text" class="form-control" id="phone" ng-model="formData.phone">
       </div>
-      <div class="form-group">
-        <label for="date">Dátum:</label>
-        <input type="date" class="form-control" id="date" ng-model="date" required
-          min="{{next10Days()}}" max="{{next10Days(10)}}" ng-change="validateDate()">
-        <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
-          Kérjük, válasszon egy időpontot a következő 10 napon belül.
-        </p>
+      <div class="d-flex justify-content-between py-2">
+        <div class="form-group w-100 p-2">
+          <label for="date" class="fs-4">Dátum:</label>
+          <input type="date" class="form-control" id="date" ng-model="date" required
+            min="{{next10Days()}}" max="{{next10Days(10)}}" ng-change="validateDate()">
+          <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
+            Please select a date within the next 10 days.
+          </p>
+        </div>
+        <div class="form-group w-100 p-2">
+          <label for="time" class="fs-4">Időpont:</label>
+          <select id="time" class="w-100 timePicker" ng-model="time" ng-options="t for t in timeOptions" required>
+          </select>
       </div>
     </div>
           
