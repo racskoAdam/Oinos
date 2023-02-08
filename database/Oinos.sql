@@ -163,14 +163,12 @@ CREATE TABLE `orders` (
 -- Tábla szerkezet ehhez a táblához `reservation`
 --
 
-CREATE TABLE `reservation` (
+CREATE TABLE `reservations` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
-  `date` date NOT NULL,
-  `attendees` int(2) NOT NULL,
-  `time` varchar(10) COLLATE utf8_hungarian_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
-  `phoneNumber` varchar(30) COLLATE utf8_hungarian_ci NOT NULL
+  `phone` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
+  `date_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
