@@ -372,4 +372,7 @@ ul {
 .timePicker{
   height: 38px;
 }
+.container{
+ background-image: url("../waltuhn/cover2.jpg") !important;
+}
 /*----------------------------END OF RESTAURANT----------------------------*/
