@@ -137,7 +137,7 @@
           data: $.param($scope.formData), // Convert the formData object to URL-encoded string
           headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Set header content type to application/x-www-form-urlencoded
         }).then(function (data) {
-          console.log(data); // Log the response data to the console
+          $("#reservationModal").modal("show");
         });
       };
     })
