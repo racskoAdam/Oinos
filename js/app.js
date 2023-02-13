@@ -136,7 +136,14 @@
           url: "./php/submit-form.php", // URL to submit the form data to
           data: $.param($scope.formData), // Convert the formData object to URL-encoded string
           headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Set header content type to application/x-www-form-urlencoded
-        }).then(function (data) {
+        }).then(function (response) {
+          if (response.data === "Ezzel a telefonszámmal már történt foglalás.") {
+            $("#reservationModalLabel").text("Error");
+            $(".modal-body").text(response.data);
+          } else {
+            $("#reservationModalLabel").text("Reservation Confirmation");
+            $(".modal-body").text("Köszönjük a foglalást!");
+          }
           $("#reservationModal").modal("show");
         });
       };
