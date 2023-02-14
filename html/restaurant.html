@@ -9,6 +9,28 @@
         </div>
     </div>
 </div>
+<table>
+  <tr>
+    <th>Id</th>
+    <th>Name</th>
+    <th>CategoriaId</th>
+    <th>Price</th>
+    <th>Description</th>
+  </tr>
+  <tr ng-repeat="item in data track by $index">
+    <td>{{item.Id}}</td>
+    <td>{{item.Name}}</td>
+    <td>{{item.CategoriaId}}</td>
+    <td>{{item.Price}}</td>
+    <td>{{item.Description}}</td>
+  </tr>
+</table>
+
+
+
+
+
+
 
   <div class="container" ng-controller="reservationController">
     <h1>Foglalás</h1>
@@ -44,6 +66,27 @@
       <button type="submit" class="btn btn-primary w-100 fs-1">Foglalás</button>
     </form>
   </div>
+
+    <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-dark" id="reservationModalLabel">Reservation Confirmation</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body text-dark">
+            Köszönjük a foglalást!
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  
 
 
 <div ng-include src="'./html/footer.html'"></div>
