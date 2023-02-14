@@ -1,27 +1,70 @@
 <div ng-include src="'./html/navigate.html'"></div>
-
-  <h1 class="mainh1">Blog</h1>
+<section class="faq-section">
   <div class="container">
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="inputGroupSelect01">Rendezés:</label>
-      </div><select class="custom-select sort" id="inputGroupSelect01" onchange="loadblog()">
-        <option selected value="date:desc">
-          Dátum szerint csökkenő
-        </option>
-        <option value="date:asc">
-          Dátum szerint növekvő
-        </option>
-      </select>
-    </div>
-    <div id="articles" class="mb-5"></div>
-  </div>
-
-
-  
-  <script src="../js/app.js"></script>
+      <div class="row">
+          <div class="col-md-8 offset-md-2">
+              <h2 class="section-title">Gyakran ismételt kérdések</h2>
+              <div class="faq-item">
+                  <button class="collapse-button" data-toggle="collapse" data-target="#faq1">
+                      <span class="faq-title">Milyen nyitvatartási idővel rendelkeznek?</span>
+                      <span class="arrow"></span>
+                  </button>
+                  <div id="faq1" class="collapse">
+                      <p class="faq-description">Hétfőtől vasárnapig reggel 6 és este 10 között nyitva tartjuk az éttermet és a gyorséttermet is.</p>
+                  </div>
+              </div>
+              <div class="faq-item">
+                  <button class="collapse-button" data-toggle="collapse" data-target="#faq2">
+                      <span class="faq-title">Van vegán opciójuk?</span>
+                      <span class="arrow"></span>
+                  </button>
+                  <div id="faq2" class="collapse">
+                      <p class="faq-description">Igen, számos vegán opciót kínálunk az étlapunkon, beleértve a salátákat, leveseket és főételeket.</p>
+                    </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="collapse-button" data-toggle="collapse" data-target="#faq3">
+                          <span class="faq-title">Tudok asztalt foglalni az étterem szekcióba?</span>
+                          <span class="arrow"></span>
+                      </button>
+                      <div id="faq3" class="collapse">
+                          <p class="faq-description">Igen! Asztalfoglalást online vagy telefonon is elintézheti.</p>
+                      </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="collapse-button" data-toggle="collapse" data-target="#faq4">
+                          <span class="faq-title">Hogy működik az étterem?</span>
+                          <span class="arrow"></span>
+                      </button>
+                      <div id="faq4" class="collapse">
+                          <p class="faq-description">2 opció van ebben a korszerű étteremben. A gyorsétterem szekció, ahol rendelni tud Makó és környéke bármelyik részére.</p>
+                          <p class="faq-description">Az exklúziv étterem szekció pedig a kifinomult szájaknak való, itt nem tud rendelni, viszont Makó legfinomabb és legjobb ételeit kóstolhatja meg! </p>
+                      </div>
+                  </div>
+                  <div class="faq-item">
+                      <button class="collapse-button" data-toggle="collapse" data-target="#faq5">
+                          <span class="faq-title">Milyen fizetési formákat fogad el?</span>
+                          <span class="arrow"></span>
+                      </button>
+                      <div id="faq5" class="collapse">
+                          <p class="faq-description">Elfogadjuk az összes főbb hitelkártyát, valamint készpénzt és mobilfizetést is.</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
 </body>
 </html>
+
+<script>
+  $(document).ready(function(){
+$(".collapse-button").click(function(){
+$(this).next().slideToggle("fast");
+$(this).children(".arrow").toggleClass("rotate");
+});
+});
+</script>
 <div ng-include src="'./html/footer.html'"></div>
 
 
