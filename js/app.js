@@ -181,6 +181,21 @@
               $scope.filter = element.id;
               $scope.$applyAsync();
             };
+
+            $scope.cart = [];
+            $scope.hasItems = false;
+            $scope.total = 0;
+            $scope.toCart = (event) => {
+              //$scope.cart.push($scope.order[event.currentTarget.id-1]);
+              $scope.cart.push($scope.order[event.currentTarget.id-1]);
+              $scope.order[event.currentTarget.id-1]["amount"] = 1;
+              console.log($scope.cart);
+              $scope.hasItems = true;
+              $scope.total = 0;
+              $scope.cart.forEach(element => {
+                $scope.total = +$scope.total + +element.Price;
+              });
+            };
           })
           .catch((e) => console.log(e));
       },
