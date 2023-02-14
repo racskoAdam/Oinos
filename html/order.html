@@ -1,15 +1,35 @@
 <div ng-include src="'./html/navigate.html'"></div>
 <h1 class="ms-md-5">Kosár</h1>
 <div class="d-flex shoppingCart mx-md-5">
-    <div class="m-auto">
+    <div class="m-auto ng-hide" ng-hide="hasItems">
         <i class="fa-solid fa-cart-shopping fa-xl text-dark"></i>
         <span class="text-dark fs-5">A kosár üres, válasszon valamit!</span>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <th>
+                    név
+                </th>
+                <th>
+                    ár
+                </th>
+                <th>
+                    mennyiség
+                </th>
+            </thead>
+            <tr ng-repeat="item in cart track by $index" class="text-dark">
+                <td>{{item.Name}}</td>
+                <td>{{item.Price}} Ft</td>
+                <td><input type="text" value="{{item.amount}}"></td>
+            </tr>
+        </table>
     </div>
 </div>
 
 <div class="d-flex mx-md-5">
     <div>
-        <span class="price">Geci Ft</span>
+        <span class="price">{{total}} Ft</span>
     </div>
     <div class="ms-auto">
         <button type="button" class="btn btn-warning rounded-0 orderBtn h-100" disabled>Rendelés</button>
@@ -45,7 +65,7 @@
             </div>
                 <div class="imageContainer h-inherit">
                     <img ng-src="./img/{{food.image}}" class="img-fluid rounded-bottom"/>
-                    <button type="button" class="btn btn-warning cartBtn hvr-grow" title="Kosárba rakni"><i class="fa-solid fa-plus fa-xl"></i></button>
+                    <button id="{{food.Id}}" type="button" class="btn btn-warning cartBtn hvr-grow" title="Kosárba rakni" ng-click="toCart($event)"><i class="fa-solid fa-plus fa-xl"></i></button>
                 </div>
             </div>
         </div>
