@@ -9,21 +9,21 @@ $con = mysqli_connect($host, $user, $password, $db);
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
-
 $name = mysqli_real_escape_string($con, $_POST['name']);
 $email = mysqli_real_escape_string($con, $_POST['email']);
 $phone = mysqli_real_escape_string($con, $_POST['phone']);
 $date_time = mysqli_real_escape_string($con, $_POST['date_time']);
+$guest = mysqli_real_escape_string($con, $_POST['guest']);
 
-// Check if the phone number has already been used for a reservation
-$check_query = "SELECT * FROM reservations WHERE phone='$phone'";
-$check_result = mysqli_query($con, $check_query);
+
+$check_sql = "SELECT * FROM reservations WHERE phone = '$phone' AND date_time = '$date_time'";
+$check_result = mysqli_query($con, $check_sql);
+
 if (mysqli_num_rows($check_result) > 0) {
-    echo "Ezzel a telefonszámmal már történt foglalás.";
+    echo "A foglalás már létezik erre a telefonszámra és időpontra.";
 } else {
-    // Insert reservation data into the database
-    $sql = "INSERT INTO reservations (name, email, phone, date_time) VALUES ('$name', '$email', '$phone', '$date_time')";
-    if (mysqli_query($con, $sql)) {
+  $sql = "INSERT INTO reservations ( name, email, phone, date_time, guest) VALUES ('$name', '$email', '$phone', '$date_time', '$guest')";
+  if (mysqli_query($con, $sql)) {
         echo "New record created successfully";
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($con);

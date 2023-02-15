@@ -31,6 +31,7 @@
           .state("faq", {
             url: "/faq",
             templateUrl: "./html/faq.html",
+            controller: "faqController",
           })
           .state("restaurant", {
             url: "/restaurant",
@@ -138,10 +139,13 @@
           url: "./php/submit-form.php", // URL to submit the form data to
           data: $.param($scope.formData), // Convert the formData object to URL-encoded string
           headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Set header content type to application/x-www-form-urlencoded
-        }).then(function (response) {
-          if (response.data === "Ezzel a telefonszámmal már történt foglalás.") {
+        }).then(function (data) {
+          if (
+            data.data ===
+            "A foglalás már létezik erre a telefonszámra és időpontra."
+          ) {
             $("#reservationModalLabel").text("Error");
-            $(".modal-body").text(response.data);
+            $(".modal-body").text(data.data);
           } else {
             $("#reservationModalLabel").text("Reservation Confirmation");
             $(".modal-body").text("Köszönjük a foglalást!");
@@ -151,6 +155,18 @@
       };
     })
 
+    // F.A.Q Controller
+    .controller("faqController", [
+      "$scope", // AngularJS $scope service
+      function ($scope) {
+        $(document).ready(function () {
+          $(".collapse-button").click(function () {
+            $(this).next().slideToggle("fast");
+            $(this).children(".arrow").toggleClass("rotate");
+          });
+        });
+      },
+    ])
     //Order Controller
     .controller("orderController", [
       "$scope", // AngularJS $scope service
