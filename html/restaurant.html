@@ -10,10 +10,10 @@
     </div>
 </div>
 
-<div ng-controller="menuController">
+<div class="container" ng-controller="menuController">
   <div class="menu-container">
-    <div class="menu-category" ng-repeat="(categoryId, categoryItems) in data | groupBy: 'CategorieId'">
-      <h2 class="menu-category-title">{{categoryId}}</h2>
+    <div class="menu-category" ng-repeat="(categoryDesc, categoryItems) in data | groupBy: 'categorieDesc'">
+      <h2 class="menu-category-title">{{categoryDesc}}</h2>
       <div class="menu-items">
         <div class="menu-item" ng-repeat="item in categoryItems">
           <div class="menu-item-info">
@@ -25,6 +25,7 @@
       </div>
     </div>
   </div>
+  
 </div>
 
 

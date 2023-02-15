@@ -86,15 +86,16 @@
           $scope.isDisabled = true;
           $scope.isEdit = false;
           $scope.$applyAsync();
-
+    
           http
             .request({
               url: "./php/get.php",
               method: "POST",
               data: {
                 db: "opd",
-                query: "SELECT * FROM `restaurantmenu`;",
+                query: "SELECT restaurantmenu.*, categories.categorieDesc FROM restaurantmenu JOIN categories ON restaurantmenu.CategorieId = categories.CategorieId;",
                 isAssoc: true,
+                
               },
             })
             .then((data) => {
@@ -104,11 +105,12 @@
             })
             .catch((e) => console.log(e));
         };
-
+    
         getData();
         console.log($stateParams);
       },
     ])
+    
 
     //Reservation Controller
     .controller("reservationController", function ($scope, $http) {
