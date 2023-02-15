@@ -368,41 +368,40 @@ ul {
 
 /*----------------------------END OF ORDER----------------------------*/
 
-/*----------------------------RESTAURANT-----------------------------*/
-.timePicker{
+/*----------------------------FAQ-----------------------------*/
+.timePicker {
   height: 38px;
 }
 
 .faq-section {
   padding: 50px 0;
-  }
-  
-  .section-title {
+}
+
+.section-title {
   text-align: center;
   font-size: 36px;
   font-weight: bold;
   margin-bottom: 50px;
-  }
-  
-  .faq-item {
+}
+
+.faq-item {
   border: 1px solid rgb(0, 0, 0);
   background-color: white;
   border-radius: 5px;
   margin-bottom: 20px;
   padding: 20px;
   position: relative;
-  }
-  
-  .faq-title {
-  font-weight: bold;
-  background-color: white;
+}
 
-  }
-  .collapse-button{
-    border: 0px white !important;
-  }
-  
-  .arrow {
+.faq-title {
+  font-weight: bolder;
+  background-color: white;
+}
+.collapse-button {
+  border: 0px white !important;
+}
+
+.arrow {
   border: solid #000;
   border-width: 0 2px 2px 0;
   display: inline-block;
@@ -412,21 +411,76 @@ ul {
   top: 20px;
   transform: rotate(45deg);
   transition: transform 0.3s;
-  }
-  
-  .rotate {
+}
+
+.rotate {
   transform: rotate(-135deg);
-  }
-  
-  .faq-description {
+}
+
+.faq-description {
   margin-top: 10px;
   color: #000;
-  }
-  
-  /* Bootstrap Overrides */
-  
-  .navbar {
-  margin-bottom: 0;
-  }
+  font-weight: bold !important;
+}
 
-/*----------------------------END OF RESTAURANT----------------------------*/
+/* Bootstrap Overrides */
+
+.navbar {
+  margin-bottom: 0;
+}
+
+/*----------------------------END OF FAQ----------------------------*/
+
+.menu-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.menu-category {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.menu-category-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.menu-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.menu-item {
+  width: 250px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.menu-item-info {
+  margin-bottom: 10px;
+}
+
+.menu-item-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.menu-item-description {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.menu-item-price {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+}

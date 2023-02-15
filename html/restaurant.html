@@ -9,23 +9,23 @@
         </div>
     </div>
 </div>
-<table>
-  <tr>
-    <th>Id</th>
-    <th>Name</th>
-    <th>CategoriaId</th>
-    <th>Price</th>
-    <th>Description</th>
-  </tr>
-  <tr ng-repeat="item in data track by $index">
-    <td>{{item.Id}}</td>
-    <td>{{item.Name}}</td>
-    <td>{{item.CategoriaId}}</td>
-    <td>{{item.Price}}</td>
-    <td>{{item.Description}}</td>
-  </tr>
-</table>
 
+<div ng-controller="menuController">
+  <div class="menu-container">
+    <div class="menu-category" ng-repeat="(categoryId, categoryItems) in data | groupBy: 'CategorieId'">
+      <h2 class="menu-category-title">{{categoryId}}</h2>
+      <div class="menu-items">
+        <div class="menu-item" ng-repeat="item in categoryItems">
+          <div class="menu-item-info">
+            <h3 class="menu-item-title">{{item.Name}}</h3>
+            <p class="menu-item-description">{{item.Description}}</p>
+          </div>
+          <div class="menu-item-price">{{item.Price}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

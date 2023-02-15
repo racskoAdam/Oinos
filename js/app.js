@@ -3,7 +3,7 @@
 
   // Application module
   angular
-    .module("app", ["ui.router", "app.common"])
+    .module("app", ["ui.router", "app.common","angular.filter"])
 
     /* Application config */
     .config([
@@ -67,6 +67,44 @@
         // Set global letiables
         $rootScope.state = { id: null, prev: null };
         $rootScope.user = { id: null, type: null, name: null };
+      },
+    ])
+
+    .controller("menuController", [
+      "$scope",
+      "$element",
+      "$timeout",
+      "http",
+      "$stateParams",
+      function ($scope, $element, $timeout, http, $stateParams) {
+        let getData = () => {
+          $scope.pointer = null;
+          $scope.prevView = "table";
+          $scope.view = "table";
+          $scope.isDisabled = true;
+          $scope.isEdit = false;
+          $scope.$applyAsync();
+
+          http
+            .request({
+              url: "./php/get.php",
+              method: "POST",
+              data: {
+                db: "opd",
+                query: "SELECT * FROM `restaurantmenu`;",
+                isAssoc: true,
+              },
+            })
+            .then((data) => {
+              $scope.data = data;
+              if ($scope.data.length) $scope.pointer = 0;
+              $scope.$applyAsync();
+            })
+            .catch((e) => console.log(e));
+        };
+
+        getData();
+        console.log($stateParams);
       },
     ])
 
@@ -152,7 +190,6 @@
         });
       };
     })
-
     // F.A.Q Controller
     .controller("faqController", [
       "$scope", // AngularJS $scope service
