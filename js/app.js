@@ -66,6 +66,8 @@
         // Set global letiables
         $rootScope.state = { id: null, prev: null };
         $rootScope.user = { id: null, type: null, name: null };
+        $rootScope.cart = []; //create cart for ordering
+        $rootScope.total = 0;
       },
     ])
 
@@ -153,7 +155,8 @@
     .controller("orderController", [
       "$scope", // AngularJS $scope service
       "http", // Custom HTTP service
-      function ($scope, http) {
+      "$rootScope",
+      function ($scope, http,$rootScope) {
         // Controller function
         // Get menu data from the server using the custom HTTP service
         http
@@ -213,19 +216,20 @@
               $scope.$applyAsync(); // Applying changes to the view
             };
 
-            $scope.cart = [];
-            $scope.hasItems = false;
-            $scope.total = 0;
+            $scope.hasItems = $rootScope.cart.length != 0;
             $scope.toCart = (event) => {
-              //$scope.cart.push($scope.order[event.currentTarget.id-1]);
-              $scope.cart.push($scope.order[event.currentTarget.id-1]);
-              $scope.order[event.currentTarget.id-1]["amount"] = 1;
+              $rootScope.cart = $rootScope.cart.concat($scope.order.filter(obj => obj.Id == event.currentTarget.id)); //put selected item in cart
+              $rootScope.cart[$rootScope.cart.findIndex(element => element.Id == event.currentTarget.id)]["amount"] = 1; // add amount variable to item and set it to 1
               console.log($scope.cart);
               $scope.hasItems = true;
-              $scope.total = 0;
-              $scope.cart.forEach(element => {
-                $scope.total = +$scope.total + +element.Price;
+              $rootScope.total = 0;
+              $rootScope.cart.forEach(element => {
+                $rootScope.total = +$rootScope.total + +element.Price;
               });
+              console.log($rootScope.total);
+            };
+            $scope.deleteItem = (event) => {
+              console.log("delete item");
             };
           })
           .catch((e) => console.log(e)); // Handling error
