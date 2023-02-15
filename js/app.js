@@ -153,6 +153,18 @@
       };
     })
 
+    // F.A.Q Controller
+    .controller("faqController", [
+      "$scope", // AngularJS $scope service
+      function ($scope) {
+        $(document).ready(function () {
+          $(".collapse-button").click(function () {
+            $(this).next().slideToggle("fast");
+            $(this).children(".arrow").toggleClass("rotate");
+          });
+        });
+      },
+    ])
     //Order Controller
     .controller("orderController", [
       "$scope", // AngularJS $scope service
@@ -222,12 +234,12 @@
             $scope.total = 0;
             $scope.toCart = (event) => {
               //$scope.cart.push($scope.order[event.currentTarget.id-1]);
-              $scope.cart.push($scope.order[event.currentTarget.id-1]);
-              $scope.order[event.currentTarget.id-1]["amount"] = 1;
+              $scope.cart.push($scope.order[event.currentTarget.id - 1]);
+              $scope.order[event.currentTarget.id - 1]["amount"] = 1;
               console.log($scope.cart);
               $scope.hasItems = true;
               $scope.total = 0;
-              $scope.cart.forEach(element => {
+              $scope.cart.forEach((element) => {
                 $scope.total = +$scope.total + +element.Price;
               });
             };
@@ -236,5 +248,3 @@
       },
     ]);
 })(window, angular);
-
-// F.A.Q
