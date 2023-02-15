@@ -366,6 +366,15 @@ ul {
   min-height: 200px;
 }
 
+.cartImg{
+  height: 100px;
+}
+
+.amountInput{
+  width: 3rem;
+  text-align: center;
+  font-weight: bold;
+}
 /*----------------------------END OF ORDER----------------------------*/
 
 /*----------------------------RESTAURANT-----------------------------*/

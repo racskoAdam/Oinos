@@ -232,20 +232,34 @@
               $scope.$applyAsync(); // Applying changes to the view
             };
 
-            $scope.hasItems = $rootScope.cart.length != 0;
+
+
             $scope.toCart = (event) => {
-              $rootScope.cart = $rootScope.cart.concat($scope.order.filter(obj => obj.Id == event.currentTarget.id)); //put selected item in cart
-              $rootScope.cart[$rootScope.cart.findIndex(element => element.Id == event.currentTarget.id)]["amount"] = 1; // add amount variable to item and set it to 1
-              console.log($scope.cart);
-              $scope.hasItems = true;
+              $scope.targetId = event.currentTarget.id;
+              if(!$rootScope.cart.filter(obj => obj.Id == $scope.targetId).length)
+              {
+                $rootScope.cart = $rootScope.cart.concat($scope.order.filter(obj => obj.Id == $scope.targetId)); //put selected item in cart
+                $rootScope.cart[$rootScope.cart.findIndex(element => element.Id == $scope.targetId)]["amount"] = 1; // add amount variable to item and set it to 1
+                console.log($scope.cart);
+                $scope.updatePrice();
+              }else{
+                console.log("already in cart");
+              }
+            };
+
+            $scope.updatePrice = () =>{
               $rootScope.total = 0;
               $rootScope.cart.forEach(element => {
-                $rootScope.total = +$rootScope.total + +element.Price;
+              $rootScope.total = +$rootScope.total + +element.Price;
               });
-              console.log($rootScope.total);
+              $scope.hasItems = $rootScope.cart.length > 0;
             };
+            $scope.updatePrice();
+
             $scope.deleteItem = (event) => {
               console.log("delete item");
+              $rootScope.cart.splice($rootScope.cart.findIndex(element => element.Id == event.currentTarget.id),1);
+              $scope.updatePrice();
             };
           })
           .catch((e) => console.log(e)); // Handling error

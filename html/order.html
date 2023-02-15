@@ -21,13 +21,13 @@
                     mennyiség
                 </th>
             </thead>
-            <tr ng-repeat="item in cart track by $index" class="text-dark">
-                <td><img ng-src="./img/{{item.image}}" alt="" style="height: 100px ;" class="d-none d-sm-block"></td>
+            <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
+                <td><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
                 <td class="w-100">{{item.Name}}</td>
                 <td class="text-nowrap">{{item.Price}} Ft</td>
                 <td>
-                    <input type="text" value="{{item.amount}}" style="width: 3rem;">
-                    <button type="button" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
+                    <input type="text" value="{{item.amount}}" class="amountInput">
+                    <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
                 </td>
             </tr>
         </table>
