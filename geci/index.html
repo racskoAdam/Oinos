@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>JSON betöltése AngularJS-zels</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  </head>
+  <body ng-app="myApp" ng-controller="myCtrl">
+    <!-- 
+    <table>
+        <ul>
+            <li ng-repeat="item in data">
+                {{ item.name }} - {{ item.born }} {{ item.gender }} {{item.email}}
+            </li>
+        </ul>
+    </table> -->
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Born in:</th>
+          <th>Gender:</th>
+          <th>Email address</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in data">
+          <td>{{ item.name }}</td>
+            <td>{{ item.born }}</td>
+          <td>{{ item.gender }}</td>
+          <td>{{ item.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <script>
+      let app = angular.module("myApp", []);
+      app.controller("myCtrl", function ($scope, $http) {
+        $http.get("student-2018-c-info.json").then(function (response) {
+          $scope.data = response.data;
+        });
+      });
+    </script>
+  </body>
+</html>
