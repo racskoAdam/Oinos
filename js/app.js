@@ -289,14 +289,13 @@
             $scope.updatePrice = () =>{
               $rootScope.total = 0;
               $rootScope.cart.forEach(element => {
-              $rootScope.total = +$rootScope.total + +element.Price;
+              $rootScope.total = +$rootScope.total + +element.Price * +element.amount;
               });
               $scope.hasItems = $rootScope.cart.length > 0;
             };
             $scope.updatePrice();
 
             $scope.deleteItem = (event) => {
-              console.log("delete item");
               $rootScope.cart.splice($rootScope.cart.findIndex(element => element.Id == event.currentTarget.id),1);
               $scope.updatePrice();
             };

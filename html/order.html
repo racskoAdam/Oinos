@@ -22,11 +22,11 @@
                 </th>
             </thead>
             <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
-                <td><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
+                <td class="p-0"><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
                 <td class="w-100">{{item.Name}}</td>
                 <td class="text-nowrap">{{item.Price}} Ft</td>
                 <td>
-                    <input type="text" value="{{item.amount}}" class="amountInput">
+                    <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()">
                     <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
                 </td>
             </tr>
