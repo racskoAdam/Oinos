@@ -10,7 +10,7 @@
     </div>
 </div>
 
-<div class="container" ng-controller="menuController">
+<div ng-controller="menuController">
   <div class="menu-container">
     <div class="menu-category" ng-repeat="(categoryDesc, categoryItems) in data | groupBy: 'categorieDesc'">
       <h2 class="menu-category-title">{{categoryDesc}}</h2>
@@ -20,7 +20,7 @@
             <h3 class="menu-item-title">{{item.Name}}</h3>
             <p class="menu-item-description">{{item.Description}}</p>
           </div>
-          <div class="menu-item-price">{{item.Price}}</div>
+          <div class="menu-item-price">{{item.Price}} Ft</div>
         </div>
       </div>
     </div>
