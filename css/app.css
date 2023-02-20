@@ -473,7 +473,10 @@ ul {
 }
 
 .menu-item {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   width: 280px;
   padding: 20px;
   border-radius: 10px;
@@ -489,7 +492,7 @@ ul {
 }
 
 .menu-item-info {
-  margin-bottom: 10px;
+  margin-bottom: auto;
 }
 
 .menu-item-title {
@@ -513,6 +516,7 @@ ul {
 }
 
 .menu-item-price {
+  margin-top: auto;
   font-size: 18px;
   font-weight: bold;
   color: #333;
