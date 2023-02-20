@@ -7,27 +7,19 @@
     </div>
     <div ng-hide="!hasItems" class="w-100">
         <table class="table table-striped w-100">
-            <thead>
-                <th>
-                    
-                </th>
-                <th>
-                    név
-                </th>
-                <th>
-                    ár
-                </th>
-                <th>
-                    mennyiség
-                </th>
-            </thead>
             <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
                 <td class="p-0"><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
-                <td class="w-100">{{item.Name}}</td>
-                <td class="text-nowrap">{{item.Price}} Ft</td>
+                <td class="w-100">
+                    {{item.Name}}<br>
+                    {{item.Price}} Ft
+                </td>
                 <td>
-                    <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()">
-                    <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
+                    <div class="text-nowrap">
+                        <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="decAmount(item.Id)">-</button>
+                        <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()" disabled>
+                        <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="incAmount(item.Id)">+</button>
+                        <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
+                    </div>
                 </td>
             </tr>
         </table>
@@ -39,7 +31,7 @@
         <span class="price">{{total}} Ft</span>
     </div>
     <div class="ms-auto">
-        <button type="button" class="btn btn-warning rounded-0 orderBtn h-100" disabled>Rendelés</button>
+        <button type="button" class="btn btn-warning rounded-0 orderBtn h-100" ng-disabled="!hasItems" ui-sref="finalizeOrder">Rendelés</button>
     </div>
 </div>
 

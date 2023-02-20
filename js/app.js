@@ -38,6 +38,11 @@
             templateUrl: "./html/restaurant.html",
             controller: "menuController",
             controller: "reservationController",
+          })
+          .state("finalizeOrder", {
+            url: "/finalizeOrder",
+            templateUrl: "./html/finalizeOrder.html",
+            controller: "orderController",
           });
 
         $urlRouterProvider.otherwise("/");
@@ -299,6 +304,22 @@
               $rootScope.cart.splice($rootScope.cart.findIndex(element => element.Id == event.currentTarget.id),1);
               $scope.updatePrice();
             };
+
+            $scope.decAmount = (id) => {
+              $scope.item = $rootScope.cart.find(element => element.Id == id);
+              if ($scope.item.amount > 1) {
+                --$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
+              }
+              $scope.updatePrice();
+            }
+
+            $scope.incAmount = (id) => {
+              $scope.item = $rootScope.cart.find(element => element.Id == id);
+              if ($scope.item.amount < 100) {
+                ++$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
+              }
+            $scope.updatePrice();
+            }
           })
           .catch((e) => console.log(e)); // Handling error
       },
