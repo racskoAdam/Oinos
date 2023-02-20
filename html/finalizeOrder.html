@@ -1,25 +1,55 @@
 <div ng-include src="'./html/navigate.html'"></div>
 
-<div class="d-flex shoppingCart mx-md-5">
-    <div class="w-100">
-        <table class="table table-striped w-100">
-            <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
-                <td class="p-0"><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
-                <td class="w-100">
-                    {{item.Name}}<br>
-                    {{item.Price}} Ft
-                </td>
-                <td>
-                    <div class="text-nowrap">
-                        <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="decAmount(item.Id)">-</button>
-                        <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()" disabled>
-                        <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="incAmount(item.Id)">+</button>
-                        <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
-                    </div>
-                </td>
-            </tr>
-        </table>
+<div class="mx-md-5 pt-5">
+    <h2 class="text-center">Véglegesítse a rendelését!</h2>
+    <div class="d-flex shoppingCart">
+        <div class="w-100">
+            <table class="table table-striped w-100">
+                <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
+                    <td class="p-0"><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
+                    <td class="w-100">
+                        {{item.Name}}<br>
+                        {{item.Price}} Ft
+                    </td>
+                    <td>
+                        <div class="text-nowrap">
+                            <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="decAmount(item.Id)">-</button>
+                            <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()" disabled>
+                            <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="incAmount(item.Id)">+</button>
+                            <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
+
+    <div class="">
+        <form>
+            <div class="m-0">
+                <label for="asd0" class="form-label">Név</label>
+                <div class="input-group-text bg-transparent border-0" id="asd0">
+                    <input type="text" class="form-control me-2" id="asd1" aria-describedby="emailHelp" placeholder="Vezetéknév">
+                    <input type="text" class="form-control ms-2" id="asd1" aria-describedby="emailHelp" placeholder="Keresztnév">
+                </div>
+              </div>
+            <div class="m-3">
+              <label for="asd2" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="asd2" aria-describedby="emailHelp">
+            </div>
+            <div class="m-3">
+              <label for="asd3" class="form-label">Telefonszám</label>
+              <input type="text" class="form-control" id="asd3">
+            </div>
+            <div class="m-3">
+                <label for="asd3" class="form-label">Szállítási cím</label>
+                <input type="text" class="form-control" id="asd3">
+            </div>
+          </form>
+    </div>
+
+    <span class="fs-3">Végösszeg: {{total+1000}} Ft</span><br>
+    <i class="fa-solid fa-truck"></i><span class="fs-5"></i> Kiszállítás: 1000 Ft</span>
 </div>
 
 <div ng-include src="'./html/footer.html'"></div>
