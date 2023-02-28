@@ -3,7 +3,7 @@
 
   // Application module
   angular
-    .module("app", ["ui.router", "app.common","angular.filter"])
+    .module("app", ["ui.router", "app.common", "angular.filter"])
 
     /* Application config */
     .config([
@@ -77,6 +77,7 @@
       },
     ])
 
+ 
     .controller("menuController", [
       "$scope",
       "$element",
@@ -91,16 +92,16 @@
           $scope.isDisabled = true;
           $scope.isEdit = false;
           $scope.$applyAsync();
-    
+
           http
             .request({
               url: "./php/get.php",
               method: "POST",
               data: {
                 db: "opd",
-                query: "SELECT restaurantmenu.*, categories.categorieDesc FROM restaurantmenu JOIN categories ON restaurantmenu.CategorieId = categories.CategorieId;",
+                query:
+                  "SELECT restaurantmenu.*, categories.categorieDesc FROM restaurantmenu JOIN categories ON restaurantmenu.CategorieId = categories.CategorieId;",
                 isAssoc: true,
-                
               },
             })
             .then((data) => {
@@ -110,12 +111,11 @@
             })
             .catch((e) => console.log(e));
         };
-    
+
         getData();
         console.log($stateParams);
       },
     ])
-    
 
     //Reservation Controller
     .controller("reservationController", function ($scope, $http) {
@@ -216,7 +216,7 @@
       "$scope", // AngularJS $scope service
       "http", // Custom HTTP service
       "$rootScope",
-      function ($scope, http,$rootScope) {
+      function ($scope, http, $rootScope) {
         // Controller function
         // Get menu data from the server using the custom HTTP service
         http
@@ -276,50 +276,66 @@
               $scope.$applyAsync(); // Applying changes to the view
             };
 
-
-
             $scope.toCart = (event) => {
               $scope.targetId = event.currentTarget.id;
-              if(!$rootScope.cart.filter(obj => obj.Id == $scope.targetId).length)
-              {
-                $rootScope.cart = $rootScope.cart.concat($scope.order.filter(obj => obj.Id == $scope.targetId)); //put selected item in cart
-                $rootScope.cart[$rootScope.cart.findIndex(element => element.Id == $scope.targetId)]["amount"] = 1; // add amount variable to item and set it to 1
+              if (
+                !$rootScope.cart.filter((obj) => obj.Id == $scope.targetId)
+                  .length
+              ) {
+                $rootScope.cart = $rootScope.cart.concat(
+                  $scope.order.filter((obj) => obj.Id == $scope.targetId)
+                ); //put selected item in cart
+                $rootScope.cart[
+                  $rootScope.cart.findIndex(
+                    (element) => element.Id == $scope.targetId
+                  )
+                ]["amount"] = 1; // add amount variable to item and set it to 1
                 console.log($scope.cart);
                 $scope.updatePrice();
-              }else{
+              } else {
                 console.log("already in cart");
               }
             };
 
-            $scope.updatePrice = () =>{
+            $scope.updatePrice = () => {
               $rootScope.total = 0;
-              $rootScope.cart.forEach(element => {
-              $rootScope.total = +$rootScope.total + +element.Price * +element.amount;
+              $rootScope.cart.forEach((element) => {
+                $rootScope.total =
+                  +$rootScope.total + +element.Price * +element.amount;
               });
               $scope.hasItems = $rootScope.cart.length > 0;
             };
             $scope.updatePrice();
 
             $scope.deleteItem = (event) => {
-              $rootScope.cart.splice($rootScope.cart.findIndex(element => element.Id == event.currentTarget.id),1);
+              $rootScope.cart.splice(
+                $rootScope.cart.findIndex(
+                  (element) => element.Id == event.currentTarget.id
+                ),
+                1
+              );
               $scope.updatePrice();
             };
 
             $scope.decAmount = (id) => {
-              $scope.item = $rootScope.cart.find(element => element.Id == id);
+              $scope.item = $rootScope.cart.find((element) => element.Id == id);
               if ($scope.item.amount > 1) {
-                --$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
+                --$rootScope.cart[
+                  $rootScope.cart.findIndex((element) => element.Id == id)
+                ].amount;
               }
               $scope.updatePrice();
-            }
+            };
 
             $scope.incAmount = (id) => {
-              $scope.item = $rootScope.cart.find(element => element.Id == id);
+              $scope.item = $rootScope.cart.find((element) => element.Id == id);
               if ($scope.item.amount < 100) {
-                ++$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
+                ++$rootScope.cart[
+                  $rootScope.cart.findIndex((element) => element.Id == id)
+                ].amount;
               }
-            $scope.updatePrice();
-            }
+              $scope.updatePrice();
+            };
           })
           .catch((e) => console.log(e)); // Handling error
       },

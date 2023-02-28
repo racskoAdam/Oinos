@@ -444,6 +444,8 @@ ul {
 }
 
 /*----------------------------END OF FAQ----------------------------*/
+
+/*----------------------------CONTACT US----------------------------*/
 .menu-container {
   display: flex;
   flex-wrap: wrap;
@@ -612,4 +614,39 @@ ul {
   .banner-text01 h1 {
     font-size: 2em;
   }
+}
+/*----------------------------END OF MENU----------------------------*/
+.contact-info {
+  padding: 50px 0;
+  text-align: center;
+}
+
+.contact-item {
+  margin-bottom: 50px;
+}
+
+.contact-item i {
+  font-size: 2em;
+  margin-bottom: 15px;
+  color: #f39c12;
+}
+
+.contact-item h4 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.contact-item hr {
+  border-top: 1px solid #f8f8f8;
+  margin-bottom: 30px;
+}
+
+.contact-text-01 {
+  font-size: 1.2em;
+  font-weight: 500;
+  color: rgb(240, 240, 240);
+}
+.form-container {
+  padding: 20px;
 }
