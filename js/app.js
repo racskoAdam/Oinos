@@ -330,22 +330,11 @@
             $scope.incAmount = (id) => {
               $scope.item = $rootScope.cart.find((element) => element.Id == id);
               if ($scope.item.amount < 100) {
-<<<<<<< HEAD
                 ++$rootScope.cart[
                   $rootScope.cart.findIndex((element) => element.Id == id)
                 ].amount;
               }
               $scope.updatePrice();
-=======
-                ++$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
-              };
-            $scope.updatePrice();
-            };
-
-            $scope.Payment = (event) => {
-              $scope.paymentType= event.currentTarget.id;
-              
->>>>>>> c4330c893e0146d1d470e72480862f6e84acd687
             };
           })
           .catch((e) => console.log(e)); // Handling error
