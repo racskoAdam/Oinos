@@ -311,15 +311,20 @@
                 --$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
               }
               $scope.updatePrice();
-            }
+            };
 
             $scope.incAmount = (id) => {
               $scope.item = $rootScope.cart.find(element => element.Id == id);
               if ($scope.item.amount < 100) {
                 ++$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
-              }
+              };
             $scope.updatePrice();
-            }
+            };
+
+            $scope.Payment = (event) => {
+              $scope.paymentType= event.currentTarget.id;
+              
+            };
           })
           .catch((e) => console.log(e)); // Handling error
       },

@@ -24,18 +24,18 @@
         </div>
     </div>
 
-    <div>
+    <div class="bg-light text-dark fw-bold py-5">
         <form>
-            <div class="m-0">
-                <label for="asd1" class="form-label">Név</label>
-                <div class="input-group-text bg-transparent border-0" id="asd0">
-                    <input type="text" class="form-control me-2" id="asd1" aria-describedby="emailHelp" placeholder="Vezetéknév">
-                    <input type="text" class="form-control ms-2" id="asd12" aria-describedby="emailHelp" placeholder="Keresztnév">
+            <h2 class="text-center">Adja meg az adatait!</h2>
+            <div class="row m-0">
+                <div class="col">
+                    <label for="asd1" class="form-label mb-3">Vezetéknév</label>
+                    <input type="text" class="form-control" id="asd1" aria-describedby="emailHelp" placeholder="Vezetéknév">
                 </div>
-              </div>
-            <div class="m-3">
-              <label for="asd2" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="asd2" aria-describedby="emailHelp">
+                <div class="col">
+                    <label for="asd12" class="form-label mb-3">Keresztnév</label>
+                    <input type="text" class="form-control" id="asd12" aria-describedby="emailHelp" placeholder="Keresztnév">
+                </div>
             </div>
             <div class="m-3">
               <label for="asd3" class="form-label">Telefonszám</label>
@@ -48,8 +48,34 @@
           </form>
     </div>
 
+    <div class="bg-light text-dark fw-bold py-5">
+        <div class="categories mt-3">
+            <h2 class="text-center">Válasszon fizetési módszert!</h2>
+            <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
+
+                <div id="credit" class="card catCard rounded-2 col-2 m-2"
+                ng-click="Payment($event)"
+                ng-class="{'catSelected': 'credit'==paymentType}"
+                >
+                    <i class="m-auto categoryIcon fa-regular fa-credit-card"></i>
+                    <span class="text-center categoryText">Bankkártya</span>
+                </div>
+
+                <div id="cash" class="card catCard rounded-2 col-2 m-2"
+                ng-click="Payment($event)"
+                ng-class="{'catSelected': 'cash'==paymentType}"
+                >
+                    <i class="m-auto categoryIcon fa-solid fa-coins"></i>
+                    <span class="text-center categoryText">Készpénz</span>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
     <span class="fs-3">Végösszeg: {{total+1000}} Ft</span><br>
     <i class="fa-solid fa-truck"></i><span class="fs-5"></i> Kiszállítás: 1000 Ft</span>
+    </div>
 </div>
 
 <div ng-include src="'./html/footer.html'"></div>
