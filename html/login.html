@@ -1,0 +1,33 @@
+<div ng-include src="'./html/navigate.html'"></div>
+
+<div class="container mt-4">
+  <h1>Bejelentkezés</h1>
+  <form (ngSubmit)="login()" #loginForm="ngForm">
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail cím</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        [(ngModel)]="email"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Jelszó</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid">
+      Bejelentkezés
+    </button>
+  </form>
+</div>
+<div ng-include src="'./html/footer.html'"></div>

@@ -43,7 +43,12 @@
             url: "/finalizeOrder",
             templateUrl: "./html/finalizeOrder.html",
             controller: "orderController",
-          });
+          })
+          .state("login",{
+            url:"/login",
+            templateUrl: "./html/login.html",
+          })
+          ;
 
         $urlRouterProvider.otherwise("/");
       },
@@ -284,12 +289,12 @@
               ) {
                 $rootScope.cart = $rootScope.cart.concat(
                   $scope.order.filter((obj) => obj.Id == $scope.targetId)
-                ); //put selected item in cart
+                ); //Put selected item in cart
                 $rootScope.cart[
                   $rootScope.cart.findIndex(
                     (element) => element.Id == $scope.targetId
                   )
-                ]["amount"] = 1; // add amount variable to item and set it to 1
+                ]["amount"] = 1; // Add amount variable to item and set it to 1
                 console.log($scope.cart);
                 $scope.updatePrice();
               } else {
