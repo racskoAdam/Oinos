@@ -336,8 +336,28 @@
             };
 
             $scope.Payment = (event) => {
-              $scope.paymentType= event.currentTarget.id;
-              
+              $scope.paymentType= event.currentTarget.id;           
+            };
+
+            $scope.firstName = "";
+            $scope.lastName = "";
+            $scope.phone = "";
+            $scope.delivery = "";
+            $scope.completeOrder = () =>{
+              if ($scope.hasItems) {
+                if ($scope.paymentType !== undefined) {
+                  if ($scope.firstName.length && $scope.lastName.length && $scope.phone.length &&  $scope.delivery.length) {
+                    console.log($scope.firstName,$scope.lastName,$scope.phone,$scope.delivery,$scope.paymentType);
+                  } else {
+                    alert("Kérem töltse ki az összes mezőt!");
+                  }
+
+                } else {
+                  alert("Kérem válasszon fizetési módszert!");
+                }
+              }else{
+                alert("Nincs semmi a korárban!");
+              }
             };
           })
           .catch((e) => console.log(e)); // Handling error
