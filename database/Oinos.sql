@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Jan 30. 11:20
+-- Létrehozás ideje: 2023. Feb 28. 15:36
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `categories` (
-  `categorieId` int(12) NOT NULL,
+  `CategorieId` int(12) NOT NULL,
   `categorieName` varchar(255) NOT NULL,
   `categorieDesc` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -38,7 +38,7 @@ CREATE TABLE `categories` (
 -- A tábla adatainak kiíratása `categories`
 --
 
-INSERT INTO `categories` (`categorieId`, `categorieName`, `categorieDesc`) VALUES
+INSERT INTO `categories` (`CategorieId`, `categorieName`, `categorieDesc`) VALUES
 (1, 'Pizza', 'A pizzaimádók örömére! Válasszon finom pizzáink széles választékából, Kellemes és ízletes! Mind friss alapanyagokból!'),
 (2, 'Burgerek', 'Válasszon egy tucat hamburger közül! Mind friss alapanyagokból!'),
 (3, 'Streetfood', 'Válasszon a streetfoodjaink közül!'),
@@ -51,36 +51,6 @@ INSERT INTO `categories` (`categorieId`, `categorieName`, `categorieDesc`) VALUE
 (10, 'mains', 'Főételek'),
 (11, 'desserts_res', 'Desszertek'),
 (12, 'wines', 'Borok');
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `contact`
---
-
-CREATE TABLE `contact` (
-  `contactId` int(21) NOT NULL,
-  `email` varchar(35) NOT NULL,
-  `phoneNo` bigint(21) NOT NULL,
-  `orderId` int(21) NOT NULL DEFAULT 0 COMMENT 'If problem is not related to the order then order id = 0',
-  `message` text NOT NULL,
-  `time` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `deliverydetails`
---
-
-CREATE TABLE `deliverydetails` (
-  `id` int(21) NOT NULL,
-  `orderId` int(21) NOT NULL,
-  `deliveryBoyName` varchar(35) NOT NULL,
-  `deliveryBoyPhoneNo` bigint(25) NOT NULL,
-  `deliveryTime` int(200) NOT NULL COMMENT 'Time in minutes',
-  `dateTime` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -125,7 +95,12 @@ INSERT INTO `menu` (`Id`, `Name`, `Price`, `Description`, `CategorieId`, `image`
 (21, 'Eperrel töltött fánk', 300, 'Eperrel töltött fánk - maga az édesség\r\n\r\n', 5, 'Dessert-Donut_Strawberry.jpg'),
 (22, 'Sült krumpli', 500, 'Olasz fűszernövényekkel sült aromás burgonya. Nagy adag.\r\n', 6, 'SideDish-Chips.jpg'),
 (23, 'Hash Browns', 500, 'Finomra szeletelt krumpli, olajban sütve', 6, 'SideDish-HashBrown.jpg'),
-(24, 'Saláta', 750, 'Saláta, Paradicsom, Uborka, Lilahagyma,', 6, 'SideDish-Salad.jpg');
+(24, 'Saláta', 750, 'Saláta, Paradicsom, Uborka, Lilahagyma,', 6, 'SideDish-Salad.jpg'),
+(25, 'Pepsi 0.33 liter', 450, '', 4, 'Bevs-Pepsi.jpg'),
+(26, 'Lipton Green 0.33 liter', 430, '', 4, 'Bevs-Lipton.jpg'),
+(27, 'Lipton Lemon 1.5 liter', 600, '', 4, 'Bevs-Lipton4.jpg'),
+(28, 'Szentkirályi 1.5 liter', 400, 'Szénsavas', 4, 'Bevs-SzentK.jpg'),
+(29, 'Szentkirályi 1.5 liter', 400, 'Szénsavmentes', 4, 'Bevs-SzentK2.jpg');
 
 -- --------------------------------------------------------
 
@@ -160,7 +135,7 @@ CREATE TABLE `orders` (
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `reservation`
+-- Tábla szerkezet ehhez a táblához `reservations`
 --
 
 CREATE TABLE `reservations` (
@@ -168,8 +143,28 @@ CREATE TABLE `reservations` (
   `name` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
   `phone` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
-  `date_time` datetime NOT NULL
+  `date_time` datetime NOT NULL,
+  `guest` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `reservations`
+--
+
+INSERT INTO `reservations` (`id`, `name`, `email`, `phone`, `date_time`, `guest`) VALUES
+(23, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '2312412123', '2023-02-16 13:00:00', 3),
+(24, 'Apenta+', 'asd@gmail.com', '+3059014041', '2023-02-23 14:00:00', 0),
+(25, 'Apenta+', 'pisti1231212@gmail.com', '+3059014041', '2023-02-17 14:30:00', 0),
+(26, 'Apenta+', 'pisti1231212@gmail.com', '36305901404', '2023-02-14 14:00:00', 0),
+(27, 'asd', 'pisti1231212@gmail.com', '36305901404', '2023-02-14 14:30:00', 3),
+(28, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-23 14:30:00', 2),
+(29, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-23 15:00:00', 2),
+(30, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-23 15:30:00', 2),
+(31, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '2222222222', '2023-02-17 14:30:00', 2),
+(32, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '2222222222', '2023-02-17 15:00:00', 2),
+(33, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-23 12:00:00', 2),
+(34, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-24 14:30:00', 1),
+(35, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-03-09 06:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -178,9 +173,9 @@ CREATE TABLE `reservations` (
 --
 
 CREATE TABLE `restaurantmenu` (
-  `Id` smallint(4) NOT NULL,
+  `Id` int(12) NOT NULL,
   `Name` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
-  `CategorieId` tinyint(2) NOT NULL,
+  `CategorieId` int(12) NOT NULL,
   `Price` int(6) NOT NULL,
   `Description` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
@@ -193,7 +188,6 @@ INSERT INTO `restaurantmenu` (`Id`, `Name`, `CategorieId`, `Price`, `Description
 (1, 'Házi olívaolajos keksz', 7, 1900, 'fűszeres kecskesajtmártással tálalva'),
 (2, 'Vegyes kalamata olajbogyó', 7, 1750, 'Egy tál vegyes kalamata olajbogyó és napraforgós paradicsom'),
 (3, 'Rozmaringos és tengeri sós focaccia', 7, 1650, 'Balzsamecettel és olívaolajjal tálalva'),
-(4, 'Fokhagymás ciabatta', 7, 1650, ''),
 (5, 'Fokhagymás ciabatta', 7, 1750, 'mozzarellával'),
 (6, 'Préselt csirke terrine konfitált csirkéből', 8, 2650, 'vadgombával, prosciutto sonkával és póréhagymával, valamint körtével, gyömbérrel és sáfránnyal ízesítve.'),
 (7, 'Tengeri herkentyűhal ’scampi’ ', 8, 3100, 'citromos majonézzel és téli gyökérrel zöldségsaláta'),
@@ -219,13 +213,13 @@ INSERT INTO `restaurantmenu` (`Id`, `Name`, `CategorieId`, `Price`, `Description
 (27, 'Kecskesajtos és zöldséges sütemény', 10, 5300, 'padlizsán, cukkini, kecskesajt és paradicsomos sütemény vajas kelkáposztával és zsenge szárú brokkolival.'),
 (28, 'Grillezett gammon steak', 10, 4000, 'szabadföldi tojással, kézzel vágott levegősütött hasábburgonyával , szőlőparadicsommal, ananásszal és mustáros pikalilivel tálalva'),
 (29, 'Pulled pork burger', 10, 4800, 'mustáros káposztasalátával, házi bbq-szósszal körítve, briós zsemlében, savanyúsággal és levegősütött hasábburgonyával tálalva.'),
-(30, 'Házi marhahúsburger ', 10, 4000, 'szalonnával és chipotle majonézzel, mustáros káposztasalátával, paradicsommal, bébi drágakővel, savanyúsággal és levegősütött hasábburgonyával tálalva. kéksajt vagy cheddar 1,00 € vagy pulled pork 2,00 € hozzáadásával'),
+(30, 'Házi marhahúsburger ', 10, 4000, 'szalonnával és chipotle majonézzel, mustáros káposztasalátával, paradicsommal, bébi drágakővel, savanyúsággal és levegősütött hasábburgonyával tálalva.'),
 (31, '25 dkg rib eye steak', 10, 8000, 'mezei gombával, szőlőparadicsommal és kézzel vágott levegősütött hasábburgonyával tálalva'),
 (32, '25 dkg szirlós steak', 10, 7550, 'mezei gombával, szőlőparadicsommal és kézzel vágott levegősütött hasábburgonyával tálalva'),
 (33, '25dkg migon filé', 10, 11000, 'mezei gombával, szőlőparadicsommal és kézzel vágott levegősütött hasábburgonyával tálalva'),
 (34, 'Balla úr specialitása', 10, 4000, 'mustáros püré vörösboros, kakukkfüves és hagymás mártással'),
 (35, 'Francia vágott szalonnaszelet', 10, 4750, 'sült alma, fekete puding, vadgomba, perl las kéksajtos püré, borsmártás'),
-(36, 'Grillezett szabad tartásból származó yorkshire-i csirkemell', 10, 6500, 'köménnyel fűszerezett sült új + édesburgonya, brokkoli és sárgarépa pakora, mentás joghurt, mangó szósz, savanyított lilahagyma'),
+(36, 'Grillezett yorkshire-i csirkemell', 10, 6500, 'köménnyel fűszerezett sült új + édesburgonya, brokkoli és sárgarépa pakora, mentás joghurt, mangó szósz, savanyított lilahagyma'),
 (37, 'Thai vörös kókusz + édesburgonya', 10, 5800, 'ragacsos jázmin rizs, lapos kenyér, keleti zöldségcsíkok + 1500 ft csirke vagy király garnélarák'),
 (38, 'Dupla csokoládé torta', 11, 3500, 'szeder kompót, kókuszos sorbet'),
 (39, 'Mario luxus sorbetje - 2 gombóc', 11, 2200, 'prosecco + eper, kókuszdió, citrom'),
@@ -234,8 +228,8 @@ INSERT INTO `restaurantmenu` (`Id`, `Name`, `CategorieId`, `Price`, `Description
 (42, 'Meleg fűszeres ananász + diós piskóta', 11, 3950, 'karamellmártás, rumos jégkrém, rumos mazsolafagylalt'),
 (43, 'Mézeskalács, áfonya + narancsos crème brulée', 11, 2650, 'mézeskalács keksz'),
 (44, 'Kinger bueno, nutella + hobnob kekszes sajttorta', 11, 4000, 'pirított mogyoró'),
-(45, 'Doman du peras / sauvignon french', 12, 32500, ''),
-(46, 'Maison belleroche / malbec french', 12, 13500, '');
+(45, 'Doman du peras / sauvignon french', 12, 32500, 'Nem száraz, friss és virágos.'),
+(46, 'Maison belleroche / malbec french', 12, 13500, 'Sima kellemes utórengéssel.');
 
 -- --------------------------------------------------------
 
@@ -289,21 +283,8 @@ INSERT INTO `user` (`id`, `type`, `prefix_name`, `first_name`, `middle_name`, `l
 -- A tábla indexei `categories`
 --
 ALTER TABLE `categories`
-  ADD PRIMARY KEY (`categorieId`);
+  ADD PRIMARY KEY (`CategorieId`);
 ALTER TABLE `categories` ADD FULLTEXT KEY `categorieName` (`categorieName`,`categorieDesc`);
-
---
--- A tábla indexei `contact`
---
-ALTER TABLE `contact`
-  ADD PRIMARY KEY (`contactId`);
-
---
--- A tábla indexei `deliverydetails`
---
-ALTER TABLE `deliverydetails`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `orderId` (`orderId`);
 
 --
 -- A tábla indexei `menu`
@@ -325,10 +306,17 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`orderId`);
 
 --
+-- A tábla indexei `reservations`
+--
+ALTER TABLE `reservations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `restaurantmenu`
 --
 ALTER TABLE `restaurantmenu`
-  ADD PRIMARY KEY (`Id`);
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `fk_restaurantmenu_categorie` (`CategorieId`);
 
 --
 -- A tábla indexei `user`
@@ -346,25 +334,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT a táblához `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `categorieId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
-
---
--- AUTO_INCREMENT a táblához `contact`
---
-ALTER TABLE `contact`
-  MODIFY `contactId` int(21) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `deliverydetails`
---
-ALTER TABLE `deliverydetails`
-  MODIFY `id` int(21) NOT NULL AUTO_INCREMENT;
+  MODIFY `CategorieId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT a táblához `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `Id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7823;
+  MODIFY `Id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7828;
 
 --
 -- AUTO_INCREMENT a táblához `orders`
@@ -373,16 +349,32 @@ ALTER TABLE `orders`
   MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT a táblához `reservations`
+--
+ALTER TABLE `reservations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
 -- AUTO_INCREMENT a táblához `restaurantmenu`
 --
 ALTER TABLE `restaurantmenu`
-  MODIFY `Id` smallint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
   MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `restaurantmenu`
+--
+ALTER TABLE `restaurantmenu`
+  ADD CONSTRAINT `fk_restaurantmenu_categorie` FOREIGN KEY (`CategorieId`) REFERENCES `categories` (`categorieId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
