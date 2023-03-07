@@ -103,7 +103,11 @@ body:not(.bannerText) {
 
 /*----------------------------END OF BANNER----------------------------*/
 
-/*----------------------------MENU CARD----------------------------*/
+/*----------------------------RESERVATION----------------------------*/
+.close{
+  border: 0px solid white;
+  background-color: white;
+}
 * {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -173,7 +177,7 @@ a:hover {
 .home-card:hover .home-card-details {
   bottom: 0;
 }
-/*----------------------------END OF MENU CARD----------------------------*/
+/*----------------------------END OF RESERVATION----------------------------*/
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
@@ -445,7 +449,7 @@ ul {
 
 /*----------------------------END OF FAQ----------------------------*/
 
-/*----------------------------CONTACT US----------------------------*/
+/*----------------------------MENU---------------------------*/
 .menu-container {
   display: flex;
   flex-wrap: wrap;

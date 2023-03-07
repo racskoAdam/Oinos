@@ -1,45 +1,48 @@
+<header>
 <nav class="navbar navbar-expand-lg navbar-dark p-0 bg-dark " id="headerNav">
- 
-    <a class="navbar-brand d-block d-lg-none w-100 d-flex justify-content-center" href="#">
-      <img src="img/logo.svg" width="400px" height="150px">
-    </a>
-    <button class="navbar-toggler w-100" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
- 
-    <div class=" collapse navbar-collapse " id="navbarNavDropdown">
-      <ul class="navbar-nav mx-auto d-flex align-items-center">
-        <li class="nav-item">
-          <a class="nav-link mx-2 hvr-grow minWidth text-center animate slideIn" aria-current="page" ui-sref="home">Kezdőlap</a>
-        </li>
-        <li class="nav-item animate slideIn">
-          <a class="nav-link mx-2 hvr-grow minWidth text-center" ui-sref="order" >Rendelés</a>
-        </li>
-        <li class="nav-item d-none d-lg-block text-center text-light animate slideIn">
-          <a class="nav-link mx-2">
-            <img src="./img/logo.svg" class="hvr-grow" height="150">
-            
-          </a>
-          <span>Fast Food & Fine Dining</span>
-        </li>
-        <li class="nav-item animate slideIn">
-          <a class="nav-link mx-2 hvr-grow minWidth text-center" ui-sref="restaurant">Étterem</a>
-        </li>
-        <li class="nav-item dropdown slideIn  animate">
-          <a class="nav-link mx-2 dropdown-toggle minWidth" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            A cégünkről
-          </a>
-          <div class="dropdown-menu dropdown-menu-end animate slideIn" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" ui-sref="faq">GY.I.K.</a>
-            <a class="dropdown-item" ui-sref="contact">Elérhetőségeink</a>
-            <a class="dropdown-item" ui-sref="about">Rólunk</a>
-          </div><!-- geci -->
-        </li>
-        
-      </ul>
-    </div>
+  <a class="navbar-brand d-block d-lg-none w-100 d-flex justify-content-center" href="#">
+    <img src="img/logo.svg" width="400px" height="150px">
+  </a>
+  <button class="navbar-toggler w-100" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    
+  <div class=" collapse navbar-collapse " id="navbarNavDropdown">
+    <ul class="navbar-nav mx-auto d-flex align-items-center">
+      <li class="nav-item">
+        <a class="nav-link mx-2 hvr-grow minWidth text-center animate slideIn" aria-current="page"
+          ui-sref="home">Kezdőlap</a>
+      </li>
 
+      <li class="nav-item animate slideIn">
+        <a class="nav-link mx-2 hvr-grow minWidth text-center" ui-sref="order">Rendelés</a>
+      </li>
+      <li class="nav-item d-none d-lg-block text-center text-light animate slideIn">
+        <a class="nav-link mx-2">
+          <img src="./img/logo.svg" class="hvr-grow" height="150">
+        </a>
+        <span>Fast Food & Fine Dining</span>
+      </li>
+      <li class="nav-item animate slideIn">
+        <a class="nav-link mx-2 hvr-grow minWidth text-center" ui-sref="restaurant">Étterem</a>
+      </li>
+      <li class="nav-item dropdown slideIn  animate">
+        <a class="nav-link mx-2 dropdown-toggle minWidth" href="#" id="navbarDropdownMenuLink" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          A cégünkről
+        </a>
+        <div class="dropdown-menu dropdown-menu-end animate slideIn" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" ui-sref="faq">GY.I.K.</a>
+          <a class="dropdown-item" ui-sref="contact">Elérhetőségeink</a>
+          <a class="dropdown-item" ui-sref="about">Rólunk</a>
+        </div>
+      </li>
+    </ul>
+  </div>
 </nav>
-
+<div class="d-flex justify-content-center mt-2 m-auto">
+  <a ui-sref="login" class="btn btn-light me-3">Bejelentkezés</a>
+  <a ui-sref="register" class="btn btn-secondary">Regisztráció</a>
+</div>
+</header>

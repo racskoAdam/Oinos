@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Feb 28. 15:36
+-- Létrehozás ideje: 2023. Már 07. 11:49
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -122,10 +122,9 @@ CREATE TABLE `orderitems` (
 
 CREATE TABLE `orders` (
   `orderId` int(21) NOT NULL,
-  `userId` int(21) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `zipCode` int(21) NOT NULL,
-  `phoneNo` bigint(21) NOT NULL,
+  `Addresss` varchar(255) NOT NULL,
+  `ZipCode` int(21) NOT NULL,
+  `Phone` bigint(21) NOT NULL,
   `amount` int(200) NOT NULL,
   `paymentMode` enum('0','1') NOT NULL DEFAULT '0' COMMENT '0=cash on delivery, \r\n1=online ',
   `orderStatus` enum('0','1','2','3','4','5','6') NOT NULL DEFAULT '0' COMMENT '0=Order Placed.\r\n1=Order Confirmed.\r\n2=Preparing your Order.\r\n3=Your order is on the way!\r\n4=Order Delivered.\r\n5=Order Denied.\r\n6=Order Cancelled.',
@@ -140,7 +139,7 @@ CREATE TABLE `orders` (
 
 CREATE TABLE `reservations` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8mb4 NOT NULL,
   `email` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
   `phone` varchar(50) COLLATE utf8_hungarian_ci NOT NULL,
   `date_time` datetime NOT NULL,
@@ -164,7 +163,11 @@ INSERT INTO `reservations` (`id`, `name`, `email`, `phone`, `date_time`, `guest`
 (32, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '2222222222', '2023-02-17 15:00:00', 2),
 (33, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-23 12:00:00', 2),
 (34, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-02-24 14:30:00', 1),
-(35, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-03-09 06:00:00', 1);
+(35, 'Apenta+', 'pisti1231212@gmail.com', '2222222222', '2023-03-09 06:00:00', 1),
+(36, 'Apenta+', 'pisti1231212@gmail.com', '+305901404', '2023-03-08 14:00:00', 5),
+(37, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '36305901404', '2023-03-09 14:30:00', 3),
+(38, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '+36305901404', '2023-03-12 14:30:00', 2),
+(39, 'Balla IstvÃ¡n', 'pisti1231212@gmail.com', '+36305901404', '2023-03-16 15:00:00', 2);
 
 -- --------------------------------------------------------
 
@@ -234,46 +237,26 @@ INSERT INTO `restaurantmenu` (`Id`, `Name`, `CategorieId`, `Price`, `Description
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `user`
+-- Tábla szerkezet ehhez a táblához `users`
 --
 
-CREATE TABLE `user` (
-  `id` mediumint(9) NOT NULL,
-  `type` char(1) NOT NULL,
-  `prefix_name` varchar(20) DEFAULT 'NULL',
-  `first_name` varchar(50) NOT NULL,
-  `middle_name` varchar(50) DEFAULT 'NULL',
-  `last_name` varchar(50) NOT NULL,
-  `suffix_name` varchar(20) DEFAULT NULL,
-  `born` date DEFAULT NULL,
-  `gender` char(1) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `valid` tinyint(1) NOT NULL DEFAULT 1,
-  `last_logon` timestamp NULL DEFAULT NULL,
-  `attempts` tinyint(4) NOT NULL DEFAULT 0,
-  `last_attempt` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `users` (
+  `Username` varchar(20) COLLATE utf8_hungarian_ci NOT NULL,
+  `Password` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
+  `Email` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
+  `Phone` int(11) NOT NULL,
+  `ZipCode` int(2) NOT NULL,
+  `Address` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
+  `LastName` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
+  `FirstName` varchar(30) COLLATE utf8_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
--- A tábla adatainak kiíratása `user`
+-- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `user` (`id`, `type`, `prefix_name`, `first_name`, `middle_name`, `last_name`, `suffix_name`, `born`, `gender`, `email`, `password`, `valid`, `last_logon`, `attempts`, `last_attempt`) VALUES
-(1, 'A', NULL, 'Attila', NULL, 'Ódry', NULL, '1964-03-08', 'M', 'odry.attila@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(2, 'A', NULL, 'Félix', 'Márk', 'Bálint', NULL, '2003-08-02', 'M', 'balint.mark.felix@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(3, 'A', NULL, 'István', NULL, 'Balla', NULL, '2003-06-07', 'M', 'balla.istvan@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(4, 'A', NULL, 'András', NULL, 'Baranyi', NULL, '2003-06-20', 'M', 'baranyi.andras@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(6, 'A', NULL, 'Kristóf', 'Ferenc', 'Csáki', NULL, '2002-10-24', 'M', 'csaki.ferenc.kristof@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(8, 'A', NULL, 'Ivonn', 'Dóra', 'Dávidr', NULL, '2003-09-21', 'F', 'davidr.dora.ivonn@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(9, 'A', NULL, 'Bence', 'Krisztián', 'Gyulai', NULL, '2003-07-08', 'M', 'gyulai.krisztian.bence@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(10, 'A', NULL, 'Fanni', NULL, 'Juhász', NULL, '2003-12-23', 'F', 'juhasz.fanni@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(12, 'A', NULL, 'Dániel', NULL, 'Lázár', NULL, '2003-05-12', 'M', 'lazar.daniel@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(13, 'A', NULL, 'Levente', NULL, 'Luncz', NULL, '2004-03-12', 'M', 'luncz.levente@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(15, 'A', NULL, 'Ádám', 'Ákos', 'Racskó', NULL, '2003-03-10', 'M', 'racsko.akos.adam@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(16, 'A', NULL, 'Bence', NULL, 'Sípos', NULL, '2001-10-11', 'M', 'sipos.bence@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(17, 'A', NULL, 'Regina', 'Viktória', 'Túri', NULL, '2003-02-24', 'F', 'turi.viktoria.regina@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL),
-(18, 'A', NULL, 'Márk', 'Tamás', 'Varga', NULL, '2003-10-26', 'M', 'varga.tamas.mark@keri.mako.hu', '1234Aa', 1, NULL, 0, NULL);
+INSERT INTO `users` (`Username`, `Password`, `Email`, `Phone`, `ZipCode`, `Address`, `LastName`, `FirstName`) VALUES
+('', '', '', 0, 0, '', '', '');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -319,14 +302,6 @@ ALTER TABLE `restaurantmenu`
   ADD KEY `fk_restaurantmenu_categorie` (`CategorieId`);
 
 --
--- A tábla indexei `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`) USING BTREE,
-  ADD UNIQUE KEY `login` (`email`,`password`);
-
---
 -- A kiírt táblák AUTO_INCREMENT értéke
 --
 
@@ -352,19 +327,13 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT a táblához `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT a táblához `restaurantmenu`
 --
 ALTER TABLE `restaurantmenu`
   MODIFY `Id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
---
--- AUTO_INCREMENT a táblához `user`
---
-ALTER TABLE `user`
-  MODIFY `id` mediumint(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Megkötések a kiírt táblákhoz
