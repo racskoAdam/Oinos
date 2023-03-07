@@ -31,20 +31,32 @@
             <div class="row m-0">
                 <div class="col">
                     <label for="lastName" class="form-label mb-3">Vezetéknév</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Vezetéknév" ng-model="lastName">
+                    <input type="text" class="form-control" id="lastName" placeholder="Vezetéknév" ng-model="orderDetails.lastName">
                 </div>
                 <div class="col">
                     <label for="firstName" class="form-label mb-3">Keresztnév</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Keresztnév" ng-model="firstName">
+                    <input type="text" class="form-control" id="firstName" placeholder="Keresztnév" ng-model="orderDetails.firstName">
                 </div>
             </div>
             <div class="m-3">
               <label for="phone" class="form-label">Telefonszám</label>
-              <input type="text" class="form-control" id="phone" placeholder="36301234567" ng-model="phone">
+              <input type="text" class="form-control" id="phone" placeholder="36301234567" ng-model="orderDetails.phone">
             </div>
-            <div class="m-3">
-                <label for="delivery" class="form-label">Szállítási cím</label>
-                <input type="text" class="form-control" id="delivery" placeholder="Makó Pósta utca 4-6" ng-model="delivery">
+            <div class="row m-0">
+                <div class="col">
+                    <label for="city" class="form-label mb-3">Város</label>
+                    <select name="" id="city" class="form-select" ng-model="orderDetails.city">
+                        <option value="1">Makó</option>
+                        <option value="2">Kiszombor</option>
+                        <option value="3">Makó-Rákos</option>
+                        <option value="4">Apátfalva</option>
+                        <option value="5">Magyarcsanád</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="firstName" class="form-label mb-3">Utca/házszám</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="Pósta utca 4-6" ng-model="orderDetails.address">
+                </div>
             </div>
     </div>
 
