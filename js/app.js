@@ -358,26 +358,33 @@
               $scope.paymentType = event.currentTarget.id;
             };
 
-            $scope.firstName = "";
-            $scope.lastName = "";
-            $scope.phone = "";
-            $scope.delivery = "";
-            $scope.completeOrder = () => {
+            $scope.orderDetails ={
+              firstName: null,
+              lastName: null,
+              phone: null,
+              city: null,
+              address: null
+            }
+
+            $scope.completeOrder = () =>{
+
+              function hasNullValue(obj) {
+                for (const key in obj) {
+                  if (obj[key] === null) {
+                    return true;
+                  }
+                }
+                return false;
+              }
+              
+
               if ($scope.hasItems) {
                 if ($scope.paymentType !== undefined) {
-                  if (
-                    $scope.firstName.length &&
-                    $scope.lastName.length &&
-                    $scope.phone.length &&
-                    $scope.delivery.length
-                  ) {
-                    console.log(
-                      $scope.firstName,
-                      $scope.lastName,
-                      $scope.phone,
-                      $scope.delivery,
-                      $scope.paymentType
-                    );
+                  if (!hasNullValue($scope.orderDetails)) {
+                    console.log($scope.orderDetails);
+                    $rootScope.cart.forEach(element => {
+                      console.log(element.Name,element.amount);
+                    });
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");
                   }
