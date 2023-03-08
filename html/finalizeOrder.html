@@ -54,8 +54,8 @@
                     </select>
                 </div>
                 <div class="col">
-                    <label for="firstName" class="form-label mb-3">Utca/házszám</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Pósta utca 4-6" ng-model="orderDetails.address">
+                    <label for="address" class="form-label mb-3">Utca/házszám</label>
+                    <input type="text" class="form-control" id="address" placeholder="Pósta utca 4-6" ng-model="orderDetails.address">
                 </div>
             </div>
     </div>
@@ -67,7 +67,7 @@
 
                 <div id="credit" class="card catCard rounded-2 col-2 m-2"
                 ng-click="Payment($event)"
-                ng-class="{'catSelected': 'credit'==paymentType}"
+                ng-class="{'catSelected': 'credit'==orderDetails.paymentType}"
                 >
                     <i class="m-auto categoryIcon fa-regular fa-credit-card"></i>
                     <span class="text-center categoryText">Bankkártya</span>
@@ -75,7 +75,7 @@
 
                 <div id="cash" class="card catCard rounded-2 col-2 m-2"
                 ng-click="Payment($event)"
-                ng-class="{'catSelected': 'cash'==paymentType}"
+                ng-class="{'catSelected': 'cash'==orderDetails.paymentType}"
                 >
                     <i class="m-auto categoryIcon fa-solid fa-coins"></i>
                     <span class="text-center categoryText">Készpénz</span>

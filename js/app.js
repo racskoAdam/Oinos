@@ -340,17 +340,19 @@
             $scope.updatePrice();
             };
 
-            $scope.Payment = (event) => {
-              $scope.paymentType= event.currentTarget.id;           
-            };
 
             $scope.orderDetails ={
               firstName: null,
               lastName: null,
               phone: null,
               city: null,
-              address: null
+              address: null,
+              paymentType: null
             }
+
+            $scope.Payment = (event) => {
+              $scope.orderDetails.paymentType= event.currentTarget.id;           
+            };
 
             $scope.completeOrder = () =>{
 
@@ -365,9 +367,12 @@
               
 
               if ($scope.hasItems) {
-                if ($scope.paymentType !== undefined) {
+                if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
 
+                    //debug
+                    console.log(`${$scope.hasItems}`);
+                    console.log(`INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`);
 
                     http
                   .request({
@@ -376,7 +381,7 @@
                     data: {
                       db: "opd",
                       query:
-                        "INSERT",
+                      `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
                       isAssoc: true,
                     },
                   })
