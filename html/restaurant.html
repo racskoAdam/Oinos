@@ -65,7 +65,7 @@
         <input type="date" class="form-control" id="date" ng-model="date" required min="{{next10Days()}}"
           max="{{next10Days(10)}}" ng-change="validateDate()">
         <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
-          Please select a date within the next 10 days.
+          Kérjük, válasszon egy időpontot a következő 10 napon belül.
         </p>
       </div>
       <div class="form-group w-100 p-2">
@@ -77,6 +77,7 @@
     <button type="submit" class="btn btn-primary w-100 fs-1">Foglalás</button>
   </form>
 </div>
+
 <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">

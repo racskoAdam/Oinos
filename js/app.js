@@ -1,6 +1,5 @@
 (function (window, angular) {
   "use strict";
-
   // Application module
   angular
     .module("app", ["ui.router", "app.common", "angular.filter"])
@@ -15,6 +14,7 @@
             url: "/",
             templateUrl: "./html/home.html",
           })
+
           .state("order", {
             url: "/order",
             templateUrl: "./html/order.html",
@@ -90,11 +90,41 @@
     .controller("regLogController", [
       "$scope",
       "$http",
-      function ($scope, $http) {
-   
+      "$state",
+      "$rootScope", // Add $rootScope as a dependency
+      function ($scope, $http, $state, $rootScope) {
+        $scope.user = {};
+        $scope.loggedIn = localStorage.getItem("loggedIn") === "false"; // Set initial value of loggedIn from localStorage
+    
+        $scope.register = function () {
+          $http({
+            method: "POST",
+            url: "./php/register.php",
+            data: $.param($scope.user),
+            headers: {"Content-Type":"application/x-www-form-urlencoded"},
+          }).then(function(response){
+            console.log(response);
+            if (response.data.indexOf('User with email') !== -1) {
+              // show Bootstrap modal with error message
+              $('#errorMessageModal').modal('show');
+              $scope.errorMessage = response.data;
+            } else {
+              // show Bootstrap modal with success message
+              $('#successModal').modal('show');
+              // redirect to home state
+              $state.go('home');
+              // set logged in status
+              localStorage.setItem('loggedIn', 'true');
+              $scope.loggedIn = true; // Set the value of loggedIn in the scope to true
+              $rootScope.firstName = $scope.user.firstname; // Set $rootScope.firstName to the user's first name
+              $rootScope.lastName = $scope.user.lastname; // Set $rootScope.lastName to the user's last name
+              console.log($rootScope.lastname);
+            }
+          })
+        };
       },
     ])
-
+    
     .controller("menuController", [
       "$scope",
       "$element",
@@ -358,16 +388,15 @@
               $scope.paymentType = event.currentTarget.id;
             };
 
-            $scope.orderDetails ={
+            $scope.orderDetails = {
               firstName: null,
               lastName: null,
               phone: null,
               city: null,
-              address: null
-            }
+              address: null,
+            };
 
-            $scope.completeOrder = () =>{
-
+            $scope.completeOrder = () => {
               function hasNullValue(obj) {
                 for (const key in obj) {
                   if (obj[key] === null) {
@@ -376,14 +405,13 @@
                 }
                 return false;
               }
-              
 
               if ($scope.hasItems) {
                 if ($scope.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
                     console.log($scope.orderDetails);
-                    $rootScope.cart.forEach(element => {
-                      console.log(element.Name,element.amount);
+                    $rootScope.cart.forEach((element) => {
+                      console.log(element.Name, element.amount);
                     });
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");

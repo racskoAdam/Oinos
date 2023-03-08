@@ -9,6 +9,8 @@ $con = mysqli_connect($host, $user, $password, $db);
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
+mysqli_set_charset($con, "utf8");
+
 $name = mysqli_real_escape_string($con, $_POST['name']);
 $email = mysqli_real_escape_string($con, $_POST['email']);
 $phone = mysqli_real_escape_string($con, $_POST['phone']);
