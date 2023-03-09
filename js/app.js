@@ -448,7 +448,7 @@
                 alert("Nincs semmi a korárban!");
               }
             };
-          })
+          });
           .catch((e) => console.log(e)); // Handling error
       },
     ]);
