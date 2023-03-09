@@ -391,8 +391,6 @@
               $scope.orderDetails.paymentType= event.currentTarget.id;           
             };
 
-            $scope.completeOrder = () =>{
-
             $scope.completeOrder = () => {
               function hasNullValue(obj) {
                 for (const key in obj) {
