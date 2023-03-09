@@ -391,7 +391,6 @@
               $scope.orderDetails.paymentType= event.currentTarget.id;           
             };
 
-            $scope.completeOrder = () =>{
 
             $scope.completeOrder = () => {
               function hasNullValue(obj) {
@@ -448,7 +447,7 @@
                 alert("Nincs semmi a korárban!");
               }
             };
-          });
+          })
           .catch((e) => console.log(e)); // Handling error
       },
     ]);
