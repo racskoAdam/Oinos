@@ -44,16 +44,11 @@
             templateUrl: "./html/finalizeOrder.html",
             controller: "orderController",
           })
-          .state("login", {
-            url: "/login",
+          .state("login",{
+            url:"/login",
             templateUrl: "./html/login.html",
-            controller: "regLogController",
           })
-          .state("register", {
-            url: "/register",
-            templateUrl: "./html/register.html",
-            controller: "regLogController",
-          });
+          ;
 
         $urlRouterProvider.otherwise("/");
       },
@@ -377,16 +372,11 @@
             $scope.incAmount = (id) => {
               $scope.item = $rootScope.cart.find((element) => element.Id == id);
               if ($scope.item.amount < 100) {
-                ++$rootScope.cart[
-                  $rootScope.cart.findIndex((element) => element.Id == id)
-                ].amount;
-              }
-              $scope.updatePrice();
+                ++$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
+              };
+            $scope.updatePrice();
             };
 
-            $scope.Payment = (event) => {
-              $scope.paymentType = event.currentTarget.id;
-            };
 
             $scope.orderDetails = {
               firstName: null,
@@ -394,7 +384,14 @@
               phone: null,
               city: null,
               address: null,
+              paymentType: null
+            }
+
+            $scope.Payment = (event) => {
+              $scope.orderDetails.paymentType= event.currentTarget.id;           
             };
+
+            $scope.completeOrder = () =>{
 
             $scope.completeOrder = () => {
               function hasNullValue(obj) {
@@ -407,19 +404,47 @@
               }
 
               if ($scope.hasItems) {
-                if ($scope.paymentType !== undefined) {
+                if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
+
+                    //debug
+                    console.log(`${$scope.hasItems}`);
+                    console.log(`INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`);
+
+                    http
+                  .request({
+                    url: "./php/get.php",
+                    method: "POST",
+                    data: {
+                      db: "opd",
+                      query:
+                      `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
+                      isAssoc: true,
+                    },
+                  })
+                  .then((data) => {
+                    $scope.data = data;
+                    if ($scope.data.length) $scope.pointer = 0;
+                    $scope.$applyAsync();
+                  })
+                  .catch((e) => console.log(e));
+
+
+
+                    //debug
                     console.log($scope.orderDetails);
                     $rootScope.cart.forEach((element) => {
                       console.log(element.Name, element.amount);
                     });
+                    //debug
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");
                   }
+
                 } else {
                   alert("Kérem válasszon fizetési módszert!");
                 }
-              } else {
+              }else{
                 alert("Nincs semmi a korárban!");
               }
             };
