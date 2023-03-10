@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Már 07. 11:49
+-- Létrehozás ideje: 2023. Már 10. 09:32
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -109,7 +109,7 @@ INSERT INTO `menu` (`Id`, `Name`, `Price`, `Description`, `CategorieId`, `image`
 --
 
 CREATE TABLE `orderitems` (
-  `id` int(21) NOT NULL,
+  `itemId` int(21) NOT NULL,
   `orderId` int(21) NOT NULL,
   `itemQuantity` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -125,10 +125,11 @@ CREATE TABLE `orders` (
   `Addresss` varchar(255) NOT NULL,
   `ZipCode` int(21) NOT NULL,
   `Phone` bigint(21) NOT NULL,
-  `amount` int(200) NOT NULL,
-  `paymentMode` enum('0','1') NOT NULL DEFAULT '0' COMMENT '0=cash on delivery, \r\n1=online ',
-  `orderStatus` enum('0','1','2','3','4','5','6') NOT NULL DEFAULT '0' COMMENT '0=Order Placed.\r\n1=Order Confirmed.\r\n2=Preparing your Order.\r\n3=Your order is on the way!\r\n4=Order Delivered.\r\n5=Order Denied.\r\n6=Order Cancelled.',
-  `orderDate` datetime NOT NULL DEFAULT current_timestamp()
+  `paymentMode` text NOT NULL DEFAULT '\'0\'',
+  `orderDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `FirstName` text NOT NULL,
+  `LastName` text NOT NULL,
+  `totalPrice` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -280,7 +281,7 @@ ALTER TABLE `menu` ADD FULLTEXT KEY `pizzaName` (`Name`,`Description`);
 -- A tábla indexei `orderitems`
 --
 ALTER TABLE `orderitems`
-  ADD PRIMARY KEY (`id`,`orderId`);
+  ADD PRIMARY KEY (`itemId`,`orderId`);
 
 --
 -- A tábla indexei `orders`
@@ -321,7 +322,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT;
+  MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT a táblához `reservations`
@@ -343,7 +344,7 @@ ALTER TABLE `restaurantmenu`
 -- Megkötések a táblához `restaurantmenu`
 --
 ALTER TABLE `restaurantmenu`
-  ADD CONSTRAINT `fk_restaurantmenu_categorie` FOREIGN KEY (`CategorieId`) REFERENCES `categories` (`categorieId`);
+  ADD CONSTRAINT `fk_restaurantmenu_categorie` FOREIGN KEY (`CategorieId`) REFERENCES `categories` (`CategorieId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

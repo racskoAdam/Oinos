@@ -258,7 +258,8 @@
       "$scope", // AngularJS $scope service
       "http", // Custom HTTP service
       "$rootScope",
-      function ($scope, http, $rootScope) {
+      "$state",
+      function ($scope, http, $rootScope, $state) {
         // Controller function
         // Get menu data from the server using the custom HTTP service
         http
@@ -334,8 +335,6 @@
                 ]["amount"] = 1; // Add amount variable to item and set it to 1
                 console.log($scope.cart);
                 $scope.updatePrice();
-              } else {
-                console.log("already in cart");
               }
             };
 
@@ -405,10 +404,6 @@
                 if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
 
-                    //debug
-                    console.log(`${$scope.hasItems}`);
-                    console.log(`INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`);
-
                     http
                   .request({
                     url: "./php/get.php",
@@ -421,20 +416,33 @@
                     },
                   })
                   .then((data) => {
-                    $scope.data = data;
-                    if ($scope.data.length) $scope.pointer = 0;
-                    $scope.$applyAsync();
+                    $scope.cartQuery = `INSERT INTO orderitems(itemId, orderId, itemQuantity) VALUES `;
+                    $rootScope.cart.forEach((element, index) => {
+                      $scope.cartQuery += `(${element.Id},(SELECT orderId FROM orders ORDER BY orderId DESC LIMIT 1),${element.amount})`;
+                      if (index !== $rootScope.cart.length - 1) {
+                        $scope.cartQuery += `, `;
+                      }
+                    });
+                    http
+                  .request({
+                    url: "./php/get.php",
+                    method: "POST",
+                    data: {
+                      db: "opd",
+                      query: $scope.cartQuery,
+                      isAssoc: true,
+                    },
+                  })
+                  .then(() => {
+                    $rootScope.cart = [];
+                    $state.go('home');
+                    alert("Rendelés leadása sikeres!");
                   })
                   .catch((e) => console.log(e));
 
+                  })
+                  .catch((e) => console.log(e));
 
-
-                    //debug
-                    console.log($scope.orderDetails);
-                    $rootScope.cart.forEach((element) => {
-                      console.log(element.Name, element.amount);
-                    });
-                    //debug
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");
                   }
