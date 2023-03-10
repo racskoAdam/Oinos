@@ -44,17 +44,21 @@
             templateUrl: "./html/finalizeOrder.html",
             controller: "orderController",
           })
-          .state("login",{
-            url:"/login",
+          .state("login", {
+            url: "/login",
             templateUrl: "./html/login.html",
+            controller: "regLogController",
           })
-          ;
+          .state("register", {
+            url: "/register",
+            templateUrl: "./html/register.html",
+            controller: "regLogController",
+          });
 
         $urlRouterProvider.otherwise("/");
       },
     ])
 
-    //Application running
     .run([
       "$rootScope",
       "$transitions",
@@ -74,11 +78,20 @@
           }).catch((e) => console.log(e));
         });
 
-        // Set global letiables
+        // Set global variables
         $rootScope.state = { id: null, prev: null };
         $rootScope.user = { id: null, type: null, name: null };
         $rootScope.cart = []; //create cart for ordering
         $rootScope.total = 0;
+
+        // Check if user is logged in on page refresh
+        if (localStorage.getItem("loggedIn") === "true") {
+          $rootScope.loggedIn = true;
+          $rootScope.firstName = localStorage.getItem("firstName");
+          $rootScope.lastName = localStorage.getItem("lastName");
+        } else {
+          $rootScope.loggedIn = false;
+        }
       },
     ])
 
@@ -86,40 +99,79 @@
       "$scope",
       "$http",
       "$state",
-      "$rootScope", // Add $rootScope as a dependency
+      "$rootScope",
       function ($scope, $http, $state, $rootScope) {
         $scope.user = {};
-        $scope.loggedIn = localStorage.getItem("loggedIn") === "false"; // Set initial value of loggedIn from localStorage
-    
+
         $scope.register = function () {
           $http({
             method: "POST",
             url: "./php/register.php",
             data: $.param($scope.user),
-            headers: {"Content-Type":"application/x-www-form-urlencoded"},
-          }).then(function(response){
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          }).then(function (response) {
             console.log(response);
-            if (response.data.indexOf('User with email') !== -1) {
+            if (response.data.indexOf("User with email") !== -1) {
               // show Bootstrap modal with error message
-              $('#errorMessageModal').modal('show');
+              $("#errorMessageModal").modal("show");
               $scope.errorMessage = response.data;
             } else {
               // show Bootstrap modal with success message
-              $('#successModal').modal('show');
+              $("#successModal").modal("show");
               // redirect to home state
-              $state.go('home');
-              // set logged in status
-              localStorage.setItem('loggedIn', 'true');
-              $scope.loggedIn = true; // Set the value of loggedIn in the scope to true
+              $state.go("home");
+              // set logged in status and user information in local storage
+              localStorage.setItem("loggedIn", "true");
+              localStorage.setItem("firstName", $scope.user.firstname);
+              localStorage.setItem("lastName", $scope.user.lastname);
+              $rootScope.loggedIn = true;
               $rootScope.firstName = $scope.user.firstname; // Set $rootScope.firstName to the user's first name
               $rootScope.lastName = $scope.user.lastname; // Set $rootScope.lastName to the user's last name
-              console.log($rootScope.lastname);
             }
-          })
+          });
+        };
+        $scope.login = function () {
+          $http({
+            method: "POST",
+            url: "./php/login.php",
+            data: $.param($scope.user),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          }).then(function (response) {
+            console.log(response);
+            if (response.data === "error") {
+              // show Bootstrap modal with error message
+              $("#errorMessageModal").modal("show");
+              $scope.errorMessage = "Incorrect email or password.";
+            } else {
+              // show Bootstrap modal with success message
+              $("#successModal").modal("show");
+              // redirect to home state
+              $state.go("home");
+              // set logged in status
+              localStorage.setItem("loggedIn", "true");
+              localStorage.setItem("firstName", response.data.firstname);
+              localStorage.setItem("lastName", response.data.lastname);
+              $rootScope.loggedIn = true;
+              $rootScope.firstName = response.data.firstname;
+              $rootScope.lastName = response.data.lastname;
+            }
+          });
+        };
+        
+        $scope.logout = function () {
+          localStorage.removeItem("loggedIn");
+          localStorage.removeItem("firstName");
+          localStorage.removeItem("lastName");
+          // Update $rootScope values
+          $rootScope.loggedIn = false;
+          $rootScope.firstName = "";
+          $rootScope.lastName = "";
+          // Redirect to home page
+          $state.go("home");
         };
       },
     ])
-    
+
     .controller("menuController", [
       "$scope",
       "$element",
@@ -372,11 +424,12 @@
             $scope.incAmount = (id) => {
               $scope.item = $rootScope.cart.find((element) => element.Id == id);
               if ($scope.item.amount < 100) {
-                ++$rootScope.cart[$rootScope.cart.findIndex(element => element.Id == id)].amount;
-              };
-            $scope.updatePrice();
+                ++$rootScope.cart[
+                  $rootScope.cart.findIndex((element) => element.Id == id)
+                ].amount;
+              }
+              $scope.updatePrice();
             };
-
 
             $scope.orderDetails = {
               firstName: null,
@@ -384,13 +437,12 @@
               phone: null,
               city: null,
               address: null,
-              paymentType: null
-            }
-
-            $scope.Payment = (event) => {
-              $scope.orderDetails.paymentType= event.currentTarget.id;           
+              paymentType: null,
             };
 
+            $scope.Payment = (event) => {
+              $scope.orderDetails.paymentType = event.currentTarget.id;
+            };
 
             $scope.completeOrder = () => {
               function hasNullValue(obj) {
@@ -405,30 +457,28 @@
               if ($scope.hasItems) {
                 if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
-
                     //debug
                     console.log(`${$scope.hasItems}`);
-                    console.log(`INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`);
+                    console.log(
+                      `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`
+                    );
 
                     http
-                  .request({
-                    url: "./php/get.php",
-                    method: "POST",
-                    data: {
-                      db: "opd",
-                      query:
-                      `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
-                      isAssoc: true,
-                    },
-                  })
-                  .then((data) => {
-                    $scope.data = data;
-                    if ($scope.data.length) $scope.pointer = 0;
-                    $scope.$applyAsync();
-                  })
-                  .catch((e) => console.log(e));
-
-
+                      .request({
+                        url: "./php/get.php",
+                        method: "POST",
+                        data: {
+                          db: "opd",
+                          query: `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
+                          isAssoc: true,
+                        },
+                      })
+                      .then((data) => {
+                        $scope.data = data;
+                        if ($scope.data.length) $scope.pointer = 0;
+                        $scope.$applyAsync();
+                      })
+                      .catch((e) => console.log(e));
 
                     //debug
                     console.log($scope.orderDetails);
@@ -439,11 +489,10 @@
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");
                   }
-
                 } else {
                   alert("Kérem válasszon fizetési módszert!");
                 }
-              }else{
+              } else {
                 alert("Nincs semmi a korárban!");
               }
             };
