@@ -138,26 +138,27 @@
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
           }).then(function (response) {
             console.log(response);
-            if (response.data === "error") {
+            if (response.data.status === "error") {
               // show Bootstrap modal with error message
               $("#errorMessageModal").modal("show");
               $scope.errorMessage = "Incorrect email or password.";
             } else {
               // show Bootstrap modal with success message
               $("#successModal").modal("show");
+              // store user data in local storage
+              localStorage.setItem("userData", JSON.stringify(response.data));
               // redirect to home state
               $state.go("home");
-              // set logged in status
               localStorage.setItem("loggedIn", "true");
               localStorage.setItem("firstName", response.data.firstname);
               localStorage.setItem("lastName", response.data.lastname);
               $rootScope.loggedIn = true;
-              $rootScope.firstName = response.data.firstname;
-              $rootScope.lastName = response.data.lastname;
+              $rootScope.firstName = response.data.firstname; // Set $rootScope.firstName to the user's first name
+              $rootScope.lastName = response.data.lastname; // Set $rootScope.lastName to the user's last name
             }
           });
         };
-        
+
         $scope.logout = function () {
           localStorage.removeItem("loggedIn");
           localStorage.removeItem("firstName");
