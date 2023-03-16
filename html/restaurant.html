@@ -1,4 +1,7 @@
 <div ng-include src="'./html/navigate.html'"></div>
+
+<div class="mx-md-5 pt-5">
+
 <div class="menu-banner">
   <div class="banner02-overlay"></div>
   <div class="banner02-text">
@@ -29,15 +32,15 @@
 </div>
 
 
-<div class="container pb-5" ng-controller="reservationController">
-  <form ng-submit="submitForm()">
+<div class="container pb-5 pt-5" ng-controller="reservationController">
+  <form ng-submit="submitForm()" class="p-4 bg-light text-dark fw-bold py-5">
     <div class="form-group my-3">
       <label for="name" class="fs-4">Név:</label>
-      <input type="text" class="form-control" id="name" ng-model="formData.name">
+      <input type="text" class="form-control" id="name" ng-model="formData.name" required>
     </div>
     <div class="form-group">
       <label for="guest">Hány főre?</label>
-      <select class="form-control" id="guest" ng-model="formData.guest">
+      <select class="form-control" id="guest" ng-model="formData.guest" required>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -53,17 +56,17 @@
 
     <div class="form-group my-3">
       <label for="email" class="fs-4">Email cím:</label>
-      <input type="email" class="form-control" id="email" ng-model="formData.email">
+      <input type="email" class="form-control" id="email" ng-model="formData.email" required>
     </div>
     <div class="form-group mt-3">
       <label for="phone" class="fs-4">Telefonszám:</label>
-      <input type="text" class="form-control" id="phone" ng-model="formData.phone">
+      <input type="text" class="form-control" id="phone" ng-model="formData.phone"> required
     </div>
     <div class="d-flex justify-content-between py-2">
       <div class="form-group w-100 p-2">
         <label for="date" class="fs-4">Dátum:</label>
         <input type="date" class="form-control" id="date" ng-model="date" required min="{{next10Days()}}"
-          max="{{next10Days(10)}}" ng-change="validateDate()">
+          max="{{next10Days(10)}}" ng-change="validateDate()" required>
         <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
           Kérjük, válasszon egy időpontot a következő 10 napon belül.
         </p>
@@ -74,9 +77,11 @@
         </select>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary w-100 fs-1">Foglalás</button>
-  </form>
+    <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100">
+      Foglalás
+    </button>  </form>
 </div>
+
 
 <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel"
   aria-hidden="true">
@@ -100,5 +105,5 @@
 
 
 
-
+</div>
 <div ng-include src="'./html/footer.html'"></div>

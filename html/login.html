@@ -1,22 +1,19 @@
 <div ng-include src="'./html/navigate.html'"></div>
-
-<div class="container my-5">
-  <div class="row">
-    <div class="col-md-4 offset-md-4">
-      <h3 class="mb-4">Bejelentkezés</h3>
-      <form ng-submit="login()" name="loginForm">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email cím</label>
-          <input type="email" class="form-control" id="email" name="email" ng-model="user.email" required>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Jelszó</label>
-          <input type="password" class="form-control" id="password" name="password" ng-model="user.password" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Bejelentkezés</button>
-      </form>
+<div class="mx-md-5 pt-5">
+  <form class="p-4 bg-light text-dark fw-bold py-5" ng-submit="login()" name="loginForm">
+    <h2 class="mb-4 text-center">Bejelentkezés</h2>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email cím</label>
+      <input type="email" class="form-control" id="email" name="email" ng-model="user.email" required />
     </div>
-  </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Jelszó</label>
+      <input type="password" class="form-control" id="password" name="password" ng-model="user.password" required />
+    </div>
+    <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100">
+      Bejelentkezés
+    </button>
+  </form>
 </div>
 <!-- Error Message Modal -->
 <div class="modal fade" id="errorMessageModal" tabindex="-1" role="dialog" aria-labelledby="errorMessageModalLabel"
@@ -29,11 +26,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body text-dark">
-        {{errorMessage}}
-      </div>
+      <div class="modal-body text-dark">{{errorMessage}}</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Bezárás
+        </button>
       </div>
     </div>
   </div>
@@ -44,20 +41,20 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title text-dark" id="successModalLabel">Sikeres bejelentkezés</h5>
+        <h5 class="modal-title text-dark" id="successModalLabel">
+          Sikeres bejelentkezés
+        </h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body text-dark">
-        Sikeres bejelentkezés!
-      </div>
+      <div class="modal-body text-dark">Sikeres bejelentkezés!</div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Bezárás
+        </button>
       </div>
     </div>
   </div>
 </div>
-
-
-  <div ng-include src="'./html/footer.html'"></div>
+<div ng-include src="'./html/footer.html'"></div>
