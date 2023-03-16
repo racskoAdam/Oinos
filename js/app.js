@@ -439,6 +439,17 @@
               address: null,
               paymentType: null,
             };
+            if (localStorage.getItem("loggedIn")) {
+              $scope.userData = JSON.parse(localStorage.getItem("userData"));
+              $scope.orderDetails = {
+                firstName: $scope.userData["firstname"],
+                lastName: $scope.userData["lastname"],
+                phone: $scope.userData["phone"],
+                city: $scope.userData["zipcode"],
+                address: $scope.userData["address"],
+                paymentType: null,
+              };
+            }
 
             $scope.Payment = (event) => {
               $scope.orderDetails.paymentType = event.currentTarget.id;
