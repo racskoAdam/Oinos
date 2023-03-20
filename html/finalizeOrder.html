@@ -85,8 +85,12 @@
     </div>
 
     <div class="bg-light text-dark fw-bold pt-3 mb-3">
-        <span class="fs-3">Végösszeg: {{total+1000}} Ft</span><br>
-        <i class="fa-solid fa-truck"></i><span class="fs-5"></i> Kiszállítás: 1000 Ft</span>
+        <span class="fs-3">Végösszeg: {{orderDetails.city== '6900' ? total : total+1000}} Ft</span><br>
+        <i class="fa-solid fa-truck"></i>
+        <span class="fs-5"></i> Kiszállítás: 
+            <span ng-if="orderDetails.city== '6900'">ingyen</span>
+            <span ng-if="orderDetails.city!= '6900'">1000 Ft</span>
+        </span>
         <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100" ng-click="completeOrder()">Rendelés leadása</button>
     </div>
 </form>
