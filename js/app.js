@@ -63,7 +63,7 @@
         $urlRouterProvider.otherwise("/");
       },
     ])
-    
+
     .run([
       "$rootScope",
       "$transitions",
@@ -91,12 +91,11 @@
         // Check if user is logged in on page refresh
         if (localStorage.getItem("loggedIn")) {
           $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
-          localStorage.setItem("firstName", $rootScope.userData.firstname);
-          $rootScope.firstName = $rootScope.userData.firstname; // Set $rootScope.firstName to the user's first name
-          localStorage.setItem("lastName", $rootScope.userData.lastname);
-          $rootScope.lastName = $rootScope.userData.lastname; // Set $rootScope.lastName to the user's last name
+          $rootScope.firstName = localStorage.getItem("firstName");
+          $rootScope.lastName = localStorage.getItem("lastName");
           $rootScope.loggedIn = true;
-        } else {
+        }
+         else {
           $rootScope.loggedIn = false;
         }
       },
@@ -224,12 +223,12 @@
       },
     ])
 
-    .controller("userDetailsController", function ($scope, $http, $state) {
+    .controller("userDetailsController", function ($scope, $http, $rootScope) {
       "$scope",
-        "$state",
         "http",
+        "$rootScope",
         ($scope.init = function () {
-          $scope.userData = JSON.parse(localStorage.getItem("userData"));
+          $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
           $scope.user = {
             email: $scope.userData["email"],
             firstName: $scope.userData["firstname"],
@@ -248,13 +247,13 @@
           data: $scope.user,
           headers: { "Content-Type": "application/json" },
         })
-          .then(function (response) {
-            // Sikeres adatmentés esetén frissítsd a felhasználói adatokat
-            $scope.userData = response.data;
-            localStorage.setItem("userData", JSON.stringify($scope.userData));
-            localStorage.setItem("firstName", $scope.user.firstname);
-            localStorage.setItem("lastName", $scope.user.lastname);
-            state.go("home");
+          .then(function () {
+            localStorage.setItem("userData", JSON.stringify($scope.user));
+            localStorage.setItem("firstName", $scope.user.firstName);
+            localStorage.setItem("lastName", $scope.user.lastName);
+            $rootScope.firstName = $scope.user.firstName; // Set $rootScope.firstName to the user's first name
+            $rootScope.lastName = $scope.user.lastName; // Set $rootScope.lastName to the user's last name
+            $rootScope.userData = $scope.user; // Set $rootScope.userData to the updated user data
           })
           .catch(function (error) {
             // Hiba esetén kezeld a hibát
