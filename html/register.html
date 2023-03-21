@@ -1,7 +1,6 @@
 <div ng-include src="'./html/navigate.html'"></div>
+<!-- Registration form -->
 <div class="mx-md-5 pt-5">
-
-  <!-- Registration Form -->
   <form class="p-4 bg-light text-dark fw-bold py-5" ng-submit="register()" method="POST">
     <h2 class="mb-4 text-center">Regisztráció</h2>
     <div class="mb-3">
@@ -29,11 +28,6 @@
       <input type="tel" class="form-control" id="phone" name="phone" ng-model="user.phone"
         placeholder="Telefonszám megadása" required />
     </div>
-    <!-- <div class="mb-3">
-    <label for="zipcode" class="form-label">Zip Code</label>
-    <input type="text" class="form-control" id="zipcode" name="zipcode" ng-model="user.zipcode"
-      placeholder="Enter zip code" required />
-  </div> -->
     <div class="mb-3">
       <label for="city" class="form-label">City</label>
       <select name="" id="city" class="form-select" ng-model="user.zipcode" required>

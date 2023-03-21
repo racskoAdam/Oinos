@@ -53,6 +53,11 @@
             url: "/register",
             templateUrl: "./html/register.html",
             controller: "regLogController",
+          })
+          .state("userDetails", {
+            url: "/userDetails",
+            templateUrl: "./html/userDetails.html",
+            controller: "userDetailsController",
           });
 
         $urlRouterProvider.otherwise("/");
@@ -120,8 +125,10 @@
               $("#successModal").modal("show");
               // redirect to home state
               $state.go("home");
+
               // set logged in status and user information in local storage
               localStorage.setItem("loggedIn", "true");
+              localStorage.setItem("userData", JSON.stringify($scope.user));
               localStorage.setItem("firstName", $scope.user.firstname);
               localStorage.setItem("lastName", $scope.user.lastname);
               $rootScope.loggedIn = true;
@@ -161,12 +168,15 @@
 
         $scope.logout = function () {
           localStorage.removeItem("loggedIn");
+          localStorage.removeItem("userData");
           localStorage.removeItem("firstName");
           localStorage.removeItem("lastName");
+
           // Update $rootScope values
           $rootScope.loggedIn = false;
-          $rootScope.firstName = "";
-          $rootScope.lastName = "";
+          $rootScope.cart = [];
+          $rootScope.firstName = null; // Set $rootScope.firstName to the user's first name
+          $rootScope.lastName = null;
           // Redirect to home page
           $state.go("home");
         };
@@ -211,6 +221,46 @@
         console.log($stateParams);
       },
     ])
+
+    .controller("userDetailsController", function ($scope, $http,$state) {
+      "$scope",
+      "$state",
+      "http",
+      $scope.init = function () {
+        $scope.userData = JSON.parse(localStorage.getItem("userData"));
+        $scope.user = {
+          email: $scope.userData["email"],
+          firstName: $scope.userData["firstname"],
+          lastName: $scope.userData["lastname"],
+          phone: $scope.userData["phone"],
+          password: $scope.userData["password"],
+          city: $scope.userData["zipcode"],
+          address: $scope.userData["address"],
+        };
+      };
+
+      $scope.updateUserData = function () {
+        $http({
+          method: "POST",
+          url: "./php/updateUserData.php",
+          data: $scope.user,
+          headers: { "Content-Type": "application/json" },
+        })
+          .then(function (response) {
+            // Sikeres adatmentés esetén frissítsd a felhasználói adatokat
+            $scope.userData = response.data;
+            localStorage.setItem("userData", JSON.stringify($scope.userData));
+            localStorage.setItem("firstName", $scope.user.firstname);
+            localStorage.setItem("lastName", $scope.user.lastname);
+            state.go("home");
+          
+          })
+          .catch(function (error) {
+            // Hiba esetén kezeld a hibát
+            console.error("Adatmentési hiba:", error);
+          });
+      };
+    })
 
     //Reservation Controller
     .controller("reservationController", function ($scope, $http) {
@@ -374,19 +424,13 @@
 
             $scope.toCart = (event) => {
               $scope.targetId = event.currentTarget.id;
-              if (
-                !$rootScope.cart.filter((obj) => obj.Id == $scope.targetId)
-                  .length
-              ) {
-                $rootScope.cart = $rootScope.cart.concat(
-                  $scope.order.filter((obj) => obj.Id == $scope.targetId)
-                ); //Put selected item in cart
-                $rootScope.cart[
-                  $rootScope.cart.findIndex(
-                    (element) => element.Id == $scope.targetId
-                  )
-                ]["amount"] = 1; // Add amount variable to item and set it to 1
-                console.log($scope.cart);
+              const selectedItem = $scope.order.find(
+                (obj) => obj.Id == $scope.targetId
+              );
+              if (!$rootScope.cart.includes(selectedItem)) {
+                selectedItem.inCart = true;
+                $rootScope.cart.push(selectedItem);
+                selectedItem.amount = 1;
                 $scope.updatePrice();
               }
             };
@@ -402,12 +446,12 @@
             $scope.updatePrice();
 
             $scope.deleteItem = (event) => {
-              $rootScope.cart.splice(
-                $rootScope.cart.findIndex(
-                  (element) => element.Id == event.currentTarget.id
-                ),
-                1
+              const deletedItem = $rootScope.cart.find(
+                (obj) => obj.Id == event.currentTarget.id
               );
+              const deletedIndex = $rootScope.cart.indexOf(deletedItem);
+              $rootScope.cart.splice(deletedIndex, 1);
+              deletedItem.inCart = false;
               $scope.updatePrice();
             };
 
@@ -468,46 +512,42 @@
               if ($scope.hasItems) {
                 if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
-
                     http
-                  .request({
-                    url: "./php/get.php",
-                    method: "POST",
-                    data: {
-                      db: "opd",
-                      query:
-                      `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
-                      isAssoc: true,
-                    },
-                  })
-                  .then((data) => {
-                    $scope.cartQuery = `INSERT INTO orderitems(itemId, orderId, itemQuantity) VALUES `;
-                    $rootScope.cart.forEach((element, index) => {
-                      $scope.cartQuery += `(${element.Id},(SELECT orderId FROM orders ORDER BY orderId DESC LIMIT 1),${element.amount})`;
-                      if (index !== $rootScope.cart.length - 1) {
-                        $scope.cartQuery += `, `;
-                      }
-                    });
-                    http
-                  .request({
-                    url: "./php/get.php",
-                    method: "POST",
-                    data: {
-                      db: "opd",
-                      query: $scope.cartQuery,
-                      isAssoc: true,
-                    },
-                  })
-                  .then(() => {
-                    $rootScope.cart = [];
-                    $state.go('home');
-                    alert("Rendelés leadása sikeres!");
-                  })
-                  .catch((e) => console.log(e));
-
-                  })
-                  .catch((e) => console.log(e));
-
+                      .request({
+                        url: "./php/get.php",
+                        method: "POST",
+                        data: {
+                          db: "opd",
+                          query: `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
+                          isAssoc: true,
+                        },
+                      })
+                      .then((data) => {
+                        $scope.cartQuery = `INSERT INTO orderitems(itemId, orderId, itemQuantity) VALUES `;
+                        $rootScope.cart.forEach((element, index) => {
+                          $scope.cartQuery += `(${element.Id},(SELECT orderId FROM orders ORDER BY orderId DESC LIMIT 1),${element.amount})`;
+                          if (index !== $rootScope.cart.length - 1) {
+                            $scope.cartQuery += `, `;
+                          }
+                        });
+                        http
+                          .request({
+                            url: "./php/get.php",
+                            method: "POST",
+                            data: {
+                              db: "opd",
+                              query: $scope.cartQuery,
+                              isAssoc: true,
+                            },
+                          })
+                          .then(() => {
+                            $rootScope.cart = [];
+                            $state.go("home");
+                            alert("Rendelés leadása sikeres!");
+                          })
+                          .catch((e) => console.log(e));
+                      })
+                      .catch((e) => console.log(e));
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");
                   }
