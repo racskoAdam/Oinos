@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Már 10. 09:32
+-- Létrehozás ideje: 2023. Már 21. 11:51
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -114,6 +114,16 @@ CREATE TABLE `orderitems` (
   `itemQuantity` int(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- A tábla adatainak kiíratása `orderitems`
+--
+
+INSERT INTO `orderitems` (`itemId`, `orderId`, `itemQuantity`) VALUES
+(1, 1, 1),
+(6, 27, 3),
+(7, 27, 1),
+(13, 27, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -131,6 +141,14 @@ CREATE TABLE `orders` (
   `LastName` text NOT NULL,
   `totalPrice` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- A tábla adatainak kiíratása `orders`
+--
+
+INSERT INTO `orders` (`orderId`, `Addresss`, `ZipCode`, `Phone`, `paymentMode`, `orderDate`, `FirstName`, `LastName`, `totalPrice`) VALUES
+(1, 'Deák Ferenc Utca 20', 6775, 36305901404, 'credit', '2023-03-21 11:29:40', 'Balla', 'István', 2750),
+(27, 'Deák Ferenc 20', 6775, 123, 'credit', '2023-03-21 11:32:56', 'Balla', 'István', 14500);
 
 -- --------------------------------------------------------
 
@@ -242,7 +260,6 @@ INSERT INTO `restaurantmenu` (`Id`, `Name`, `CategorieId`, `Price`, `Description
 --
 
 CREATE TABLE `users` (
-  `Username` varchar(20) COLLATE utf8_hungarian_ci NOT NULL,
   `Password` varchar(30) COLLATE utf8_hungarian_ci NOT NULL,
   `Email` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
   `Phone` int(11) NOT NULL,
@@ -256,8 +273,11 @@ CREATE TABLE `users` (
 -- A tábla adatainak kiíratása `users`
 --
 
-INSERT INTO `users` (`Username`, `Password`, `Email`, `Phone`, `ZipCode`, `Address`, `LastName`, `FirstName`) VALUES
-('', '', '', 0, 0, '', '', '');
+INSERT INTO `users` (`Password`, `Email`, `Phone`, `ZipCode`, `Address`, `LastName`, `FirstName`) VALUES
+('', '', 0, 0, '', '', ''),
+('asd', 'pisti1231212@gmail.com', 123, 6775, 'Deák Ferenc 20', 'István', 'Balla'),
+('asd', 'asd@gmail.com123', 2147483647, 6900, 'asd', 'asd', 'Balla'),
+('asd', 'asd@gmaasdil.com', 2147483647, 6932, 'ASD', 'asd', 'Balla');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -322,7 +342,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT a táblához `reservations`

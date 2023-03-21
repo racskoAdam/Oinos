@@ -63,7 +63,7 @@
         $urlRouterProvider.otherwise("/");
       },
     ])
-
+    
     .run([
       "$rootScope",
       "$transitions",
@@ -85,15 +85,17 @@
 
         // Set global variables
         $rootScope.state = { id: null, prev: null };
-        $rootScope.user = { id: null, type: null, name: null };
         $rootScope.cart = []; //create cart for ordering
         $rootScope.total = 0;
 
         // Check if user is logged in on page refresh
-        if (localStorage.getItem("loggedIn") === "true") {
+        if (localStorage.getItem("loggedIn")) {
+          $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
+          localStorage.setItem("firstName", $rootScope.userData.firstname);
+          $rootScope.firstName = $rootScope.userData.firstname; // Set $rootScope.firstName to the user's first name
+          localStorage.setItem("lastName", $rootScope.userData.lastname);
+          $rootScope.lastName = $rootScope.userData.lastname; // Set $rootScope.lastName to the user's last name
           $rootScope.loggedIn = true;
-          $rootScope.firstName = localStorage.getItem("firstName");
-          $rootScope.lastName = localStorage.getItem("lastName");
         } else {
           $rootScope.loggedIn = false;
         }
@@ -222,22 +224,22 @@
       },
     ])
 
-    .controller("userDetailsController", function ($scope, $http,$state) {
+    .controller("userDetailsController", function ($scope, $http, $state) {
       "$scope",
-      "$state",
-      "http",
-      $scope.init = function () {
-        $scope.userData = JSON.parse(localStorage.getItem("userData"));
-        $scope.user = {
-          email: $scope.userData["email"],
-          firstName: $scope.userData["firstname"],
-          lastName: $scope.userData["lastname"],
-          phone: $scope.userData["phone"],
-          password: $scope.userData["password"],
-          city: $scope.userData["zipcode"],
-          address: $scope.userData["address"],
-        };
-      };
+        "$state",
+        "http",
+        ($scope.init = function () {
+          $scope.userData = JSON.parse(localStorage.getItem("userData"));
+          $scope.user = {
+            email: $scope.userData["email"],
+            firstName: $scope.userData["firstname"],
+            lastName: $scope.userData["lastname"],
+            phone: $scope.userData["phone"],
+            password: $scope.userData["password"],
+            city: $scope.userData["zipcode"],
+            address: $scope.userData["address"],
+          };
+        });
 
       $scope.updateUserData = function () {
         $http({
@@ -253,7 +255,6 @@
             localStorage.setItem("firstName", $scope.user.firstname);
             localStorage.setItem("lastName", $scope.user.lastname);
             state.go("home");
-          
           })
           .catch(function (error) {
             // Hiba esetén kezeld a hibát
