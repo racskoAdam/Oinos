@@ -1,109 +1,124 @@
 <div ng-include src="'./html/navigate.html'"></div>
-
-<div class="mx-md-5 pt-5">
-
-<div class="menu-banner">
-  <div class="banner02-overlay"></div>
-  <div class="banner02-text">
-    <h1>Étlap</h1>
+<div class="mx-md-5 p-3">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card-link-1 card-link" data-url="etlap.html">
+        <h1 class="card-link-heading">Étlap</h1>
+        <p class="card-link-description">Üdvözöljük a mi éttermünkben! Az étlapunkon számos finom étekkel várjuk Önöket. Kínálunk friss halakat, tésztákat, húsételeket és még sok mást. Nézze meg az étlapunkat és válassza ki a kedvenc ételeit!</p>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card-link-2 card-link" data-url="book-a-table.html">
+        <h1 class="card-link-heading">Asztalfoglalás</h1>
+        <p class="card-link-description">Szeretne asztalt foglalni éttermünkben? Kérjük, használja a foglalási űrlapot az oldalon, vagy hívjon minket az alábbi telefonszámon: +3630/590-1404. Várjuk Önöket szeretettel!</p>
+      </div>
+    </div>
   </div>
 </div>
-<div ng-controller="menuController">
-  <div class="menu-container">
-    <div class="menu-category" ng-repeat="(categoryDesc, categoryItems) in data | groupBy: 'categorieDesc'">
-      <h2 class="menu-category-title">{{categoryDesc}}</h2>
-      <div class="menu-items">
-        <div class="menu-item" ng-repeat="item in categoryItems">
-          <div class="menu-item-info">
-            <h3 class="menu-item-title">{{item.Name}}</h3>
-            <p class="menu-item-description">{{item.Description}}</p>
+
+
+<!-- 
+<div class="mx-md-5 pt-5">
+  <div class="menu-banner">
+    <div class="banner02-overlay"></div>
+    <div class="banner02-text">
+      <h1>Étlap</h1>
+    </div>
+  </div>
+  <div ng-controller="menuController">
+    <div class="menu-container">
+      <div class="menu-category" ng-repeat="(categoryDesc, categoryItems) in data | groupBy: 'categorieDesc'">
+        <h2 class="menu-category-title">{{categoryDesc}}</h2>
+        <div class="menu-items">
+          <div class="menu-item" ng-repeat="item in categoryItems">
+            <div class="menu-item-info">
+              <h3 class="menu-item-title">{{item.Name}}</h3>
+              <p class="menu-item-description">{{item.Description}}</p>
+            </div>
+            <div class="menu-item-price">{{item.Price}} Ft</div>
           </div>
-          <div class="menu-item-price">{{item.Price}} Ft</div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<div class="booking-banner">
-  <div class="banner01-overlay"></div>
-  <div class="banner01-text">
-    <h1>Foglaljon asztalt itt!</h1>
+  <div class="booking-banner">
+    <div class="banner01-overlay"></div>
+    <div class="banner01-text">
+      <h1>Foglaljon asztalt itt!</h1>
+    </div>
   </div>
-</div>
 
-
-<div class="container pb-5 pt-5" ng-controller="reservationController">
-  <form ng-submit="submitForm()" class="p-4 bg-light text-dark fw-bold py-5">
-    <div class="form-group my-3">
-      <label for="name" class="fs-4">Név:</label>
-      <input type="text" class="form-control" id="name" ng-model="formData.name" required>
-    </div>
-    <div class="form-group">
-      <label for="guest">Hány főre?</label>
-      <select class="form-control" id="guest" ng-model="formData.guest" required>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-      </select>
-    </div>
-
-    <div class="form-group my-3">
-      <label for="email" class="fs-4">Email cím:</label>
-      <input type="email" class="form-control" id="email" ng-model="formData.email" required>
-    </div>
-    <div class="form-group mt-3">
-      <label for="phone" class="fs-4">Telefonszám:</label>
-      <input type="text" class="form-control" id="phone" ng-model="formData.phone"> required
-    </div>
-    <div class="d-flex justify-content-between py-2">
-      <div class="form-group w-100 p-2">
-        <label for="date" class="fs-4">Dátum:</label>
-        <input type="date" class="form-control" id="date" ng-model="date" required min="{{next10Days()}}"
-          max="{{next10Days(10)}}" ng-change="validateDate()" required>
-        <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
-          Kérjük, válasszon egy időpontot a következő 10 napon belül.
-        </p>
+  <div class="container pb-5 pt-5" ng-controller="reservationController" >
+    <form ng-submit="submitForm()" class="p-4 bg-light text-dark fw-bold py-5">
+      <div class="form-group my-3">
+        <label for="name" class="fs-4">Név:</label>
+        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required>
       </div>
-      <div class="form-group w-100 p-2">
-        <label for="time" class="fs-4">Időpont:</label>
-        <select id="time" class="w-100 timePicker" ng-model="time" ng-options="t for t in timeOptions" required>
+      <div class="form-group">
+        <label for="guest">Hány főre?</label>
+        <select class="form-control" id="guest" ng-model="formData.guest" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
         </select>
       </div>
-    </div>
-    <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100">
-      Foglalás
-    </button>  </form>
-</div>
 
+      <div class="form-group my-3">
+        <label for="email" class="fs-4">Email cím:</label>
+        <input type="email" class="form-control" id="email" ng-model="formData.email" required />
+      </div>
+      <div class="form-group mt-3">
+        <label for="phone" class="fs-4">Telefonszám:</label>
+        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required />
+      </div>
+      <div class="d-flex justify-content-between py-2">
+        <div class="form-group w-100 p-2">
+          <label for="date" class="fs-4">Dátum:</label>
+          <input type="date" class="form-control" id="date" ng-model="date" required min="{{next10Days()}}"
+            max="{{next10Days(10)}}" ng-change="validateDate()" required />
+          <p ng-show="dateForm.date.$error.min || dateForm.date.$error.max">
+            Kérjük, válasszon egy időpontot a következő 10 napon belül.
+          </p>
+        </div>
+        <div class="form-group w-100 p-2">
+          <label for="time" class="fs-4">Időpont:</label>
+          <select id="time" class="w-100 timePicker" ng-model="time" ng-options="t for t in timeOptions"
+            required></select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100">
+        Foglalás
+      </button>
+    </form>
+  </div>
 
-<div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title text-dark" id="reservationModalLabel">Reservation Confirmation</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        Köszönjük a foglalást!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bezárás</button>
+  <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="reservationModalLabel">
+            Reservation Confirmation
+          </h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-dark">Köszönjük a foglalást!</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Bezárás
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-
-
-</div>
+</div> -->
 <div ng-include src="'./html/footer.html'"></div>

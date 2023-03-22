@@ -94,8 +94,7 @@
           $rootScope.firstName = localStorage.getItem("firstName");
           $rootScope.lastName = localStorage.getItem("lastName");
           $rootScope.loggedIn = true;
-        }
-         else {
+        } else {
           $rootScope.loggedIn = false;
         }
       },
@@ -129,7 +128,12 @@
 
               // set logged in status and user information in local storage
               localStorage.setItem("loggedIn", "true");
-              localStorage.setItem("userData", JSON.stringify($scope.user));
+              let userWithoutPassword = angular.copy($scope.user); // Make a copy of the user object
+              delete userWithoutPassword.password; // Remove the password property from the copy
+              localStorage.setItem(
+                "userData",
+                JSON.stringify(userWithoutPassword)
+              );
               localStorage.setItem("firstName", $scope.user.firstname);
               localStorage.setItem("lastName", $scope.user.lastname);
               $rootScope.loggedIn = true;
@@ -138,6 +142,7 @@
             }
           });
         };
+
         $scope.login = function () {
           $http({
             method: "POST",
@@ -231,11 +236,11 @@
           $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
           $scope.user = {
             email: $scope.userData["email"],
-            firstName: $scope.userData["firstname"],
-            lastName: $scope.userData["lastname"],
+            firstName: $rootScope.firstName,
+            lastName: $rootScope.lastName,
             phone: $scope.userData["phone"],
             password: $scope.userData["password"],
-            city: $scope.userData["zipcode"],
+            zipcode: $scope.userData["zipcode"],
             address: $scope.userData["address"],
           };
         });
@@ -264,7 +269,7 @@
 
     //Reservation Controller
     .controller("reservationController", function ($scope, $http) {
-      $scope.formData = {}; // Initialize an object to store the form data
+      $scope.formData = {};
       $scope.timeOptions = []; // Initialize an array to store the time options
 
       // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
@@ -275,20 +280,24 @@
           $scope.timeOptions.push(hour + ":" + minute); // Push formatted time to timeOptions array
         }
       }
-
       // Function to return the date 10 days from today (or from a specified number of days from today)
       $scope.next10Days = function (days) {
-        let today = new Date(); // Get today's date
-        today.setDate(today.getDate() + (days || 1)); // Add specified number of days (default to 1) to today's date
-        return today.toISOString().substring(0, 10); // Return the date in ISO format and cut off the time portion
+        // Get today's date
+        let today = new Date();
+        // Add specified number of days (default to 1) to today's date
+        today.setDate(today.getDate() + (days || 1));
+        // Return the date in ISO format and cut off the time portion
+        return today.toISOString().substring(0, 10);
       };
 
       $scope.validateDate = function () {
         if (
-          $scope.date < $scope.next10Days() || // If selected date is before today or more than 10 days from today
+          // If selected date is before today or more than 10 days from today
+          $scope.date < $scope.next10Days() || 
           $scope.date > $scope.next10Days(10)
         ) {
-          $scope.date = null; // Reset selected date to null
+          // Reset selected date to null
+          $scope.date = null; 
         }
       };
 
@@ -302,14 +311,6 @@
           !$scope.time
         ) {
           alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing
-          return;
-        }
-
-        let emailRegex =
-          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/; // Regular expression to validate email format
-        if (!emailRegex.test($scope.formData.email)) {
-          // If email format is invalid
-          alert("Érvénytelen e-mail cím."); // Display error message
           return;
         }
 
@@ -482,12 +483,14 @@
               city: null,
               address: null,
               paymentType: null,
+              email: null,
             };
             if (localStorage.getItem("loggedIn")) {
               $scope.userData = JSON.parse(localStorage.getItem("userData"));
               $scope.orderDetails = {
-                firstName: $scope.userData["firstname"],
-                lastName: $scope.userData["lastname"],
+                email: $scope.userData["email"],
+                firstName: $rootScope.firstName,
+                lastName: $rootScope.lastName,
                 phone: $scope.userData["phone"],
                 city: $scope.userData["zipcode"],
                 address: $scope.userData["address"],
@@ -518,7 +521,7 @@
                         method: "POST",
                         data: {
                           db: "opd",
-                          query: `INSERT INTO orders(Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
+                          query: `INSERT INTO orders(Email,Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice) VALUES ("${$scope.orderDetails.email}","${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total})`,
                           isAssoc: true,
                         },
                       })
