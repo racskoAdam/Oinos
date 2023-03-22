@@ -17,7 +17,7 @@ $firstName = $data['firstName'];
 $lastName = $data['lastName'];
 $phone = $data['phone'];
 $password = $data['password'];
-$city = $data['city'];
+$city = $data['zipcode'];
 $address = $data['address'];
 
 // Adatok frissítése az adatbázisban

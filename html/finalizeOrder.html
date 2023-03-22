@@ -1,5 +1,4 @@
 <div ng-include src="'./html/navigate.html'"></div>
-
 <div class="mx-md-5 pt-5">
     <h2 class="text-center">Véglegesítse a rendelését!</h2>
     <button type="button" class="btn btn-warning rounded-0 orderBtn h-100 fs-3" ui-sref="order">Vissza</button>
@@ -7,17 +6,24 @@
         <div class="w-100">
             <table class="table table-striped w-100">
                 <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
-                    <td class="p-0"><img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg"></td>
+                    <td class="p-0">
+                        <img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg">
+                    </td>
                     <td class="w-100">
-                        {{item.Name}}<br>
+                        {{item.Name}}
+                        <br>
                         {{item.Price}} Ft
                     </td>
                     <td>
                         <div class="text-nowrap">
-                            <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="decAmount(item.Id)">-</button>
-                            <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()" disabled>
-                            <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="incAmount(item.Id)">+</button>
-                            <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">x</button>
+                            <button type="button" class="btn btn-secondary rounded-circle valueBtns"
+                                ng-click="decAmount(item.Id)">-</button>
+                            <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount"
+                                ng-change="updatePrice()" disabled>
+                            <button type="button" class="btn btn-secondary rounded-circle valueBtns"
+                                ng-click="incAmount(item.Id)">+</button>
+                            <button type="button" id="{{item.Id}}" class="btn btn-danger"
+                                ng-click="deleteItem($event)">x</button>
                         </div>
                     </td>
                 </tr>
@@ -25,22 +31,31 @@
         </div>
     </div>
     <form name="order" novalidate>
-    <div class="bg-light text-dark fw-bold py-5">
-
+        <div class="bg-light text-dark fw-bold py-5">
             <h2 class="text-center">Adja meg az adatait!</h2>
+            <div class="row m-0">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email cím</label>
+                    <input type="email" class="form-control" id="email" name="email" ng-model="orderDetails.email"
+                        placeholder="Adja meg az e-mail címét" required>
+                </div>
+            </div>
             <div class="row m-0">
                 <div class="col">
                     <label for="lastName" class="form-label mb-3">Vezetéknév</label>
-                    <input type="text" class="form-control" id="lastName" placeholder="Vezetéknév" ng-model="orderDetails.lastName">
+                    <input type="text" class="form-control" id="lastName" placeholder="Vezetéknév"
+                        ng-model="orderDetails.lastName">
                 </div>
                 <div class="col">
                     <label for="firstName" class="form-label mb-3">Keresztnév</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="Keresztnév" ng-model="orderDetails.firstName">
+                    <input type="text" class="form-control" id="firstName" placeholder="Keresztnév"
+                        ng-model="orderDetails.firstName">
                 </div>
             </div>
             <div class="m-3">
-              <label for="phone" class="form-label">Telefonszám</label>
-              <input type="text" class="form-control" id="phone" placeholder="36301234567" ng-model="orderDetails.phone">
+                <label for="phone" class="form-label">Telefonszám</label>
+                <input type="text" class="form-control" id="phone" placeholder="36301234567"
+                    ng-model="orderDetails.phone">
             </div>
             <div class="row m-0">
                 <div class="col">
@@ -55,46 +70,41 @@
                 </div>
                 <div class="col">
                     <label for="address" class="form-label mb-3">Utca/házszám</label>
-                    <input type="text" class="form-control" id="address" placeholder="Pósta utca 4-6" ng-model="orderDetails.address">
+                    <input type="text" class="form-control" id="address" placeholder="Pósta utca 4-6"
+                        ng-model="orderDetails.address">
                 </div>
             </div>
-    </div>
-
-    <div class="bg-light text-dark fw-bold py-3">
-        <div class="categories mt-3">
-            <h2 class="text-center">Válasszon fizetési módszert!</h2>
-            <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
-
-                <div id="credit" class="card catCard rounded-2 col-2 m-2"
-                ng-click="Payment($event)"
-                ng-class="{'catSelected': 'credit'==orderDetails.paymentType}"
-                >
-                    <i class="m-auto categoryIcon fa-regular fa-credit-card"></i>
-                    <span class="text-center categoryText">Bankkártya</span>
-                </div>
-
-                <div id="cash" class="card catCard rounded-2 col-2 m-2"
-                ng-click="Payment($event)"
-                ng-class="{'catSelected': 'cash'==orderDetails.paymentType}"
-                >
-                    <i class="m-auto categoryIcon fa-solid fa-coins"></i>
-                    <span class="text-center categoryText">Készpénz</span>
+        </div>
+        <div class="bg-light text-dark fw-bold py-3">
+            <div class="categories mt-3">
+                <h2 class="text-center">Válasszon fizetési módszert!</h2>
+                <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
+                    <div id="credit" class="card catCard rounded-2 col-2 m-2" ng-click="Payment($event)"
+                        ng-class="{'catSelected': 'credit'==orderDetails.paymentType}">
+                        <i class="m-auto categoryIcon fa-regular fa-credit-card"></i>
+                        <span class="text-center categoryText">Bankkártya</span>
+                    </div>
+                    <div id="cash" class="card catCard rounded-2 col-2 m-2" ng-click="Payment($event)"
+                        ng-class="{'catSelected': 'cash'==orderDetails.paymentType}">
+                        <i class="m-auto categoryIcon fa-solid fa-coins"></i>
+                        <span class="text-center categoryText">Készpénz</span>
+                    </div>
                 </div>
             </div>
-        </div> 
-    </div>
-
-    <div class="bg-light text-dark fw-bold pt-3 mb-3">
-        <span class="fs-3">Végösszeg: {{orderDetails.city== '6900' ? total : total+1000}} Ft</span><br>
-        <i class="fa-solid fa-truck"></i>
-        <span class="fs-5"></i> Kiszállítás: 
-            <span>{{orderDetails.city== '6900' ? 'ingyen' :'1000 Ft'}}</span>
-        </span>
-        <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100" ng-click="completeOrder()">Rendelés leadása</button>
-    </div>
-</form>
-
-    </div>
+        </div>
+        <div class="bg-light text-dark fw-bold pt-3 mb-3">
+            <span class="fs-3">Végösszeg: {{orderDetails.city== '6900' ? total : total+1000}} Ft</span>
+            <br>
+            <i class="fa-solid fa-truck"></i>
+            <span class="fs-5">
+                </i>
+                Kiszállítás:
+                <span>{{orderDetails.city== '6900' ? 'ingyen' :'1000 Ft'}}</span>
+            </span>
+            <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100" ng-click="completeOrder()">Rendelés
+                leadása</button>
+        </div>
+    </form>
 </div>
-
+</div>
 <div ng-include src="'./html/footer.html'"></div>
