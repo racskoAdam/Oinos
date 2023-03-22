@@ -73,6 +73,7 @@
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
+          window.scrollTo(0,0);//cancer
           return $timeout(function () {
             if (isFirstRun) {
               isFirstRun = false;
@@ -82,6 +83,7 @@
             return true;
           }).catch((e) => console.log(e));
         });
+
 
         // Set global variables
         $rootScope.state = { id: null, prev: null };

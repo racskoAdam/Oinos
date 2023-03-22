@@ -28,7 +28,7 @@ if (mysqli_num_rows($check_result) > 0) {
   echo "User with email $email already exists.";
 } else {
   // insert the user data into the database
-  $sql = "INSERT INTO users (password, email, phone, zipcode, address, lastname, firstname) VALUES ('$password', '$email', '$phone', '$zipcode', '$address', '$lastname', '$firstname')";
+  $sql = "INSERT INTO users (password, email, phone, zipcode, address, lastname, firstname, type) VALUES ('$password', '$email', '$phone', '$zipcode', '$address', '$lastname', '$firstname', 'user')";
   $result = mysqli_query($con, $sql);
 
   if ($result) {
