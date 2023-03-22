@@ -73,7 +73,7 @@
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
-          window.scrollTo(0,0);//cancer
+          window.scrollTo(0,0);
           return $timeout(function () {
             if (isFirstRun) {
               isFirstRun = false;
