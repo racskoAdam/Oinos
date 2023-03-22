@@ -39,6 +39,16 @@
             controller: "menuController",
             controller: "reservationController",
           })
+          .state("reservation", {
+            url: "/reservation",
+            templateUrl: "./html/reservation.html",
+            controller: "reservationController",
+          })
+          .state("menu", {
+            url: "/menu",
+            templateUrl: "./html/menu.html",
+            controller: "menuController",
+          })
           .state("finalizeOrder", {
             url: "/finalizeOrder",
             templateUrl: "./html/finalizeOrder.html",
@@ -73,7 +83,7 @@
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
-          window.scrollTo(0,0);//cancer
+          window.scrollTo(0,0);
           return $timeout(function () {
             if (isFirstRun) {
               isFirstRun = false;
@@ -81,7 +91,7 @@
                 return transition.router.stateService.target("home");
             }
             return true;
-          }).catch((e) => console.log(e));
+          }).catch((e) => alert(e));
         });
 
 
@@ -117,7 +127,6 @@
             data: $.param($scope.user),
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
           }).then(function (response) {
-            console.log(response);
             if (response.data.indexOf("User with email") !== -1) {
               // show Bootstrap modal with error message
               $("#errorMessageModal").modal("show");
@@ -152,7 +161,6 @@
             data: $.param($scope.user),
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
           }).then(function (response) {
-            console.log(response);
             if (response.data.status === "error") {
               // show Bootstrap modal with error message
               $("#errorMessageModal").modal("show");
@@ -222,11 +230,10 @@
               if ($scope.data.length) $scope.pointer = 0;
               $scope.$applyAsync();
             })
-            .catch((e) => console.log(e));
+            .catch((e) => alert(e));
         };
 
         getData();
-        console.log($stateParams);
       },
     ])
 
@@ -550,9 +557,9 @@
                             $state.go("home");
                             alert("Rendelés leadása sikeres!");
                           })
-                          .catch((e) => console.log(e));
+                          .catch((e) => alert(e));
                       })
-                      .catch((e) => console.log(e));
+                      .catch((e) => alert(e));
                   } else {
                     alert("Kérem töltse ki az összes mezőt!");
                   }
@@ -564,7 +571,7 @@
               }
             };
           })
-          .catch((e) => console.log(e)); // Handling error
+          .catch((e) => alert(e)); // Handling error
       },
     ]);
 })(window, angular);

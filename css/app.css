@@ -584,8 +584,12 @@ button.cartBtn.checked:hover {
   display: flex; /* add the flexbox layout */
   flex-direction: column; /* set the flex direction to column */
   justify-content: center; /* vertically center the content */
-}
+  transition: transform 0.3s ease-in-out;
 
+}
+.card-link:hover {
+  transform: scale(1.05);
+}
 
 .card-link-1 {
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/restaurant-book.jpg");

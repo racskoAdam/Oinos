@@ -1,0 +1,22 @@
+<div ng-include src="'./html/navigate.html'"></div>
+<div class="mx-md-5 pt-5">
+      <div class="banner02-text">
+        <h1>Étlap</h1>
+      </div>
+    <div ng-controller="menuController">
+      <div class="menu-container">
+        <div class="menu-category" ng-repeat="(categoryDesc, categoryItems) in data | groupBy: 'categorieDesc'">
+          <h2 class="menu-category-title">{{categoryDesc}}</h2>
+          <div class="menu-items">
+            <div class="menu-item" ng-repeat="item in categoryItems">
+              <div class="menu-item-info">
+                <h3 class="menu-item-title">{{item.Name}}</h3>
+                <p class="menu-item-description">{{item.Description}}</p>
+              </div>
+              <div class="menu-item-price">{{item.Price}} Ft</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<div ng-include src="'./html/footer.html'"></div>
