@@ -36,8 +36,6 @@
           .state("restaurant", {
             url: "/restaurant",
             templateUrl: "./html/restaurant.html",
-            controller: "menuController",
-            controller: "reservationController",
           })
           .state("reservation", {
             url: "/reservation",
@@ -196,6 +194,7 @@
           // Redirect to home page
           $state.go("home");
         };
+       
       },
     ])
 
@@ -237,10 +236,11 @@
       },
     ])
 
-    .controller("userDetailsController", function ($scope, $http, $rootScope) {
+    .controller("userDetailsController", function ($scope, $http, $rootScope, $state) {
       "$scope",
         "http",
         "$rootScope",
+        "$state",
         ($scope.init = function () {
           $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
           $scope.user = {
@@ -253,6 +253,48 @@
             address: $scope.userData["address"],
           };
         });
+
+        $scope.accountDeletion = function() {
+          $scope.email = $rootScope.userData.email;
+          $("#deleteConfirmation").modal("show");
+          $("#deleteConfirmation").attr("data-bs-dismiss", "modal").on("click", "#yesBtn", function() {
+            // Send HTTP request to trigger PHP file for account deletion
+            $http({
+              method: "POST",
+              url: "./php/get.php",
+              data: {
+                db: "opd",
+                query: `DELETE FROM users WHERE email = ("${$scope.email}")`,
+                isAssoc: true,
+              },
+            }).then(
+              function success() {
+                  $state.go("home");
+
+        
+                // Remove user data from local storage
+                localStorage.removeItem("loggedIn");
+                localStorage.removeItem("userData");
+                localStorage.removeItem("firstName");
+                localStorage.removeItem("lastName");
+        
+                // Update $rootScope values
+                $rootScope.loggedIn = false;
+                $rootScope.cart = [];
+                $rootScope.firstName = null;
+                $rootScope.lastName = null;
+              },
+              function error(response) {
+                console.log(response.statusText);
+              }
+            );
+          });
+        };
+        
+        
+        
+        
+
 
       $scope.updateUserData = function () {
         $http({
@@ -278,8 +320,8 @@
 
     //Reservation Controller
     .controller("reservationController", function ($scope, $http) {
-      $scope.formData = {};
       $scope.timeOptions = []; // Initialize an array to store the time options
+      $scope.formData = {};
 
       // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
       for (let i = 6; i < 22; i++) {

@@ -1,0 +1,108 @@
+/* Box sizing */
+*, 
+*:before, 
+*:after {
+  -webkit-box-sizing:border-box !important;
+     -moz-box-sizing:border-box !important;
+          box-sizing:border-box !important;
+}
+
+/* Top shadow */
+.top-shadow::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: -2px;
+  width: 100vw;
+  height: 2px;
+  -webkit-box-shadow: 0 0 2px rgba(0,0,0,.8);
+          box-shadow: 0 0 2px rgba(0,0,0,.8);
+}
+
+/* User select */
+*:not(input):not(textarea) {
+  -webkit-user-select: none !important;
+   -khtml-user-select: none !important;
+     -moz-user-select: none !important;
+      -ms-user-select: none !important;
+          user-select: none !important;
+        outline-style: none !important;
+}
+
+/* Clear fix */
+.clearfix:before,
+.clearfix:after {
+  content: '';
+  display: block;
+}
+.clearfix:after {
+  clear: both;
+  overflow: hidden;
+}
+
+/* Background image */
+.bg-img {
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+}
+
+/* Background image contain */
+.bg-img-contain {
+  -webkit-background-size: contain !important;
+          background-size: contain !important;
+}
+
+/* Background image cover */
+.bg-image-cover {
+  -webkit-background-size: cover !important;
+          background-size: cover !important;
+}
+
+/* Conditional display */
+.d-conditional:not(.show) {
+  display: none !important;
+}
+
+/* Curso pointer */
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Text align justify */
+.text-justify {
+  text-align: justify !important
+}
+
+/* Text ident */
+.text-indent-4 {
+  text-indent: 40px !important
+}
+
+/* Letter spacing */
+.letter-spacing-2 {
+  letter-spacing: 2px !important;
+}
+
+/* Font size */
+.fs-sm {
+  font-size:0.75rem  !important;
+}
+.fs-md {
+  font-size:0.85rem  !important;
+}
+
+/* Button click effect */
+.btnClickEffect:active {
+  -webkit-animation:btnClickEffect 40ms;
+          animation:btnClickEffect 40ms;
+}
+@-webkit-keyframes btnClickEffect {
+    0% 	{-webkit-transform:none;}
+   50% 	{-webkit-transform:scale(0.9);}
+  100% 	{-webkit-transform:none;}
+}
+@keyframes btnClickEffect {
+    0% 	{transform:none;}
+   50% 	{transform:scale(0.9);}
+  100% 	{transform:none;}
+}
