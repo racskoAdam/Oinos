@@ -28,12 +28,15 @@
 
       <div class="form-group my-3">
         <label for="email" class="fs-4">Email cím:</label>
-        <input type="email" class="form-control" id="email" ng-model="formData.email" required />
+        <input type="email" class="form-control" id="email" ng-model="formData.email" required ng-blur="validateEmail()" />
+        <div class="text-danger">{{ emailError }}</div>
       </div>
       <div class="form-group mt-3">
         <label for="phone" class="fs-4">Telefonszám:</label>
-        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required />
+        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required ng-blur="validatePhone()" />
+        <div class="text-danger">{{ phoneError }}</div>
       </div>
+      
       <div class="d-flex justify-content-between py-2">
         <div class="form-group w-100 p-2">
           <label for="date" class="fs-4">Dátum:</label>
