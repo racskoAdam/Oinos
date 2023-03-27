@@ -162,7 +162,7 @@
             if (response.data.status === "error") {
               // show Bootstrap modal with error message
               $("#errorMessageModal").modal("show");
-              $scope.errorMessage = "Incorrect email or password.";
+              $scope.errorMessage = "Helytelen e-mail cím vagy jelszó.";
             } else {
               // show Bootstrap modal with success message
               $("#successModal").modal("show");
@@ -352,6 +352,8 @@
         }
       };
 
+
+      
       // Function to submit the form
       $scope.submitForm = function () {
         if (

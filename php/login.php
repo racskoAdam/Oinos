@@ -1,57 +1,51 @@
 <?php
 // login.php
 
-// Require file
-require_once('../../../common/php/Database.php');
-require_once('../../../common/php/Util.php');
+// connect to the database
+$con = mysqli_connect("localhost", "root", "", "opd");
 
-// Get arguments
-$args = Util::getArgs();
+// check connection
+if (!$con) {
+  die("Connection failed: " . mysqli_connect_error());
+}
+mysqli_set_charset($con, "utf8");
 
-// Get user data from the request
-$email = $args['email'];
-$password = $args['password'];
+// get the user data from the request
+$email = mysqli_real_escape_string($con, $_POST['email']);
+$password = mysqli_real_escape_string($con, $_POST['password']);
 
-// Set options
-$options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC);
+// check if user with the given email and password exists
+$sql = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+$result = mysqli_query($con, $sql);
 
-// Connect to MySQL server
-$db = new Database(null, $options);
+if (mysqli_num_rows($result) == 1) {
+  // user exists and password is correct
+  $row = mysqli_fetch_assoc($result);
+  session_start();
+  $_SESSION["email"] = $row["Email"];
+  $_SESSION["phone"] = $row["Phone"];
+  $_SESSION["zipcode"] = $row["ZipCode"];
+  $_SESSION["address"] = $row["Address"];
+  $_SESSION["lastname"] = $row["LastName"];
+  $_SESSION["firstname"] = $row["FirstName"];
 
-// Check if user with the given email and password exists
-$sql = "SELECT * FROM users WHERE email = :email AND password = :password";
-$params = ['email' => $email, 'password' => $password];
-$transaction = new Transaction(['sql' => $sql, 'params' => $params]);
-$db->execute($transaction);
+  $response = array(
+    "status" => "success",
+    "email" => $row["Email"],
+    "phone" => $row["Phone"],
+    "zipcode" => $row["ZipCode"],
+    "address" => $row["Address"],
+    "lastname" => $row["LastName"],
+    "firstname" => $row["FirstName"]
+  );
 
-if (!$db->is_error() && count($data = $db->get_data()) == 1) {
-    // User exists and password is correct
-    $row = $data[0];
-    session_start();
-    $_SESSION["email"] = $row["Email"];
-    $_SESSION["phone"] = $row["Phone"];
-    $_SESSION["zipcode"] = $row["ZipCode"];
-    $_SESSION["address"] = $row["Address"];
-    $_SESSION["lastname"] = $row["LastName"];
-    $_SESSION["firstname"] = $row["FirstName"];
-
-    $response = array(
-        "status" => "success",
-        "email" => $row["Email"],
-        "phone" => $row["Phone"],
-        "zipcode" => $row["ZipCode"],
-        "address" => $row["Address"],
-        "lastname" => $row["LastName"],
-        "firstname" => $row["FirstName"]
-    );
-
-    Util::setResponse($response);
+  echo json_encode($response);
 } else {
-    // User does not exist or password is incorrect
-    $response = array("status" => "error");
-    Util::setResponse($response);
+  // user does not exist or password is incorrect
+  $response = array("status" => "error");
+  echo json_encode($response);
 }
 
-// Disconnect
-$db = null;
+mysqli_close($con);
+
 ?>
