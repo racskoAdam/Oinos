@@ -1,4 +1,13 @@
 <?php
+
+//$_POST['data'] = '{"email":"odry.attila@keri.mako.hu","subject":"Sikeres rendelés","message":"Köszönjük a rendelését! A rendelés részletei..."}';
+$args = isset(  $_GET['data']) ?  $_GET['data']   :
+        (isset($_POST['data']) ?  $_POST['data']  : 
+        file_get_contents("php://input", true));
+$args = json_decode($args, true, 512, 0);
+
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -13,7 +22,7 @@ function send_email($to, $subject, $message) {
 
     try {
         $mail->isSMTP();
-        $mail->Host = 'smtp.freemail.hu'; // vagy 'mail.gmail.hu'
+        $mail->Host = 'smtp.freemail.hu'; 
         $mail->SMTPAuth = true;
         $mail->Username = 'oinosetterem2023@freemail.hu';
         $mail->Password = 'Futy132aSfhWeGG';
@@ -34,6 +43,13 @@ function send_email($to, $subject, $message) {
     }
 }
 
+if (send_email($args['email'], $args['subject'], $args['message'])) {
+    echo 'Email sent successfully';
+} else {
+    echo 'Email could not be sent';
+}
+
+/*
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $to = $_POST['email'];
     $subject = 'Sikeres rendelés';
@@ -45,4 +61,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'Email could not be sent';
     }
 }
+*/
 ?>

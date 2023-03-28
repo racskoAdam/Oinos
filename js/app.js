@@ -660,7 +660,7 @@
                                 subject: "Sikeres rendelés",
                                 message: "Köszönjük a rendelését! A rendelés részletei...",
                               },
-                            }).then(() => {
+                            }).then((response) => {
                               $rootScope.cart = [];
                               $state.go("home");
                               alert("Rendelés leadása sikeres!");
