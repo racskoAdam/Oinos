@@ -618,7 +618,7 @@
                 }
                 return false;
               }
-            
+
               if ($scope.hasItems) {
                 if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
@@ -652,19 +652,88 @@
                           })
                           .then(() => {
                             // Sikeres rendelési folyamat: e-mail küldése
-                            http.request({
-                              url: "./php/send_email.php",
-                              method: "POST",
-                              data: {
-                                email: $scope.orderDetails.email,
-                                subject: "Sikeres rendelés",
-                                message: "Köszönjük a rendelését! A rendelés részletei...",
-                              },
-                            }).then(() => {
-                              $rootScope.cart = [];
-                              $state.go("home");
-                              alert("Rendelés leadása sikeres!");
-                            }).catch((e) => alert(e));
+                            http
+                              .request({
+                                url: "./php/send_email.php",
+                                method: "POST",
+                                data: {
+                                  email: $scope.orderDetails.email,
+                                  subject: "Sikeres rendelés",
+                                  message: `
+                                     <html>
+                                       <head>
+                                         <style>
+                                           body {
+                                             font-size: 18px;
+                                             font-family: Arial, sans-serif;
+                                           }
+                                           h1 {
+                                             font-size: 28px;
+                                             font-weight: bold;
+                                           }
+                                           table {
+                                             border-collapse: collapse;
+                                             width: 100%;
+                                           }
+                                           th, td {
+                                             text-align: left;
+                                             padding: 8px;
+                                             border-bottom: 1px solid #ddd;
+                                           }
+                                           th {
+                                             background-color: #f2f2f2;
+                                           }
+                                         </style>
+                                       </head>
+                                       <body>
+                                         <h1>Kedves ${$scope.orderDetails.firstName} ${
+                                                                 $scope.orderDetails.lastName
+                                                               },</h1>
+                                         <p>Köszönjük rendelését! Az alábbi adatokkal rögzítettük a rendelést:</p>
+                                         <ul>
+                                           <li>Email: ${$scope.orderDetails.email}</li>
+                                           <li>Cím: ${$scope.orderDetails.address}</li>
+                                           <li>Irányítószám: ${$scope.orderDetails.city}</li>
+                                           <li>Telefonszám: ${$scope.orderDetails.phone}</li>
+                                           <li>Fizetési mód: ${$scope.orderDetails.paymentType}</li>
+                                           <li>Összesen fizetendő: ${$rootScope.total} Ft</li>
+                                         </ul>
+                                         <p>A rendelt termékek:</p>
+                                         <table>
+                                           <thead>
+                                             <tr>
+                                               <th>Termék neve</th>
+                                               <th>Mennyiség</th>
+                                               <th>Ár</th>
+                                             </tr>
+                                           </thead>
+                                           <tbody>
+                                             ${$rootScope.cart
+                                               .map(
+                                                 (item) => `
+                                               <tr>
+                                                 <td>${item.Name}</td>
+                                                 <td>${item.amount}</td>
+                                                 <td>${item.Price} Ft</td>
+                                               </tr>
+                                             `
+                                               )
+                                               .join("")}
+                                           </tbody>
+                                         </table>
+                                         <p>Kérjük, hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
+                                         <p>Köszönjük, hogy minket választott!</p>
+                                       </body>
+                                     </html>
+                                   `,
+                                },
+                              })
+                              .then(() => {
+                                $rootScope.cart = [];
+                                $state.go("home");
+                                alert("Rendelés leadása sikeres!");
+                              })
+                              .catch((e) => alert(e));
                           })
                           .catch((e) => alert(e));
                       })
@@ -679,7 +748,6 @@
                 alert("Nincs semmi a korárban!");
               }
             };
-            
           })
           .catch((e) => alert(e)); // Handling error
       },
