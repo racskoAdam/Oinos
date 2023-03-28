@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Már 22. 13:08
+-- Létrehozás ideje: 2023. Már 28. 15:00
 -- Kiszolgáló verziója: 10.4.6-MariaDB
 -- PHP verzió: 7.3.8
 
@@ -51,6 +51,27 @@ INSERT INTO `categories` (`CategorieId`, `categorieName`, `categorieDesc`) VALUE
 (10, 'mains', 'Főételek'),
 (11, 'desserts_res', 'Desszertek'),
 (12, 'wines', 'Borok');
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `employee_users`
+--
+
+CREATE TABLE `employee_users` (
+  `id` int(3) NOT NULL,
+  `username` text COLLATE utf8_hungarian_ci NOT NULL,
+  `password` text COLLATE utf8_hungarian_ci NOT NULL,
+  `type` text COLLATE utf8_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `employee_users`
+--
+
+INSERT INTO `employee_users` (`id`, `username`, `password`, `type`) VALUES
+(1, 'adam', 'asd123', 'admin'),
+(2, 'pityu', 'asd', 'cook');
 
 -- --------------------------------------------------------
 
@@ -120,10 +141,8 @@ CREATE TABLE `orderitems` (
 
 INSERT INTO `orderitems` (`itemId`, `orderId`, `itemQuantity`) VALUES
 (1, 1, 1),
-(1, 28, 1),
-(6, 27, 3),
-(7, 27, 1),
-(13, 27, 1);
+(13, 1, 1),
+(25, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -141,17 +160,16 @@ CREATE TABLE `orders` (
   `orderDate` datetime NOT NULL DEFAULT current_timestamp(),
   `FirstName` text NOT NULL,
   `LastName` text NOT NULL,
-  `totalPrice` int(10) NOT NULL
+  `totalPrice` int(10) NOT NULL,
+  `state` varchar(30) NOT NULL COMMENT '1.ordered,2.finished,3.delivered'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- A tábla adatainak kiíratása `orders`
 --
 
-INSERT INTO `orders` (`orderId`, `Email`, `Addresss`, `ZipCode`, `Phone`, `paymentMode`, `orderDate`, `FirstName`, `LastName`, `totalPrice`) VALUES
-(1, 'gecigranat@gmail.com', 'Deák Ferenc Utca 20', 6775, 36305901404, 'credit', '2023-03-21 11:29:40', 'Balla', 'István', 2750),
-(27, 'gecigranat@gmail.com', 'Deák Ferenc 20', 6775, 123, 'credit', '2023-03-21 11:32:56', 'Balla', 'István', 14500),
-(28, 'berki@freemail.hu', 'Fürj utca 92/B park borozó', 6931, 6302765347, 'credit', '2023-03-21 14:39:19', 'Berki', 'Katalin', 2750);
+INSERT INTO `orders` (`orderId`, `Email`, `Addresss`, `ZipCode`, `Phone`, `paymentMode`, `orderDate`, `FirstName`, `LastName`, `totalPrice`, `state`) VALUES
+(1, 'testferi@gmail.com', 'Szex utca 13', 6932, 66969696969, 'credit', '2023-03-27 11:06:54', 'feri', 'test', 5550, 'finished');
 
 -- --------------------------------------------------------
 
@@ -281,13 +299,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`Password`, `Email`, `Phone`, `ZipCode`, `Address`, `LastName`, `FirstName`) VALUES
-('asd', '', 2147483647, 6775, 'asd', 'István', 'Balla'),
-('FASZ', 'pisti1231212@gmail.com', 123, 6775, 'GECIGRÁNÁT', 'TEST', 'TEST'),
-('asd', 'asd@gmail.com123', 2147483647, 6900, 'asd', 'asd', 'Balla'),
-('asd', 'asd@gmaasdil.com', 2147483647, 6932, 'ASD', 'Gec', 'Balla'),
-('asd', 'pisti123125423542312@gmail.com', 2147483647, 6932, 'Deák Ferenc Utca 20', 'asder', 'asdgec123gec'),
-('asd1', 'pisti1231212@gmail.com123123', 2147483647, 6900, 'Deák Ferenc Utca 21', 'István1', 'Balla1'),
-('asd', 'berki@freemail.hu', 2147483647, 6931, 'Fürj utca 92/B park borozó', 'Katalin', 'Berki');
+('asd123', 'asd', 123, 6900, 'asd asd', 'asd123', 'asd'),
+('PINA123', 'dani@gmail.com', 2147483647, 6921, 'Szex utca 13', 'PUSSYFUCKER', 'Pussyhunter69');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -299,6 +312,12 @@ INSERT INTO `users` (`Password`, `Email`, `Phone`, `ZipCode`, `Address`, `LastNa
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`CategorieId`);
 ALTER TABLE `categories` ADD FULLTEXT KEY `categorieName` (`categorieName`,`categorieDesc`);
+
+--
+-- A tábla indexei `employee_users`
+--
+ALTER TABLE `employee_users`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `menu`
@@ -343,6 +362,12 @@ ALTER TABLE `categories`
   MODIFY `CategorieId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
+-- AUTO_INCREMENT a táblához `employee_users`
+--
+ALTER TABLE `employee_users`
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT a táblához `menu`
 --
 ALTER TABLE `menu`
@@ -352,7 +377,7 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `orderId` int(21) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `reservations`
