@@ -37,7 +37,7 @@ function send_email($to, $subject, $message, $e) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $to = $_POST['myEmail'];
+    $to = $_POST['email'];
     $subject = 'Sikeres rendelés';
     $message = 'Köszönjük a rendelését! A rendelés részletei...';
 
