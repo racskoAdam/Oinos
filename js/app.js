@@ -116,8 +116,37 @@
       "$rootScope",
       function ($scope, $http, $state, $rootScope) {
         $scope.user = {};
+        $scope.emailError = null;
+        $scope.phoneError = null;
+
+        $scope.validateEmail = function () {
+          $scope.emailError = null;
+          let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+          if ($scope.user.email && !emailRegex.test($scope.user.email)) {
+            $scope.emailError = "Kérjük, adjon meg egy érvényes e-mail címet.";
+          }
+        };
+
+        $scope.validatePhone = function () {
+          $scope.phoneError = null;
+          let phoneRegex =
+            /^(?:(?:\+|00)36|06)?(?:-|\s)?(?:20|30|31|50|70|90)(?:-|\s)?\d{3}(?:-|\s)?\d{4}$/;
+          if ($scope.user.phone && !phoneRegex.test($scope.user.phone)) {
+            $scope.phoneError = "Kérjük, adjon meg egy érvényes telefonszámot.";
+          }
+        };
 
         $scope.register = function () {
+          // Check for validation errors
+          if (
+            !$scope.user.email ||
+            !$scope.user.phone ||
+            $scope.emailError ||
+            $scope.phoneError
+          ) {
+            alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing or there are validation errors
+            return;
+          }
           $http({
             method: "POST",
             url: "./php/register.php",
@@ -316,11 +345,8 @@
     )
 
     //Reservation Controller
-    .controller("reservationController", function ($scope, $http,$state) {
-      "$scope",
-      "http",
-      "$state",
-      $scope.timeOptions = []; // Initialize an array to store the time options
+    .controller("reservationController", function ($scope, $http, $state) {
+      "$scope", "http", "$state", ($scope.timeOptions = []); // Initialize an array to store the time options
       $scope.formData = {};
 
       // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
@@ -592,7 +618,7 @@
                 }
                 return false;
               }
-
+            
               if ($scope.hasItems) {
                 if ($scope.orderDetails.paymentType !== undefined) {
                   if (!hasNullValue($scope.orderDetails)) {
@@ -625,9 +651,20 @@
                             },
                           })
                           .then(() => {
-                            $rootScope.cart = [];
-                            $state.go("home");
-                            alert("Rendelés leadása sikeres!");
+                            // Sikeres rendelési folyamat: e-mail küldése
+                            http.request({
+                              url: "./php/send_email.php",
+                              method: "POST",
+                              data: {
+                                email: $scope.orderDetails.email,
+                                subject: "Sikeres rendelés",
+                                message: "Köszönjük a rendelését! A rendelés részletei...",
+                              },
+                            }).then(() => {
+                              $rootScope.cart = [];
+                              $state.go("home");
+                              alert("Rendelés leadása sikeres!");
+                            }).catch((e) => alert(e));
                           })
                           .catch((e) => alert(e));
                       })
@@ -642,6 +679,7 @@
                 alert("Nincs semmi a korárban!");
               }
             };
+            
           })
           .catch((e) => alert(e)); // Handling error
       },
