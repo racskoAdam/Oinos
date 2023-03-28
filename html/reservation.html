@@ -8,7 +8,7 @@
     <form ng-submit="submitForm()" class="p-4 bg-light text-dark fw-bold py-5">
       <div class="form-group my-3">
         <label for="name" class="fs-4">Név:</label>
-        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required>
+        <input type="text" class="form-control" id="name" ng-model="formData.name" required>
       </div>
       <div class="form-group">
         <label for="guest">Hány főre?</label>
@@ -28,12 +28,15 @@
 
       <div class="form-group my-3">
         <label for="email" class="fs-4">Email cím:</label>
-        <input type="email" class="form-control" id="email" ng-model="formData.email" required />
+        <input type="email" class="form-control" id="email" ng-model="formData.email" required ng-blur="validateEmail()" />
+        <div class="text-danger">{{ emailError }}</div>
       </div>
       <div class="form-group mt-3">
         <label for="phone" class="fs-4">Telefonszám:</label>
-        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required />
+        <input type="text" class="form-control" id="phone" ng-model="formData.phone" required ng-blur="validatePhone()" />
+        <div class="text-danger">{{ phoneError }}</div>
       </div>
+      
       <div class="d-flex justify-content-between py-2">
         <div class="form-group w-100 p-2">
           <label for="date" class="fs-4">Dátum:</label>
@@ -61,7 +64,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-dark" id="reservationModalLabel">
-            Reservation Confirmation
+            Foglalási visszaigazolás
           </h5>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>

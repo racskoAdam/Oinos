@@ -10,11 +10,7 @@
     <table class="table table-striped w-100">
       <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
         <td class="p-0">
-          <img
-            ng-src="./img/{{item.image}}"
-            alt=""
-            class="d-none d-sm-block cartImg"
-          />
+          <img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg" />
         </td>
         <td class="w-100">
           {{item.Name}}<br />
@@ -22,35 +18,15 @@
         </td>
         <td>
           <div class="text-nowrap">
-            <button
-              type="button"
-              class="btn btn-secondary rounded-circle valueBtns"
-              ng-click="decAmount(item.Id)"
-            >
+            <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="decAmount(item.Id)">
               -
             </button>
-            <input
-              type="number"
-              min="1"
-              max="10"
-              class="amountInput"
-              ng-model="item.amount"
-              ng-change="updatePrice()"
-              disabled
-            />
-            <button
-              type="button"
-              class="btn btn-secondary rounded-circle valueBtns"
-              ng-click="incAmount(item.Id)"
-            >
+            <input type="number" min="1" max="10" class="amountInput" ng-model="item.amount" ng-change="updatePrice()"
+              disabled />
+            <button type="button" class="btn btn-secondary rounded-circle valueBtns" ng-click="incAmount(item.Id)">
               +
             </button>
-            <button
-              type="button"
-              id="{{item.Id}}"
-              class="btn btn-danger"
-              ng-click="deleteItem($event)"
-            >
+            <button type="button" id="{{item.Id}}" class="btn btn-danger" ng-click="deleteItem($event)">
               x
             </button>
           </div>
@@ -66,12 +42,8 @@
     <span class="price">{{total}} Ft</span>
   </div>
   <div class="ms-auto">
-    <button
-      type="button"
-      class="btn btn-warning rounded-0 orderBtn h-100"
-      ng-disabled="!hasItems"
-      ui-sref="finalizeOrder"
-    >
+    <button type="button" class="btn btn-warning rounded-0 orderBtn h-100" ng-disabled="!hasItems"
+      ui-sref="finalizeOrder">
       Rendelés
     </button>
   </div>
@@ -80,16 +52,9 @@
 <!-- Categories of the items -->
 <div class="categories mt-5">
   <h2 class="text-center">Kategóriák</h2>
-  <div
-    class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5"
-  >
-    <div
-      class="card catCard rounded-2 col-2 m-2"
-      id="{{item.id}}"
-      ng-repeat="item in categories track by $index"
-      ng-click="orderFilter($event)"
-      ng-class="{'catSelected': item.id==filter}"
-    >
+  <div class="d-flex justify-content-center row w-100 m-auto text-dark fw-bold mb-5">
+    <div class="card catCard rounded-2 col-2 m-2" id="{{item.id}}" ng-repeat="item in categories track by $index"
+      ng-click="orderFilter($event)" ng-class="{'catSelected': item.id==filter}">
       <i class="m-auto categoryIcon" ng-class="item.icon"></i>
       <span class="text-center categoryText">{{item.name}}</span>
     </div>
@@ -97,32 +62,21 @@
 </div>
 <!-- The title, price, picture and the description of the foods,  -->
 <div class="row d-flex justify-content-center w-100 m-0">
-  <div
-    class="col-lg-6 d-flex justify-content-center my-2"
-    ng-repeat="food in order track by $index"
-    ng-if="food.CategorieId==filter"
-  >
+  <div class="col-lg-6 d-flex justify-content-center my-2" ng-repeat="food in order track by $index"
+    ng-if="food.CategorieId==filter">
     <div class="menuItem rounded">
       <div class="card-title text-dark">
         <div class="d-flex pt-3">
           <h4 class="flex-grow-1 px-2 fs-1">{{food.Name}}</h4>
-          <span class="m-auto px-2 fs-2 fw-bold text-nowrap"
-            >{{food.Price}} Ft</span
-          >
+          <span class="m-auto px-2 fs-2 fw-bold text-nowrap">{{food.Price}} Ft</span>
         </div>
         <hr class="m-0" />
         <div class="fs-3 px-2">{{food.Description}}</div>
       </div>
       <div class="imageContainer h-inherit">
         <img ng-src="./img/{{food.image}}" class="img-fluid rounded-bottom" />
-        <button
-          type="button"
-          id="{{food.Id}}"
-          class="btn btn-warning cartBtn hvr-grow"
-          title="Kosárba rakni"
-          ng-click="toCart($event)"
-          ng-class="{'checked': food.inCart}"
-        >
+        <button type="button" id="{{food.Id}}" class="btn btn-warning cartBtn hvr-grow" title="Kosárba rakni"
+          ng-click="toCart($event)" ng-class="{'checked': food.inCart}">
           <i class="fa-solid fa-plus fa-xl" ng-if="!food.inCart"></i>
           <i class="fa-solid fa-check fa-xl" ng-if="food.inCart"></i>
         </button>

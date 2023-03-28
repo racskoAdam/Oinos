@@ -7,7 +7,7 @@ $db = "opd";
 $con = mysqli_connect($host, $user, $password, $db);
 
 if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
+    die("A kapcsolat sikertelen: " . mysqli_connect_error());
 }
 mysqli_set_charset($con, "utf8");
 
@@ -26,9 +26,9 @@ if (mysqli_num_rows($check_result) > 0) {
 } else {
   $sql = "INSERT INTO reservations ( name, email, phone, date_time, guest) VALUES ('$name', '$email', '$phone', '$date_time', '$guest')";
   if (mysqli_query($con, $sql)) {
-        echo "New record created successfully";
+        echo "Sikeresen létrehozott foglalás!";
     } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($con);
+        echo "Hiba: " . $sql . "<br>" . mysqli_error($con);
     }
 }
 

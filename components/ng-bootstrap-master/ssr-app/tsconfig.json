@@ -1,0 +1,13 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "./",
+		"outDir": "../out-tsc/ssr-app",
+		"paths": {
+			"@ng-bootstrap/ng-bootstrap": ["../dist/ng-bootstrap"]
+		}
+	},
+	"files": ["src/main.ts"],
+	"include": ["src/**/*.d.ts"],
+	"exclude": ["src/**/*.po.ts", "src/**/*.e2e-spec.ts"]
+}

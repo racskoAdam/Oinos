@@ -1,0 +1,95 @@
+{
+  "db": null,
+  "tbl": null,
+  "icon": null,
+  "title": null,
+  "query": null,
+  "params": null,
+  "isAssoc": null,
+  "controls": {
+    "header": [
+      {"id":"refresh", "ngClass":"", "icon":"fas fa-sync"},
+      {"id":"change_view", "ngClass":"", "icon":"fas fa-eye"},
+      {"id":"minimize", "ngClass":"d-none", "icon":"fas fa-window-minimize"},
+      {"id":"restore", "ngClass":"", "icon":"fas fa-window-restore"},
+      {"id":"maximize", "ngClass":"", "icon":"fas fa-window-maximize"},
+      {"id":"close", "ngClass":"danger", "icon":"fas fa-times-circle"}
+    ],
+    "footer": [
+      {"id": "end", "ngClass":"", "icon": "fas fa-step-forward fa-rotate-90"},
+      {"id": "next_page", "ngClass":"", "icon": "fas fa-angle-double-down"},
+      {"id": "next", "ngClass":"", "icon": "fas fa-play fa-rotate-90"},
+      {"id": null, "ngClass":"px-1", "icon": null},
+      {"id": "previous", "ngClass":"", "icon": "fas fa-play fa-rotate-270"},
+      {"id": "previous-page", "ngClass":"", "icon": "fas fa-angle-double-up"},
+      {"id": "beginning", "ngClass":"", "icon": "fas fa-step-forward fa-rotate-270"},
+      {"id": null, "ngClass":"px-3", "icon": null},
+      {"id": "modify", "ngClass":"", "icon": "fas fas fa-edit"},
+      {"id": "new", "ngClass":"", "icon": "fas fa-plus-circle"},
+      {"id": "copy", "ngClass":"", "icon": "fas fa-clone"},
+      {"id": "remove", "ngClass":"danger", "icon": "fas fa-times-circle"}
+    ],
+    "edit": [
+      {"id": "save", "ngClass":"btn-success", "ngDisabled":true, "icon": "fas fa-save me-1"},
+      {"id": "cancel", "ngClass":"btn-danger", "icon": "fas fa-times-circle me-1"}
+    ],
+    "spec": [
+      {"id": "search", "ngClass":"", "icon": "fas fa-search"},
+      {"id": "filter", "ngClass":"", "icon": "fas fa-filter"},
+      {"id": "information", "ngClass":"", "icon": "fas fa-info-circle"},
+      {"id": "list", "ngClass":"", "icon": "fas fa-list"}
+    ]
+  },
+  "field": {
+    "name": null,
+    "type": "text",
+    "isTemporary": false,
+    "isRequired": false,
+    "isModified": true,
+    "isDuplicated": true,
+    "isAutoIncrement": false,
+    "defaultValue": null,
+    "relationship": {
+      "db": null,
+      "tbl": null,
+      "id": null,
+			"name": null,
+			"filter": null,
+			"order": null,
+      "isTranslate": false,
+      "isCapitalize": false,
+      "query": null
+    },
+    "label": {
+      "table": {
+        "content": null,
+				"order": null,
+        "isVisible": true,
+        "labelClass": "text-start",
+				"dataClass": "text-start",
+				"labelStyle": null,
+        "dataStyle": null,
+        "isLabelTranslate": false,
+        "isDataTranslate": false,
+        "isLabelCapitalize": true,
+				"isDataCapitalize": false
+      },
+      "page": {
+        "content": null,
+				"isVisible": true,
+        "order": null,
+        "labelClass": "text-end",
+        "dataClass": "text-start",
+        "labelStyle": null,
+        "dataStyle": null,
+				"isLabelTranslate": false,
+				"isDataTranslate": false,
+        "isLabelCapitalize": true,
+				"isDataCapitalize": false,
+        "dataName": null,
+        "isDataNameCapitalize": false,
+        "isDataNameTranslate": false
+      }
+    }
+  }
+}

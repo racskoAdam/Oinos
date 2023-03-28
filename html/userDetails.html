@@ -1,6 +1,7 @@
 <div ng-include src="'./html/navigate.html'"></div>
-<div class="mx-md-5 pt-5">
-    <form ng-submit="updateUserData()" class="p-4 bg-light text-dark fw-bold py-5" data-ng-init="init()">
+<div class="mx-md-5 pt-5 p-4 bg-light text-dark fw-bold py-5 my-5" >
+    <h1 class="text-center">Fiókadatok</h1>
+    <form ng-submit="updateUserData()" data-ng-init="init()">
         <div class="form-group">
             <label for="firstName">Email cím:</label>
             <input type="email" class="form-control" id="email" ng-model="user.email" disabled />
@@ -36,10 +37,37 @@
             <label for="password">Jelszó:</label>
             <input type="password" class="form-control" id="password" ng-model="user.password" required />
         </div>
-        <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100">
+        <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100 my-2">
             Módosítás
         </button>
     </form>
+    <button type="submit" class="btn btn-danger rounded-0 orderBtn w-100 my-2" ng-click="accountDeletion()">
+        Fiók törlése
+    </button>
+    <button type="submit" class="btn btn-success rounded-0 orderBtn w-100 my-2">
+      Rendeléseim megtekintése
+    </button>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-dark" id="deleteConfirmationLabel ">Biztosan törölni akarja a fiókját?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+          Ezzel véglegesen töröljük a fiókját és minden kapcsolódó adatot. Ez a folyamat nem visszavonható.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="noBtn">Nem</button>
+          <button type="button" class="btn btn-danger" id="yesBtn">Igen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 <div ng-include src="'./html/footer.html'"></div>

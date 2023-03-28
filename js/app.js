@@ -36,8 +36,6 @@
           .state("restaurant", {
             url: "/restaurant",
             templateUrl: "./html/restaurant.html",
-            controller: "menuController",
-            controller: "reservationController",
           })
           .state("reservation", {
             url: "/reservation",
@@ -83,7 +81,7 @@
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
-          window.scrollTo(0,0);
+          window.scrollTo(0, 0);
           return $timeout(function () {
             if (isFirstRun) {
               isFirstRun = false;
@@ -93,7 +91,6 @@
             return true;
           }).catch((e) => alert(e));
         });
-
 
         // Set global variables
         $rootScope.state = { id: null, prev: null };
@@ -119,8 +116,37 @@
       "$rootScope",
       function ($scope, $http, $state, $rootScope) {
         $scope.user = {};
+        $scope.emailError = null;
+        $scope.phoneError = null;
+
+        $scope.validateEmail = function () {
+          $scope.emailError = null;
+          let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+          if ($scope.user.email && !emailRegex.test($scope.user.email)) {
+            $scope.emailError = "Kérjük, adjon meg egy érvényes e-mail címet.";
+          }
+        };
+
+        $scope.validatePhone = function () {
+          $scope.phoneError = null;
+          let phoneRegex =
+            /^(?:(?:\+|00)36|06)?(?:-|\s)?(?:20|30|31|50|70|90)(?:-|\s)?\d{3}(?:-|\s)?\d{4}$/;
+          if ($scope.user.phone && !phoneRegex.test($scope.user.phone)) {
+            $scope.phoneError = "Kérjük, adjon meg egy érvényes telefonszámot.";
+          }
+        };
 
         $scope.register = function () {
+          // Check for validation errors
+          if (
+            !$scope.user.email ||
+            !$scope.user.phone ||
+            $scope.emailError ||
+            $scope.phoneError
+          ) {
+            alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing or there are validation errors
+            return;
+          }
           $http({
             method: "POST",
             url: "./php/register.php",
@@ -164,7 +190,7 @@
             if (response.data.status === "error") {
               // show Bootstrap modal with error message
               $("#errorMessageModal").modal("show");
-              $scope.errorMessage = "Incorrect email or password.";
+              $scope.errorMessage = "Helytelen e-mail cím vagy jelszó.";
             } else {
               // show Bootstrap modal with success message
               $("#successModal").modal("show");
@@ -237,49 +263,91 @@
       },
     ])
 
-    .controller("userDetailsController", function ($scope, $http, $rootScope) {
-      "$scope",
-        "http",
-        "$rootScope",
-        ($scope.init = function () {
-          $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
-          $scope.user = {
-            email: $scope.userData["email"],
-            firstName: $rootScope.firstName,
-            lastName: $rootScope.lastName,
-            phone: $scope.userData["phone"],
-            password: $scope.userData["password"],
-            zipcode: $scope.userData["zipcode"],
-            address: $scope.userData["address"],
-          };
-        });
-
-      $scope.updateUserData = function () {
-        $http({
-          method: "POST",
-          url: "./php/updateUserData.php",
-          data: $scope.user,
-          headers: { "Content-Type": "application/json" },
-        })
-          .then(function () {
-            localStorage.setItem("userData", JSON.stringify($scope.user));
-            localStorage.setItem("firstName", $scope.user.firstName);
-            localStorage.setItem("lastName", $scope.user.lastName);
-            $rootScope.firstName = $scope.user.firstName; // Set $rootScope.firstName to the user's first name
-            $rootScope.lastName = $scope.user.lastName; // Set $rootScope.lastName to the user's last name
-            $rootScope.userData = $scope.user; // Set $rootScope.userData to the updated user data
-          })
-          .catch(function (error) {
-            // Hiba esetén kezeld a hibát
-            console.error("Adatmentési hiba:", error);
+    .controller(
+      "userDetailsController",
+      function ($scope, $http, $rootScope, $state) {
+        "$scope",
+          "http",
+          "$rootScope",
+          "$state",
+          ($scope.init = function () {
+            $rootScope.userData = JSON.parse(localStorage.getItem("userData"));
+            $scope.user = {
+              email: $scope.userData["email"],
+              firstName: $rootScope.firstName,
+              lastName: $rootScope.lastName,
+              phone: $scope.userData["phone"],
+              password: $scope.userData["password"],
+              zipcode: $scope.userData["zipcode"],
+              address: $scope.userData["address"],
+            };
           });
-      };
-    })
+
+        $scope.accountDeletion = function () {
+          $scope.email = $rootScope.userData.email;
+          $("#deleteConfirmation").modal("show");
+          $("#deleteConfirmation")
+            .attr("data-bs-dismiss", "modal")
+            .on("click", "#yesBtn", function () {
+              // Send HTTP request to trigger PHP file for account deletion
+              $http({
+                method: "POST",
+                url: "./php/get.php",
+                data: {
+                  db: "opd",
+                  query: `DELETE FROM users WHERE email = ("${$scope.email}")`,
+                  isAssoc: true,
+                },
+              }).then(
+                function success() {
+                  $state.go("home");
+
+                  // Remove user data from local storage
+                  localStorage.removeItem("loggedIn");
+                  localStorage.removeItem("userData");
+                  localStorage.removeItem("firstName");
+                  localStorage.removeItem("lastName");
+
+                  // Update $rootScope values
+                  $rootScope.loggedIn = false;
+                  $rootScope.cart = [];
+                  $rootScope.firstName = null;
+                  $rootScope.lastName = null;
+                },
+                function error(response) {
+                  console.log(response.statusText);
+                }
+              );
+            });
+        };
+
+        $scope.updateUserData = function () {
+          $http({
+            method: "POST",
+            url: "./php/updateUserData.php",
+            data: $scope.user,
+            headers: { "Content-Type": "application/json" },
+          })
+            .then(function () {
+              localStorage.setItem("userData", JSON.stringify($scope.user));
+              localStorage.setItem("firstName", $scope.user.firstName);
+              localStorage.setItem("lastName", $scope.user.lastName);
+              $rootScope.firstName = $scope.user.firstName; // Set $rootScope.firstName to the user's first name
+              $rootScope.lastName = $scope.user.lastName; // Set $rootScope.lastName to the user's last name
+              $rootScope.userData = $scope.user; // Set $rootScope.userData to the updated user data
+            })
+            .catch(function (error) {
+              // Hiba esetén kezeld a hibát
+              console.error("Adatmentési hiba:", error);
+            });
+        };
+      }
+    )
 
     //Reservation Controller
-    .controller("reservationController", function ($scope, $http) {
+    .controller("reservationController", function ($scope, $http, $state) {
+      "$scope", "http", "$state", ($scope.timeOptions = []); // Initialize an array to store the time options
       $scope.formData = {};
-      $scope.timeOptions = []; // Initialize an array to store the time options
 
       // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
       for (let i = 6; i < 22; i++) {
@@ -302,24 +370,53 @@
       $scope.validateDate = function () {
         if (
           // If selected date is before today or more than 10 days from today
-          $scope.date < $scope.next10Days() || 
+          $scope.date < $scope.next10Days() ||
           $scope.date > $scope.next10Days(10)
         ) {
           // Reset selected date to null
-          $scope.date = null; 
+          $scope.date = null;
+        }
+      };
+
+      $scope.validateEmail = function () {
+        if ($scope.formData.email) {
+          // Use regular expression to validate email format
+          let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+          if (!emailRegex.test($scope.formData.email)) {
+            $scope.emailError = "Kérem adjon meg egy érvényes email címet!";
+          } else {
+            $scope.emailError = "";
+          }
+        }
+      };
+
+      $scope.validatePhone = function () {
+        if ($scope.formData.phone) {
+          // Use regular expression to validate phone number format (Hungarian format)
+          let phoneRegex =
+            /^(?:(?:\+|00)36|06)?(?:-|\s)?(?:20|30|31|50|70|90)(?:-|\s)?\d{3}(?:-|\s)?\d{4}$/;
+
+          if (!phoneRegex.test($scope.formData.phone)) {
+            $scope.phoneError = "Kérem adjon meg egy érvényes telefonszámot!";
+          } else {
+            $scope.phoneError = "";
+          }
         }
       };
 
       // Function to submit the form
       $scope.submitForm = function () {
+        // Check for validation errors
         if (
           !$scope.formData.name ||
           !$scope.formData.email ||
           !$scope.formData.phone ||
           !$scope.date ||
-          !$scope.time
+          !$scope.time ||
+          $scope.emailError ||
+          $scope.phoneError
         ) {
-          alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing
+          alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing or there are validation errors
           return;
         }
 
@@ -347,8 +444,9 @@
             $("#reservationModalLabel").text("Error");
             $(".modal-body").text(data.data);
           } else {
-            $("#reservationModalLabel").text("Reservation Confirmation");
+            $("#reservationModalLabel").text("Foglalás megerősítés");
             $(".modal-body").text("Köszönjük a foglalást!");
+            $state.go("home");
           }
           $("#reservationModal").modal("show");
         });
@@ -553,9 +651,89 @@
                             },
                           })
                           .then(() => {
-                            $rootScope.cart = [];
-                            $state.go("home");
-                            alert("Rendelés leadása sikeres!");
+                            // Sikeres rendelési folyamat: e-mail küldése
+                            http
+                              .request({
+                                url: "./php/send_email.php",
+                                method: "POST",
+                                data: {
+                                  email: $scope.orderDetails.email,
+                                  subject: "Sikeres rendelés",
+                                  message: `
+                                     <html>
+                                       <head>
+                                         <style>
+                                           body {
+                                             font-size: 18px;
+                                             font-family: Arial, sans-serif;
+                                           }
+                                           h1 {
+                                             font-size: 28px;
+                                             font-weight: bold;
+                                           }
+                                           table {
+                                             border-collapse: collapse;
+                                             width: 100%;
+                                           }
+                                           th, td {
+                                             text-align: left;
+                                             padding: 8px;
+                                             border-bottom: 1px solid #ddd;
+                                           }
+                                           th {
+                                             background-color: #f2f2f2;
+                                           }
+                                         </style>
+                                       </head>
+                                       <body>
+                                         <h1>Kedves ${$scope.orderDetails.firstName} ${
+                                                                 $scope.orderDetails.lastName
+                                                               },</h1>
+                                         <p>Köszönjük rendelését! Az alábbi adatokkal rögzítettük a rendelést:</p>
+                                         <ul>
+                                           <li>Email: ${$scope.orderDetails.email}</li>
+                                           <li>Cím: ${$scope.orderDetails.address}</li>
+                                           <li>Irányítószám: ${$scope.orderDetails.city}</li>
+                                           <li>Telefonszám: ${$scope.orderDetails.phone}</li>
+                                           <li>Fizetési mód: ${$scope.orderDetails.paymentType}</li>
+                                           <li>Összesen fizetendő: ${$rootScope.total} Ft</li>
+                                         </ul>
+                                         <p>A rendelt termékek:</p>
+                                         <table>
+                                           <thead>
+                                             <tr>
+                                               <th>Termék neve</th>
+                                               <th>Mennyiség</th>
+                                               <th>Ár</th>
+                                             </tr>
+                                           </thead>
+                                           <tbody>
+                                             ${$rootScope.cart
+                                               .map(
+                                                 (item) => `
+                                               <tr>
+                                                 <td>${item.Name}</td>
+                                                 <td>${item.amount}</td>
+                                                 <td>${item.Price} Ft</td>
+                                               </tr>
+                                             `
+                                               )
+                                               .join("")}
+                                           </tbody>
+                                         </table>
+                                         <p>Kérjük, hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
+                                         <p>Köszönjük, hogy minket választott!</p>
+                                       </body>
+                                     </html>
+                                   `,
+                                },
+                              })
+                              .then(() => {
+                                $rootScope.cart = [];
+                                $state.go("home");
+                                alert("Rendelés leadása sikeres!");
+                              })
+                              .catch((e) => alert(e));
                           })
                           .catch((e) => alert(e));
                       })
