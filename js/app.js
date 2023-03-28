@@ -651,20 +651,25 @@
                             },
                           })
                           .then(() => {
-                            // Sikeres rendelési folyamat: e-mail küldése
+                            if ($scope.paymentType == "cash") {
+                              $scope.payment = "Kézpénz";
+                            }
+                            else{
+                              $scope.payment = "Bankkártya"
+                            }
                             http
                               .request({
                                 url: "./php/send_email.php",
                                 method: "POST",
                                 data: {
                                   email: $scope.orderDetails.email,
-                                  subject: "Sikeres rendelés",
+                                  subject: `Sikeres rendelés: ${$scope.orderDetails.firstName} ${$scope.orderDetails.lastName}!`,
                                   message: `
                                      <html>
                                        <head>
                                          <style>
                                            body {
-                                             font-size: 18px;
+                                             font-size: 25px;
                                              font-family: Arial, sans-serif;
                                            }
                                            h1 {
@@ -683,6 +688,9 @@
                                            th {
                                              background-color: #f2f2f2;
                                            }
+                                           p{
+                                            font-size: 25px;
+                                           }
                                          </style>
                                        </head>
                                        <body>
@@ -695,7 +703,7 @@
                                            <li>Cím: ${$scope.orderDetails.address}</li>
                                            <li>Irányítószám: ${$scope.orderDetails.city}</li>
                                            <li>Telefonszám: ${$scope.orderDetails.phone}</li>
-                                           <li>Fizetési mód: ${$scope.orderDetails.paymentType}</li>
+                                           <li>Fizetési mód: ${$scope.payment} </li>
                                            <li>Összesen fizetendő: ${$rootScope.total} Ft</li>
                                          </ul>
                                          <p>A rendelt termékek:</p>
