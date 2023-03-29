@@ -1,17 +1,13 @@
 <?php
 
-//$_POST['data'] = '{"email":"odry.attila@keri.mako.hu","subject":"Sikeres rendelés","message":"Köszönjük a rendelését! A rendelés részletei..."}';
-$args = isset(  $_GET['data']) ?  $_GET['data']   :
-        (isset($_POST['data']) ?  $_POST['data']  : 
+$args = isset($_GET['data']) ? $_GET['data'] :
+        (isset($_POST['data']) ? $_POST['data'] :
         file_get_contents("php://input", true));
 $args = json_decode($args, true, 512, 0);
-
-
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
-
 
 require '../components/PHPMailer/src/PHPMailer.php';
 require '../components/PHPMailer/src/Exception.php';
@@ -34,7 +30,8 @@ function send_email($to, $subject, $message) {
         $mail->isHTML(true);
 
         $mail->Subject = $subject;
-        $mail->Body    = $message;
+        $mail->CharSet = 'UTF-8';
+        $mail->Body = $message;
 
         $mail->send();
         return true;
@@ -49,17 +46,5 @@ if (send_email($args['email'], $args['subject'], $args['message'])) {
     echo 'Email could not be sent';
 }
 
-/*
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $to = $_POST['email'];
-    $subject = 'Sikeres rendelés';
-    $message = 'Köszönjük a rendelését! A rendelés részletei...';
-
-    if (send_email($to, $subject, $message)) {
-        echo 'Email sent successfully';
-    } else {
-        echo 'Email could not be sent';
-    }
-}
-*/
+header('Content-Type: application/json; charset=utf-8');
 ?>

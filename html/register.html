@@ -30,11 +30,7 @@
       </div>
     </div>
     
-    <div class="mb-3">
-      <label for="phone" class="form-label">Telefonszám</label>
-      <input type="tel" class="form-control" id="phone" name="phone" ng-model="user.phone"
-        placeholder="Telefonszám megadása" required />
-    </div>
+ 
     <div class="mb-3">
       <label for="city" class="form-label">City</label>
       <select name="" id="zipcode" class="form-select" ng-model="user.zipcode" required>
@@ -51,10 +47,18 @@
       <input type="text" class="form-control" id="address" name="address" ng-model="user.address"
         placeholder="Adja meg a címet" required />
     </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Jelszó</label>
+      <input type="password" class="form-control" id="password" name="password" ng-model="user.password"
+        placeholder="Adja meg a jelszavát" required />
+    </div>
     <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100">
       Regisztráció
     </button>
+    
   </form>
+
+  
 
   <!-- Error Message Modal -->
   <div class="modal fade" id="errorMessageModal" tabindex="-1" role="dialog" aria-labelledby="errorMessageModalLabel"

@@ -341,6 +341,8 @@
               console.error("Adatmentési hiba:", error);
             });
         };
+
+        
       }
     )
 
@@ -653,83 +655,112 @@
                           .then(() => {
                             if ($scope.paymentType == "cash") {
                               $scope.payment = "Kézpénz";
+                            } else {
+                              $scope.payment = "Bankkártya";
                             }
-                            else{
-                              $scope.payment = "Bankkártya"
-                            }
+                            $scope.CurrentDate = new Date().toLocaleString(
+                              "hu-HU",
+                              {
+                                year: "numeric",
+                                month: "numeric",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric",
+                              }
+                            );
+
+                            $state.go("home");
+                            alert("Rendelés leadása sikeres!");
+
                             http
                               .request({
                                 url: "./php/send_email.php",
                                 method: "POST",
                                 data: {
                                   email: $scope.orderDetails.email,
-                                  subject: `Sikeres rendelés: ${$scope.orderDetails.firstName} ${$scope.orderDetails.lastName}!`,
+                                  subject: `Kedves ${$scope.orderDetails.firstName} ${$scope.orderDetails.lastName}! Rögzítettük a ${$scope.CurrentDate} dátumú rendelését!`,
                                   message: `
-                                     <html>
-                                       <head>
-                                         <style>
-                                           body {
-                                             font-size: 25px;
-                                             font-family: Arial, sans-serif;
-                                           }
-                                           h1 {
-                                             font-size: 28px;
-                                             font-weight: bold;
-                                           }
-                                           table {
-                                             border-collapse: collapse;
-                                             width: 100%;
-                                           }
-                                           th, td {
-                                             text-align: left;
-                                             padding: 8px;
-                                             border-bottom: 1px solid #ddd;
-                                           }
-                                           th {
-                                             background-color: #f2f2f2;
-                                           }
-                                           p{
+                                    <html>
+                                      <head>
+                                        <style>
+                                          body {
                                             font-size: 25px;
-                                           }
-                                         </style>
-                                       </head>
-                                       <body>
-                                         <h1>Kedves ${$scope.orderDetails.firstName} ${
-                                                                 $scope.orderDetails.lastName
-                                                               },</h1>
-                                         <p>Köszönjük rendelését! Az alábbi adatokkal rögzítettük a rendelést:</p>
-                                         <ul>
-                                           <li>Email: ${$scope.orderDetails.email}</li>
-                                           <li>Cím: ${$scope.orderDetails.address}</li>
-                                           <li>Irányítószám: ${$scope.orderDetails.city}</li>
-                                           <li>Telefonszám: ${$scope.orderDetails.phone}</li>
-                                           <li>Fizetési mód: ${$scope.payment} </li>
-                                           <li>Összesen fizetendő: ${$rootScope.total} Ft</li>
-                                         </ul>
-                                         <p>A rendelt termékek:</p>
-                                         <table>
-                                           <thead>
-                                             <tr>
-                                               <th>Termék neve</th>
-                                               <th>Mennyiség</th>
-                                               <th>Ár</th>
-                                             </tr>
-                                           </thead>
-                                           <tbody>
-                                             ${$rootScope.cart
-                                               .map(
-                                                 (item) => `
-                                               <tr>
-                                                 <td>${item.Name}</td>
-                                                 <td>${item.amount}</td>
-                                                 <td>${item.Price} Ft</td>
-                                               </tr>
-                                             `
-                                               )
-                                               .join("")}
-                                           </tbody>
-                                         </table>
-                                         <p>Kérjük, hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
+                                            font-family: Arial, sans-serif;
+                                          }
+                                          h1 {
+                                            font-size: 28px;
+                                            font-weight: bold;
+                                          }
+                                          table {
+                                            border-collapse: collapse;
+                                            width: 100%;
+                                          }
+                                          th, td {
+                                            text-align: left;
+                                            padding: 8px;
+                                            border-bottom: 1px solid #ddd;
+                                          }
+                                          th {
+                                            background-color: #f2f2f2;
+                                          }
+                                          p{
+                                            font-size: 25px;
+                                          }
+                                        </style>
+                                      </head>
+                                      <body>
+                                        <h1>Kedves ${
+                                          $scope.orderDetails.firstName
+                                        } ${$scope.orderDetails.lastName},</h1>
+                                        <p>Köszönjük rendelését! Az alábbi adatokkal rögzítettük a rendelést:</p>
+                                        <ul>
+                                          <li>Rendelés időpontja: ${
+                                            $scope.CurrentDate
+                                          }</li>
+                                          <li>Email: ${
+                                            $scope.orderDetails.email
+                                          }</li>
+                                          <li>Cím: ${
+                                            $scope.orderDetails.address
+                                          }</li>
+                                          <li>Irányítószám: ${
+                                            $scope.orderDetails.city
+                                          }</li>
+                                          <li>Telefonszám: ${
+                                            $scope.orderDetails.phone
+                                          }</li>
+                                          <li>Fizetési mód: ${
+                                            $scope.payment
+                                          } </li>
+                                          <li>Összesen fizetendő: ${
+                                            $rootScope.total
+                                          } Ft</li>
+                                        </ul>
+                                        <p>A rendelt termékek:</p>
+                                        <table>
+                                          <thead>
+                                            <tr>
+                                              <th>Termék neve</th>
+                                              <th>Mennyiség</th>
+                                              <th>Ár</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            ${$rootScope.cart
+                                              .map(
+                                                (item) => `
+                                                  <tr>
+                                                    <td>${item.Name}</td>
+                                                    <td>${item.amount}</td>
+                                                    <td>${item.Price} Ft</td>
+                                                  </tr>
+                                                `
+                                              )
+                                              .join("")}
+                                          </tbody>
+                                        </table>
+                                        <p>Kérjük, hogy hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
                                          <p>Köszönjük, hogy minket választott!</p>
                                        </body>
                                      </html>
@@ -738,8 +769,6 @@
                               })
                               .then(() => {
                                 $rootScope.cart = [];
-                                $state.go("home");
-                                alert("Rendelés leadása sikeres!");
                               })
                               .catch((e) => alert(e));
                           })
