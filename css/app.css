@@ -585,39 +585,41 @@ button.cartBtn.checked:hover {
   flex-direction: column; /* set the flex direction to column */
   justify-content: center; /* vertically center the content */
   transition: transform 0.3s ease-in-out;
-
 }
 .card-link:hover {
   transform: scale(1.05);
 }
 
 .card-link-1 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/restaurant-book.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/restaurant-book.jpg");
   background-size: cover;
   background-position: center;
   color: #fff; /* set the text color to white */
 }
 
 .card-link-2 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/restaurant-divider-2.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/restaurant-divider-2.jpg");
   background-size: cover;
   background-position: center;
   color: #fff; /* set the text color to white */
 }
 .card-link-3 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/burger-1835192_1920.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/burger-1835192_1920.jpg");
   background-size: cover;
   background-position: center;
   color: #fff; /* set the text color to white */
 }
 
 .card-link-4 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../img/platting-4282016_1920.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../img/platting-4282016_1920.jpg");
   background-size: cover;
   background-position: center;
   color: #fff; /* set the text color to white */
 }
-
 
 .card-link:hover {
   background-color: rgb(46, 46, 46);
@@ -638,3 +640,96 @@ button.cartBtn.checked:hover {
     padding: 20px;
   }
 }
+
+/* ORDER HISTORY */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.order-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.order-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-header > span {
+  font-weight: bold;
+}
+
+.order-details-btn {
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  /* border-radius: 5px; */
+  cursor: pointer;
+}
+
+.order-details-btn:hover {
+  background-color: #3e8e41;
+}
+
+.order-details {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.order-details-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-weight: bolder !important;
+}
+
+.order-details-header > span {
+  width: 25%;
+  text-align: center;
+}
+
+.order-details-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.item > span {
+  width: 25%;
+  text-align: center;
+}
+
+.item-name {
+  width: 35%;
+}
+
+.item-name {
+  width: 35%;
+}
+.item-price {
+  text-align: right;
+}
+/* ORDER HISTORY */

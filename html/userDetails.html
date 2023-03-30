@@ -1,75 +1,116 @@
 <div ng-include src="'./html/navigate.html'"></div>
-<div class="mx-md-5 pt-5 p-4 bg-light text-dark fw-bold py-5 my-5" >
-    <h1 class="text-center">Fiókadatok</h1>
-    <form ng-submit="updateUserData()" data-ng-init="init()">
-        <div class="form-group">
-            <label for="firstName">Email cím:</label>
-            <input type="email" class="form-control" id="email" ng-model="user.email" disabled />
-        </div>
-        <div class="form-group">
-            <label for="firstName">First Name:</label>
-            <input type="text" class="form-control" id="firstName" ng-model="user.firstName" required />
-        </div>
-        <div class="form-group">
-            <label for="lastName">Last Name:</label>
-            <input type="text" class="form-control" id="lastName" ng-model="user.lastName" required />
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone:</label>
-            <input type="text" class="form-control" id="phone" ng-model="user.phone" required />
-        </div>
-        <div class="form-group">
-            <label for="zipCode">Zip Code:</label>
-            <select name="" id="zipcode" class="form-select" ng-model="user.zipcode" required>
-                <option value="">City Selection</option>
-                <option value="6900">Makó</option>
-                <option value="6775">Kiszombor</option>
-                <option value="6931">Apátfalva</option>
-                <option value="6932">Magyarcsanád</option>
-                <option value="6921">Maroslele</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="address">address:</label>
-            <input type="text" class="form-control" id="address" ng-model="user.address" required />
-        </div>
-        <div class="form-group">
-            <label for="password">Jelszó:</label>
-            <input type="password" class="form-control" id="password" ng-model="user.password" required />
-        </div>
-        <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100 my-2">
-            Módosítás
+<div class="mx-md-5 pt-5 p-4 bg-light text-dark fw-bold py-5 my-5">
+  <h1 class="text-center">Fiókadatok</h1>
+  <form ng-submit="updateUserData()" data-ng-init="init()">
+    <div class="form-group">
+      <label for="firstName">Email cím:</label>
+      <input type="email" class="form-control" id="email" ng-model="user.email" disabled>
+    </div>
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" class="form-control" id="firstName" ng-model="user.firstName" required>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" class="form-control" id="lastName" ng-model="user.lastName" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone:</label>
+      <input type="text" class="form-control" id="phone" ng-model="user.phone" required>
+    </div>
+    <div class="form-group">
+      <label for="zipCode">Zip Code:</label>
+      <select name="" id="zipcode" class="form-select" ng-model="user.zipcode" required>
+        <option value="">City Selection</option>
+        <option value="6900">Makó</option>
+        <option value="6775">Kiszombor</option>
+        <option value="6931">Apátfalva</option>
+        <option value="6932">Magyarcsanád</option>
+        <option value="6921">Maroslele</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="address">address:</label>
+      <input type="text" class="form-control" id="address" ng-model="user.address" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Jelszó:</label>
+      <input type="password" class="form-control" id="password" ng-model="user.password" required>
+    </div>
+    <button type="submit" class="btn btn-warning rounded-0 orderBtn w-100 my-2">
+      Módosítás
+    </button>
+  </form>
+  <button type="submit" class="btn btn-danger rounded-0 orderBtn w-100 my-2" ng-click="accountDeletion()">
+    Fiók törlése
+  </button>
+  <button type="submit" class="btn btn-success rounded-0 orderBtn w-100 my-2" ng-click="showOrders()">
+    Rendeléseim megtekintése
+  </button>
+  <!-- Order list: Displays existing orders to the user -->
+  <div class="orders-list">
+    <div class="no-orders-message fw-bold h1 text-center text-danger" ng-if="groupedOrders.length === 0">
+      Ön még nem adott le rendelést.
+      <button type="submit" class="btn btn-danger text-light rounded-0 orderBtn w-100 my-2" ui-sref="order">
+        Rendelés
+      </button>
+    </div>
+    <div class="order-item" ng-repeat="order in groupedOrders">
+      <!-- order-header: This is the header for existing orders -->
+      <div class="order-header">
+        <span class="order-id">Megrendelés azonosító: {{ order.order.orderId }}</span>
+        <span class="order-date">Dátum: {{ order.order.orderDate }}</span>
+        <span class="order-total-price">Teljes ár: {{ order.order.totalPrice }}</span>
+        <span class="order-status">Státusz: {{ order.order.state }}</span>
+        <!-- Clicking on details will bring up the details of the order -->
+        <button class="order-details-btn" ng-click="showOrderDetails(order)" ng-hide="order.showDetails">
+          Részletek megtekintése
         </button>
-    </form>
-    <button type="submit" class="btn btn-danger rounded-0 orderBtn w-100 my-2" ng-click="accountDeletion()">
-        Fiók törlése
-    </button>
-    <button type="submit" class="btn btn-success rounded-0 orderBtn w-100 my-2"  ng-click="showOrders()">
-      Rendeléseim megtekintése
-    </button>
-</div>
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title text-dark" id="deleteConfirmationLabel ">Biztosan törölni akarja a fiókját?</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <button class="order-details-btn" ng-click="order.showDetails= false" ng-show="order.showDetails">
+          Részletek elrejtése
+        </button>
+      </div>
+      <div class="order-details" ng-show="order.showDetails">
+        <div class="order-details-header">
+          <span class="item-name-header">Tétel neve</span>
+          <span class="item-quantity-header">Mennyisége</span>
+          <span class="item-price-header">Ára</span>
         </div>
-        <div class="modal-body text-dark">
-          Ezzel véglegesen töröljük a fiókját és minden kapcsolódó adatot. Ez a folyamat nem visszavonható.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="noBtn">Nem</button>
-          <button type="button" class="btn btn-danger" id="yesBtn">Igen</button>
+        <div class="order-details-body">
+          <div class="item" ng-repeat="item in order.items">
+            <span class="item-name">{{ item.itemName }}</span>
+            <span class="item-quantity">{{ item.itemQuantity }}</span>
+            <span class="item-price">{{ item.itemPrice }}</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
+</div>
+<!-- Modal: Account deletion -->
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="deleteConfirmationLabel ">
+          Biztosan törölni akarja a fiókját?
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        Ezzel véglegesen töröljük a fiókját és minden kapcsolódó adatot. Ez a
+        folyamat nem visszavonható.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="noBtn">
+          Nem
+        </button>
+        <button type="button" class="btn btn-danger" id="yesBtn">Igen</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div ng-include src="'./html/footer.html'"></div>

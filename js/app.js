@@ -342,7 +342,68 @@
             });
         };
 
+        $scope.showOrders = function () {
+          $http
+            .post("./php/getOrders.php", { email: $rootScope.userData.email })
+            .then(
+              function (response) {
+                $scope.orders = response.data;
         
+                // Check if $scope.orders is an array
+                if (Array.isArray($scope.orders)) {
+                  // Csoportosítás orderId alapján
+                  var groupedOrders = {};
+                  $scope.orders.forEach(function (order) {
+                    if (!groupedOrders[order.orderId]) {
+                      groupedOrders[order.orderId] = {
+                        order: order,
+                        items: [],
+                      };
+                    }
+                    groupedOrders[order.orderId].items.push({
+                      itemId: order.itemId,
+                      itemName: order.itemName,
+                      itemQuantity: order.itemQuantity,
+                      itemPrice: order.itemPrice,
+                    });
+                  });
+        
+                  // Csoportosított rendelések megjelenítése
+                  $scope.groupedOrders = [];
+                  for (var orderId in groupedOrders) {
+                    $scope.groupedOrders.push(groupedOrders[orderId]);
+                  }
+                } else {
+                  // If $scope.orders is not an array, initialize groupedOrders as an empty array
+                  $scope.groupedOrders = [];
+                }
+              },
+              function (error) {
+                console.log(error);
+              }
+            );
+        };
+        
+
+        $scope.showOrderDetails = function (order) {
+  $http({
+    method: "POST",
+    url: "./php/getOrderItems.php",
+    data: {
+      orderId: order.order.orderId,
+    },
+    headers: { "Content-Type": "application/json" },
+  }).then(
+    function (response) {
+      order.items = response.data; // Update this line
+      order.showDetails = true;
+    },
+    function (error) {
+      console.log(error);
+    }
+  );
+};
+
       }
     )
 
@@ -490,6 +551,7 @@
           .then((data) => {
             // Handling successful response
             $scope.order = data; // Assigning response data to $scope.order
+            updateInCartStatus(); // Update inCart status for items in the cart
             $scope.$applyAsync(); // Applying changes to the view
             $scope.filter = null; // Initializing filter
             $scope.categories = [
@@ -537,13 +599,32 @@
               const selectedItem = $scope.order.find(
                 (obj) => obj.Id == $scope.targetId
               );
-              if (!$rootScope.cart.includes(selectedItem)) {
+
+              // Check if the item is already in the cart
+              const itemInCart = $rootScope.cart.find(
+                (item) => item.Id === selectedItem.Id
+              );
+
+              // If the item is not in the cart, add it
+              if (!itemInCart) {
                 selectedItem.inCart = true;
                 $rootScope.cart.push(selectedItem);
                 selectedItem.amount = 1;
                 $scope.updatePrice();
+                updateInCartStatus();
               }
             };
+
+            function updateInCartStatus() {
+              $rootScope.cart.forEach((cartItem) => {
+                const matchingItem = $scope.order.find(
+                  (item) => item.Id === cartItem.Id
+                );
+                if (matchingItem) {
+                  matchingItem.inCart = true;
+                }
+              });
+            }
 
             $scope.updatePrice = () => {
               $rootScope.total = 0;
@@ -561,7 +642,14 @@
               );
               const deletedIndex = $rootScope.cart.indexOf(deletedItem);
               $rootScope.cart.splice(deletedIndex, 1);
-              deletedItem.inCart = false;
+
+              // Update inCart property for the deleted item
+              const matchingItem = $scope.order.find(
+                (item) => item.Id === deletedItem.Id
+              );
+              if (matchingItem) {
+                matchingItem.inCart = false;
+              }
               $scope.updatePrice();
             };
 
