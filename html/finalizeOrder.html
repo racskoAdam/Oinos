@@ -36,8 +36,8 @@
             <div class="row m-0">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email cím</label>
-                    <input type="email" class="form-control" id="email" name="myEmail" ng-model="orderDetails.email"
-                        placeholder="Adja meg az e-mail címét" required>
+                    <input type="email" class="form-control" id="email" name="myEmail" ng-model="orderDetails.email" 
+                        placeholder="Adja meg az e-mail címét" ng-disabled="!canEditEmail" required>
                 </div>
             </div>
             <div class="row m-0">

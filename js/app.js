@@ -348,7 +348,7 @@
             .then(
               function (response) {
                 $scope.orders = response.data;
-        
+
                 // Check if $scope.orders is an array
                 if (Array.isArray($scope.orders)) {
                   // Csoportosítás orderId alapján
@@ -367,7 +367,7 @@
                       itemPrice: order.itemPrice,
                     });
                   });
-        
+
                   // Csoportosított rendelések megjelenítése
                   $scope.groupedOrders = [];
                   for (var orderId in groupedOrders) {
@@ -383,27 +383,25 @@
               }
             );
         };
-        
 
         $scope.showOrderDetails = function (order) {
-  $http({
-    method: "POST",
-    url: "./php/getOrderItems.php",
-    data: {
-      orderId: order.order.orderId,
-    },
-    headers: { "Content-Type": "application/json" },
-  }).then(
-    function (response) {
-      order.items = response.data; // Update this line
-      order.showDetails = true;
-    },
-    function (error) {
-      console.log(error);
-    }
-  );
-};
-
+          $http({
+            method: "POST",
+            url: "./php/getOrderItems.php",
+            data: {
+              orderId: order.order.orderId,
+            },
+            headers: { "Content-Type": "application/json" },
+          }).then(
+            function (response) {
+              order.items = response.data; // Update this line
+              order.showDetails = true;
+            },
+            function (error) {
+              console.log(error);
+            }
+          );
+        };
       }
     )
 
@@ -682,6 +680,7 @@
               paymentType: null,
               email: null,
             };
+            
             if (localStorage.getItem("loggedIn")) {
               $scope.userData = JSON.parse(localStorage.getItem("userData"));
               $scope.orderDetails = {
@@ -693,7 +692,12 @@
                 address: $scope.userData["address"],
                 paymentType: null,
               };
+              $scope.canEditEmail = false; // Set to false when user is logged in
+            } else {
+              $scope.canEditEmail = true; // Set to true when user is logged out
             }
+            
+            
 
             $scope.Payment = (event) => {
               $scope.orderDetails.paymentType = event.currentTarget.id;
