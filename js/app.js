@@ -1,10 +1,12 @@
 (function (window, angular) {
+
   "use strict";
+
   // Application module
   angular
     .module("app", ["ui.router", "app.common", "angular.filter"])
 
-    /* Application config */
+    // Application config
     .config([
       "$stateProvider",
       "$urlRouterProvider",
@@ -14,7 +16,6 @@
             url: "/",
             templateUrl: "./html/home.html",
           })
-
           .state("order", {
             url: "/order",
             templateUrl: "./html/order.html",
@@ -76,8 +77,8 @@
       "$rootScope",
       "$transitions",
       "$timeout",
-      "http",
-      function ($rootScope, $transitions, $timeout, http) {
+      function ($rootScope, $transitions, $timeout) {
+
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
@@ -263,8 +264,11 @@
       },
     ])
 
-    .controller(
-      "userDetailsController",
+    .controller("userDetailsController", [
+      "$scope",
+      "http",
+      "$rootScope",
+      "$state",
       function ($scope, $http, $rootScope, $state) {
         "$scope",
           "http",
@@ -403,116 +407,143 @@
           );
         };
       }
-    )
+    ])
 
     //Reservation Controller
-    .controller("reservationController", function ($scope, $http, $state) {
-      "$scope", "http", "$state", ($scope.timeOptions = []); // Initialize an array to store the time options
-      $scope.formData = {};
+    .controller("reservationController", [
+      "$scope", 
+      "http", 
+      "$state",
+      function ($scope, http, $state) {
+        
+        // Initialize an array to store the time options
+        $scope.timeOptions = []; 
+        $scope.formData = {};
 
-      // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
-      for (let i = 6; i < 22; i++) {
-        for (let j = 0; j < 2; j++) {
-          let hour = i >= 10 ? i : "0" + i; // Format hour to include leading zero if necessary
-          let minute = j === 0 ? "00" : "30"; // Determine whether minute is 0 or 30
-          $scope.timeOptions.push(hour + ":" + minute); // Push formatted time to timeOptions array
-        }
-      }
-      // Function to return the date 10 days from today (or from a specified number of days from today)
-      $scope.next10Days = function (days) {
-        // Get today's date
-        let today = new Date();
-        // Add specified number of days (default to 1) to today's date
-        today.setDate(today.getDate() + (days || 1));
-        // Return the date in ISO format and cut off the time portion
-        return today.toISOString().substring(0, 10);
-      };
-
-      $scope.validateDate = function () {
-        if (
-          // If selected date is before today or more than 10 days from today
-          $scope.date < $scope.next10Days() ||
-          $scope.date > $scope.next10Days(10)
-        ) {
-          // Reset selected date to null
-          $scope.date = null;
-        }
-      };
-
-      $scope.validateEmail = function () {
-        if ($scope.formData.email) {
-          // Use regular expression to validate email format
-          let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-          if (!emailRegex.test($scope.formData.email)) {
-            $scope.emailError = "Kérem adjon meg egy érvényes email címet!";
-          } else {
-            $scope.emailError = "";
+        // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
+        for (let i = 6; i < 22; i++) {
+          for (let j = 0; j < 2; j++) {
+            let hour = i >= 10 ? i : "0" + i; // Format hour to include leading zero if necessary
+            let minute = j === 0 ? "00" : "30"; // Determine whether minute is 0 or 30
+            $scope.timeOptions.push(hour + ":" + minute); // Push formatted time to timeOptions array
           }
         }
-      };
 
-      $scope.validatePhone = function () {
-        if ($scope.formData.phone) {
-          // Use regular expression to validate phone number format (Hungarian format)
-          let phoneRegex =
-            /^(?:(?:\+|00)36|06)?(?:-|\s)?(?:20|30|31|50|70|90)(?:-|\s)?\d{3}(?:-|\s)?\d{4}$/;
+        // Function to return the date 10 days from today (or from a specified number of days from today)
+        $scope.next10Days = function (days) {
+          // Get today's date
+          let today = new Date();
+          // Add specified number of days (default to 1) to today's date
+          today.setDate(today.getDate() + (days || 1));
+          // Return the date in ISO format and cut off the time portion
+          return today.toISOString().substring(0, 10);
+        };
 
-          if (!phoneRegex.test($scope.formData.phone)) {
-            $scope.phoneError = "Kérem adjon meg egy érvényes telefonszámot!";
-          } else {
-            $scope.phoneError = "";
-          }
-        }
-      };
-
-      // Function to submit the form
-      $scope.submitForm = function () {
-        // Check for validation errors
-        if (
-          !$scope.formData.name ||
-          !$scope.formData.email ||
-          !$scope.formData.phone ||
-          !$scope.date ||
-          !$scope.time ||
-          $scope.emailError ||
-          $scope.phoneError
-        ) {
-          alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing or there are validation errors
-          return;
-        }
-
-        let date = moment($scope.date); // Use Moment.js library to format selected date
-        let now = moment(); // Get the current date and time
-        if (date.isBefore(now, "day")) {
-          // If selected date is before today
-          // handle past date  // Code to handle past date
-          return;
-        }
-        let time = moment($scope.time, "HH:mm"); // Use Moment.js library to format selected time
-        let date_time =
-          date.format("YYYY-MM-DD") + " " + time.format("HH:mm") + ":00"; // Combine date and time into a single formatted string
-        $scope.formData.date_time = date_time; // Add the combined date and time to the formData object
-        $http({
-          method: "POST", // Use HTTP POST method
-          url: "./php/submit-form.php", // URL to submit the form data to
-          data: $.param($scope.formData), // Convert the formData object to URL-encoded string
-          headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Set header content type to application/x-www-form-urlencoded
-        }).then(function (data) {
+        $scope.validateDate = function () {
           if (
-            data.data ===
-            "A foglalás már létezik erre a telefonszámra és időpontra."
+            // If selected date is before today or more than 10 days from today
+            $scope.date < $scope.next10Days() ||
+            $scope.date > $scope.next10Days(10)
           ) {
-            $("#reservationModalLabel").text("Error");
-            $(".modal-body").text(data.data);
-          } else {
-            $("#reservationModalLabel").text("Foglalás megerősítés");
-            $(".modal-body").text("Köszönjük a foglalást!");
-            $state.go("home");
+            // Reset selected date to null
+            $scope.date = null;
           }
-          $("#reservationModal").modal("show");
-        });
-      };
-    })
+        };
+
+        $scope.validateEmail = function () {
+          if ($scope.formData.email) {
+            // Use regular expression to validate email format
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+            if (!emailRegex.test($scope.formData.email)) {
+              $scope.emailError = "Kérem adjon meg egy érvényes email címet!";
+            } else {
+              $scope.emailError = "";
+            }
+          }
+        };
+
+        $scope.validatePhone = function () {
+          if ($scope.formData.phone) {
+            // Use regular expression to validate phone number format (Hungarian format)
+            let phoneRegex =
+              /^(?:(?:\+|00)36|06)?(?:-|\s)?(?:20|30|31|50|70|90)(?:-|\s)?\d{3}(?:-|\s)?\d{4}$/;
+
+            if (!phoneRegex.test($scope.formData.phone)) {
+              $scope.phoneError = "Kérem adjon meg egy érvényes telefonszámot!";
+            } else {
+              $scope.phoneError = "";
+            }
+          }
+        };
+
+        // Function to submit the form
+        $scope.submitForm = function () {
+          // Check for validation errors
+          if (
+            !$scope.formData.name ||
+            !$scope.formData.email ||
+            !$scope.formData.phone ||
+            !$scope.date ||
+            !$scope.time ||
+            $scope.emailError ||
+            $scope.phoneError
+          ) {
+            alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing or there are validation errors
+            return;
+          }
+
+          let date = moment($scope.date); // Use Moment.js library to format selected date
+          let now = moment(); // Get the current date and time
+          if (date.isBefore(now, "day")) {
+            // If selected date is before today
+            // handle past date  // Code to handle past date
+            return;
+          }
+          let time = moment($scope.time, "HH:mm"); // Use Moment.js library to format selected time
+          let date_time =
+            date.format("YYYY-MM-DD") + " " + time.format("HH:mm") + ":00"; // Combine date and time into a single formatted string
+          $scope.formData.date_time = date_time; // Add the combined date and time to the formData object
+          
+          http.request({
+            method: "POST",
+            url: "./php/submit-form.php",
+            data: $scope.formData,
+          }).then(function (data) {
+            let success = data === "Köszönjük a foglalást!";
+            $("#reservationModalLabel").text(success ? "Foglalás megerősítve" : "Hiba");
+            $(".modal-body").text(data);
+            $("#reservationModal").modal("show");
+            if (success) $state.go("home");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+
+          /*
+          $http({
+            method: "POST", // Use HTTP POST method
+            url: "./php/submit-form.php", // URL to submit the form data to
+            data: $.param($scope.formData), // Convert the formData object to URL-encoded string
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Set header content type to application/x-www-form-urlencoded
+          }).then(function (data) {
+            if (
+              data.data ===
+              "A foglalás már létezik erre a telefonszámra és időpontra."
+            ) {
+              $("#reservationModalLabel").text("Error");
+              $(".modal-body").text(data.data);
+            } else {
+              $("#reservationModalLabel").text("Foglalás megerősítés");
+              $(".modal-body").text("Köszönjük a foglalást!");
+              $state.go("home");
+            }
+            $("#reservationModal").modal("show");
+          });
+          */
+        };
+      }
+    ])
+
     // F.A.Q Controller
     .controller("faqController", [
       "$scope", // AngularJS $scope service
@@ -525,6 +556,7 @@
         });
       },
     ])
+
     //Order Controller
     .controller("orderController", [
       "$scope", // AngularJS $scope service

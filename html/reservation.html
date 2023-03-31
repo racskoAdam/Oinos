@@ -13,16 +13,10 @@
       <div class="form-group">
         <label for="guest">Hány főre?</label>
         <select class="form-control" id="guest" ng-model="formData.guest" required>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
+          <option ng-repeat="x in [].constructor(10) track by $index" 
+                  value="{{$index+1}}">
+            {{$index+1}}
+          </option>
         </select>
       </div>
 
@@ -48,7 +42,8 @@
         </div>
         <div class="form-group w-100 p-2">
           <label for="time" class="fs-4">Időpont:</label>
-          <select id="time" class="w-100 timePicker" ng-model="time" ng-options="t for t in timeOptions"
+          <select id="time" class="w-100 timePicker" ng-model="time" 
+                  ng-options="t for t in timeOptions"
             required></select>
         </div>
       </div>
