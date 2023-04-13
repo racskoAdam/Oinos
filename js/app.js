@@ -1,5 +1,4 @@
 (function (window, angular) {
-
   "use strict";
 
   // Application module
@@ -78,7 +77,6 @@
       "$transitions",
       "$timeout",
       function ($rootScope, $transitions, $timeout) {
-
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
@@ -266,12 +264,12 @@
 
     .controller("userDetailsController", [
       "$scope",
-      "http",
+      "$http",
       "$rootScope",
       "$state",
       function ($scope, $http, $rootScope, $state) {
         "$scope",
-          "http",
+          "$http",
           "$rootScope",
           "$state",
           ($scope.init = function () {
@@ -406,18 +404,17 @@
             }
           );
         };
-      }
+      },
     ])
 
     //Reservation Controller
     .controller("reservationController", [
-      "$scope", 
-      "http", 
+      "$scope",
+      "http",
       "$state",
       function ($scope, http, $state) {
-        
         // Initialize an array to store the time options
-        $scope.timeOptions = []; 
+        $scope.timeOptions = [];
         $scope.formData = {};
 
         // Create an array of available time options (from 6:00 to 21:30 in 30-minute increments)
@@ -503,21 +500,25 @@
           let date_time =
             date.format("YYYY-MM-DD") + " " + time.format("HH:mm") + ":00"; // Combine date and time into a single formatted string
           $scope.formData.date_time = date_time; // Add the combined date and time to the formData object
-          
-          http.request({
-            method: "POST",
-            url: "./php/submit-form.php",
-            data: $scope.formData,
-          }).then(function (data) {
-            let success = data === "Köszönjük a foglalást!";
-            $("#reservationModalLabel").text(success ? "Foglalás megerősítve" : "Hiba");
-            $(".modal-body").text(data);
-            $("#reservationModal").modal("show");
-            if (success) $state.go("home");
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+
+          http
+            .request({
+              method: "POST",
+              url: "./php/submit-form.php",
+              data: $scope.formData,
+            })
+            .then(function (data) {
+              let success = data === "Köszönjük a foglalást!";
+              $("#reservationModalLabel").text(
+                success ? "Foglalás megerősítve" : "Hiba"
+              );
+              $(".modal-body").text(data);
+              $("#reservationModal").modal("show");
+              if (success) $state.go("home");
+            })
+            .catch((e) => {
+              console.log(e);
+            });
 
           /*
           $http({
@@ -541,7 +542,7 @@
           });
           */
         };
-      }
+      },
     ])
 
     // F.A.Q Controller
@@ -712,7 +713,7 @@
               paymentType: null,
               email: null,
             };
-            
+
             if (localStorage.getItem("loggedIn")) {
               $scope.userData = JSON.parse(localStorage.getItem("userData"));
               $scope.orderDetails = {
@@ -728,8 +729,6 @@
             } else {
               $scope.canEditEmail = true; // Set to true when user is logged out
             }
-            
-            
 
             $scope.Payment = (event) => {
               $scope.orderDetails.paymentType = event.currentTarget.id;
