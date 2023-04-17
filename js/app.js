@@ -337,10 +337,10 @@
               $rootScope.firstName = $scope.user.firstName; // Set $rootScope.firstName to the user's first name
               $rootScope.lastName = $scope.user.lastName; // Set $rootScope.lastName to the user's last name
               $rootScope.userData = $scope.user; // Set $rootScope.userData to the updated user data
+              alert("Sikeres módosítás!");
             })
             .catch(function (error) {
-              // Hiba esetén kezeld a hibát
-              console.error("Adatmentési hiba:", error);
+              alert("sikertelen módosítás! Kérjük próbálja újra később!");
             });
         };
 
@@ -753,7 +753,7 @@
                         method: "POST",
                         data: {
                           db: "opd",
-                          query: `INSERT INTO orders(Email,Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice, state) VALUES ("${$scope.orderDetails.email}","${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total},"ordered")`,
+                          query: `INSERT INTO orders(Email,Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice, state) VALUES ("${$scope.orderDetails.email}","${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total},"Rendelés leadva")`,
                           isAssoc: true,
                         },
                       })
@@ -883,7 +883,7 @@
                                               .join("")}
                                           </tbody>
                                         </table>
-                                        <p>Kérjük, hogy hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
+                                        <p>Kérjük, hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
                                          <p>Köszönjük, hogy minket választott!</p>
                                        </body>
                                      </html>

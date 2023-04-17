@@ -1,3 +1,4 @@
+/* ----------------------------Animatations---------------------------- */
 @import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @media (min-width: 768px) {
   .animate {
@@ -41,7 +42,6 @@
     -webkit-opacity: 0;
   }
 }
-
 /*----------------------------Body changes----------------------------*/
 body:not(.bannerText) {
   font-family: "Poppins", sans-serif;
@@ -50,7 +50,6 @@ body:not(.bannerText) {
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
 }
-/*----------------------------END OF Body changes----------------------------*/
 
 /*----------------------------Navbar----------------------------*/
 .cursor-pointer {
@@ -93,7 +92,6 @@ body:not(.bannerText) {
   color: #fff;
 }
 
-/*----------------------------END OF Navbar----------------------------*/
 
 /*----------------------------Banner----------------------------*/
 .banner {
@@ -104,7 +102,6 @@ body:not(.bannerText) {
   background-position: center;
 }
 
-/*----------------------------END OF BANNER----------------------------*/
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
@@ -235,7 +232,6 @@ ul {
   font-size: 14px;
   color: #878787;
 }
-/*----------------------------END OF BANNER----------------------------*/
 
 /*----------------------------ORDER----------------------------*/
 button.cartBtn {
@@ -332,8 +328,6 @@ button.cartBtn.checked:hover {
   width: 38px;
   height: 38px;
 }
-/*----------------------------END OF ORDER----------------------------*/
-
 /*----------------------------FAQ-----------------------------*/
 .timePicker {
   height: 38px;
@@ -394,8 +388,6 @@ button.cartBtn.checked:hover {
 .navbar {
   margin-bottom: 0;
 }
-
-/*----------------------------END OF FAQ----------------------------*/
 
 /*----------------------------MENU---------------------------*/
 .menu-container {
@@ -566,7 +558,7 @@ button.cartBtn.checked:hover {
     font-size: 2em;
   }
 }
-/*----------------------------END OF MENU----------------------------*/
+/*----------------------------DIVIDER----------------------------*/
 
 .mx-md-5 {
   margin-left: auto !important;
@@ -641,7 +633,7 @@ button.cartBtn.checked:hover {
   }
 }
 
-/* ORDER HISTORY */
+/*----------------------------ORDER HISTORY----------------------------*/
 .orders-list {
   display: flex;
   flex-direction: column;
@@ -732,4 +724,3 @@ button.cartBtn.checked:hover {
 .item-price {
   text-align: right;
 }
-/* ORDER HISTORY */

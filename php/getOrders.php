@@ -1,6 +1,6 @@
 <?php
 
-// Adatbázis kapcsolat létrehozása
+// Create database connection
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -8,19 +8,19 @@ $dbname = "opd";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Kapcsolat ellenőrzése
+// Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-// HTTP kérésből érkező adatok feldolgozása
+// Processing data from HTTP requests
 $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 
-// Felhasználó e-mail címe
+// User e-mail address
 $email = $request->email;
 
-// SQL lekérdezés a rendelések lekérdezéséhez
+// SQL query to retrieve orders
 $sql = "SELECT o.orderId, o.orderDate, o.totalPrice, o.state, oi.itemId, oi.itemQuantity, m.Name, m.Price 
         FROM Orders o 
         JOIN Users u ON o.Email = u.Email 
@@ -30,7 +30,7 @@ $sql = "SELECT o.orderId, o.orderDate, o.totalPrice, o.state, oi.itemId, oi.item
 
 $result = $conn->query($sql);
 
-// SQL eredmények JSON formátumban
+// SQL results in JSON format
 if ($result->num_rows > 0) {
   $data = array();
   while($row = $result->fetch_assoc()) {
