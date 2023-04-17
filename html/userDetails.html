@@ -60,7 +60,7 @@
       <div class="order-header">
         <span class="order-id">Megrendelés azonosító: {{ order.order.orderId }}</span>
         <span class="order-date">Dátum: {{ order.order.orderDate }}</span>
-        <span class="order-total-price">Teljes ár: {{ order.order.totalPrice }}</span>
+        <span class="order-total-price">Teljes ár: {{ order.order.totalPrice }} Ft</span>
         <span class="order-status">Státusz: {{ order.order.state }}</span>
         <!-- Clicking on details will bring up the details of the order -->
         <button class="order-details-btn" ng-click="showOrderDetails(order)" ng-hide="order.showDetails">
@@ -74,13 +74,13 @@
         <div class="order-details-header">
           <span class="item-name-header">Tétel neve</span>
           <span class="item-quantity-header">Mennyisége</span>
-          <span class="item-price-header">Ára</span>
+          <span class="item-price-header">Ár</span>
         </div>
         <div class="order-details-body">
           <div class="item" ng-repeat="item in order.items">
             <span class="item-name">{{ item.itemName }}</span>
-            <span class="item-quantity">{{ item.itemQuantity }}</span>
-            <span class="item-price">{{ item.itemPrice }}</span>
+            <span class="item-quantity">{{ item.itemQuantity }} db</span>
+            <span class="item-price">{{ item.itemPrice }} Ft</span>
           </div>
         </div>
       </div>

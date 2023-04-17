@@ -1,4 +1,5 @@
 <?php
+
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -10,7 +11,7 @@ if ($conn->connect_error) {
 }
 mysqli_set_charset($conn, "utf8");
 
-// Receiving user data
+// Receiving user data from the request
 $data = json_decode(file_get_contents("php://input"), true);
 $email = $data['email'];
 $firstName = $data['firstName'];
@@ -20,21 +21,23 @@ $password = $data['password'];
 $city = $data['zipcode'];
 $address = $data['address'];
 
-// Updating data in the database
+// Updating user data in the database
 $sql = "UPDATE users SET firstname='$firstName', lastname='$lastName', phone='$phone', password='$password', zipcode='$city', address='$address' WHERE email='$email'";
 if ($conn->query($sql) === TRUE) {
-  // Get updated data from the database
+  // Get updated user data from the database
   $sql = "SELECT * FROM users WHERE email='$email'";
   $result = $conn->query($sql);
   $userData = $result->fetch_assoc();
   
-  // Send updated data in JSON format
+  // Send updated user data in JSON format
   header('Content-Type: application/json');
   echo json_encode($userData);
 } else {
+  // Error updating user data
   echo "Hiba: " . $sql . "<br>" . $conn->error;
 }
 
-// Close contact
+// Close the database connection
 $conn->close();
+
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-// Create database connection
+// Establish a database connection
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -8,26 +8,26 @@ $dbname = "opd";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
+// Check the connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-// Processing data from HTTP requests
+// Process the HTTP request data
 $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 
-// Order ID
+// Extract the order ID from the request data
 $orderId = $request->orderId;
 
-// SQL query to retrieve order item data
+// Construct an SQL query to retrieve the order item data
 $sql = "SELECT oi.itemId, oi.itemQuantity, m.Name as itemName, m.Price as itemPrice
         FROM Orderitems oi
         JOIN Menu m ON oi.itemId = m.Id
         WHERE oi.orderId = '".$orderId."'";
 $result = $conn->query($sql);
 
-// SQL results in JSON format
+// Convert the SQL results to JSON format
 if ($result->num_rows > 0) {
   $data = array();
   while($row = $result->fetch_assoc()) {
@@ -38,4 +38,7 @@ if ($result->num_rows > 0) {
   echo "No results found.";
 }
 
+// Close the database connection
 $conn->close();
+
+?>

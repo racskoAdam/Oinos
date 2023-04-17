@@ -18,7 +18,7 @@ $address = mysqli_real_escape_string($con, $_POST['address']);
 $lastname = mysqli_real_escape_string($con, $_POST['lastname']);
 $firstname = mysqli_real_escape_string($con, $_POST['firstname']);
 
-// check if user with the given email already exists
+// check if a user with the given email already exists
 $check_sql = "SELECT * FROM users WHERE email = '$email'";
 $check_result = mysqli_query($con, $check_sql);
 
@@ -31,11 +31,15 @@ if (mysqli_num_rows($check_result) > 0) {
   $result = mysqli_query($con, $sql);
 
   if ($result) {
+    // user data inserted successfully
     echo "New record created successfully";
   } else {
+    // error inserting user data
     echo "Error: " . $sql . "<br>" . mysqli_error($con);
   }
 }
 
+// close the database connection
 mysqli_close($con);
+
 ?>
