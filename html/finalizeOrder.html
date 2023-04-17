@@ -2,9 +2,11 @@
 <div class="mx-md-5 pt-5">
     <h2 class="text-center">Véglegesítse a rendelését!</h2>
     <button type="button" class="btn btn-warning rounded-0 orderBtn h-100 fs-3" ui-sref="order">Vissza</button>
+    <!-- The shopping cart section -->
     <div class="d-flex shoppingCart">
         <div class="w-100">
             <table class="table table-striped w-100">
+                <!-- The list of items in the cart -->
                 <tr ng-repeat="item in cart track by $index" class="text-dark fw-bold">
                     <td class="p-0">
                         <img ng-src="./img/{{item.image}}" alt="" class="d-none d-sm-block cartImg">
@@ -15,6 +17,7 @@
                         {{item.Price}} Ft
                     </td>
                     <td>
+                        <!-- The quantity controls and the delete button for each item -->
                         <div class="text-nowrap">
                             <button type="button" class="btn btn-secondary rounded-circle valueBtns"
                                 ng-click="decAmount(item.Id)">-</button>
@@ -30,13 +33,14 @@
             </table>
         </div>
     </div>
+    <!-- The form section for entering order details -->
     <form name="order" novalidate>
         <div class="bg-light text-dark fw-bold py-5">
             <h2 class="text-center">Adja meg az adatait!</h2>
             <div class="row m-0">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email cím</label>
-                    <input type="email" class="form-control" id="email" name="myEmail" ng-model="orderDetails.email" 
+                    <input type="email" class="form-control" id="email" name="myEmail" ng-model="orderDetails.email"
                         placeholder="Adja meg az e-mail címét" ng-disabled="!canEditEmail" required>
                 </div>
             </div>
@@ -105,6 +109,5 @@
                 leadása</button>
         </div>
     </form>
-</div>
 </div>
 <div ng-include src="'./html/footer.html'"></div>

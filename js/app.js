@@ -80,13 +80,19 @@
         // On before transaction
         let isFirstRun = true;
         $transitions.onBefore({}, function (transition) {
+          // Scroll to top of the page
           window.scrollTo(0, 0);
+
+          // Wait for the transition to complete
           return $timeout(function () {
+            // If this is the first run
             if (isFirstRun) {
               isFirstRun = false;
+              // Redirect to home page if not already there
               if (transition.to().name !== "home")
                 return transition.router.stateService.target("home");
             }
+            // Continue with the transition
             return true;
           }).catch((e) => alert(e));
         });
@@ -108,12 +114,14 @@
       },
     ])
 
+    //Registration - login controller
     .controller("regLogController", [
       "$scope",
       "$http",
       "$state",
       "$rootScope",
       function ($scope, $http, $state, $rootScope) {
+        // Initialize user object and error variables
         $scope.user = {};
         $scope.emailError = null;
         $scope.phoneError = null;
@@ -135,6 +143,7 @@
           }
         };
 
+        // Register function to handle user registration
         $scope.register = function () {
           // Check for validation errors
           if (
@@ -143,7 +152,8 @@
             $scope.emailError ||
             $scope.phoneError
           ) {
-            alert("Kérem töltse ki az összes mezőt megfelelően"); // Display error message if any of the required fields are missing or there are validation errors
+            // Display error message if any of the required fields are missing or there are validation errors
+            alert("Kérem töltse ki az összes mezőt megfelelően");
             return;
           }
           $http({
@@ -164,8 +174,10 @@
 
               // set logged in status and user information in local storage
               localStorage.setItem("loggedIn", "true");
-              let userWithoutPassword = angular.copy($scope.user); // Make a copy of the user object
-              delete userWithoutPassword.password; // Remove the password property from the copy
+              // Make a copy of the user object
+              let userWithoutPassword = angular.copy($scope.user);
+              // Remove the password property from the copy
+              delete userWithoutPassword.password;
               localStorage.setItem(
                 "userData",
                 JSON.stringify(userWithoutPassword)
@@ -173,8 +185,10 @@
               localStorage.setItem("firstName", $scope.user.firstname);
               localStorage.setItem("lastName", $scope.user.lastname);
               $rootScope.loggedIn = true;
-              $rootScope.firstName = $scope.user.firstname; // Set $rootScope.firstName to the user's first name
-              $rootScope.lastName = $scope.user.lastname; // Set $rootScope.lastName to the user's last name
+              // Set $rootScope.firstName to the user's first name
+              $rootScope.firstName = $scope.user.firstname;
+              // Set $rootScope.lastName to the user's last name
+              $rootScope.lastName = $scope.user.lastname;
             }
           });
         };
@@ -197,48 +211,70 @@
               localStorage.setItem("userData", JSON.stringify(response.data));
               // redirect to home state
               $state.go("home");
+              // It saves the data about the client to the localstorage, and sets it to a global variable
               localStorage.setItem("loggedIn", "true");
               localStorage.setItem("firstName", response.data.firstname);
               localStorage.setItem("lastName", response.data.lastname);
               $rootScope.loggedIn = true;
-              $rootScope.firstName = response.data.firstname; // Set $rootScope.firstName to the user's first name
-              $rootScope.lastName = response.data.lastname; // Set $rootScope.lastName to the user's last name
+              $rootScope.firstName = response.data.firstname;
+              $rootScope.lastName = response.data.lastname;
             }
           });
         };
 
         $scope.logout = function () {
+          //Removes all kinds of data from the localstorage
           localStorage.removeItem("loggedIn");
           localStorage.removeItem("userData");
           localStorage.removeItem("firstName");
           localStorage.removeItem("lastName");
 
-          // Update $rootScope values
+          // Update $rootScope values - sets the loggedIn status to false, then empties the cart
           $rootScope.loggedIn = false;
           $rootScope.cart = [];
-          $rootScope.firstName = null; // Set $rootScope.firstName to the user's first name
+          // Set $rootScope.firstName to the user's first name
+          $rootScope.firstName = null;
           $rootScope.lastName = null;
           // Redirect to home page
           $state.go("home");
         };
       },
     ])
-
+    //Menu display controllers
     .controller("menuController", [
+      // Inject dependencies into the controller function using AngularJS's dependency injection system
+      // $scope allows data to be shared between the controller and the view
+      // $element is the element that the controller is attached to
+      // $timeout is used to execute a function after a specified time delay
+      // http is a custom service for making HTTP requests
+      // $stateParams is used to access parameters passed in the URL
       "$scope",
       "$element",
       "$timeout",
       "http",
       "$stateParams",
+
+      // The controller function itself
       function ($scope, $element, $timeout, http, $stateParams) {
+        // Define a function called "getData" to retrieve data from the server
         let getData = () => {
+          // Initialize several properties on the $scope object
+          // $scope.pointer is the current pointer
+          // $scope.prevView is the previous view
+          // $scope.view is the current view
+          // $scope.isDisabled is whether editing is disabled or not
+          // $scope.isEdit is whether the user is in edit mode or not
           $scope.pointer = null;
           $scope.prevView = "table";
           $scope.view = "table";
           $scope.isDisabled = true;
           $scope.isEdit = false;
+
+          // Use $applyAsync to ensure that the view updates properly
           $scope.$applyAsync();
 
+          // Send an HTTP POST request to the server to retrieve data
+          // The request data includes the name of the database to query, the SQL query to execute, and whether the results should be returned as an associative array or not
           http
             .request({
               url: "./php/get.php",
@@ -250,18 +286,22 @@
                 isAssoc: true,
               },
             })
+            // If the request is successful, update $scope.data and $scope.pointer
             .then((data) => {
               $scope.data = data;
               if ($scope.data.length) $scope.pointer = 0;
               $scope.$applyAsync();
             })
+            // If there's an error, display an alert with the error message
             .catch((e) => alert(e));
         };
 
+        // Call getData() once to retrieve the initial data
         getData();
       },
     ])
 
+    //User details controller- delete, modify, check past orders
     .controller("userDetailsController", [
       "$scope",
       "$http",
@@ -547,11 +587,16 @@
 
     // F.A.Q Controller
     .controller("faqController", [
-      "$scope", // AngularJS $scope service
+      "$scope",
       function ($scope) {
+        // Wait for the document to finish loading
         $(document).ready(function () {
+          // When a button with the class "collapse-button" is clicked
           $(".collapse-button").click(function () {
+            // Slide toggle the next element (i.e. the element immediately following the button)
             $(this).next().slideToggle("fast");
+
+            // Toggle the class "rotate" on the child element with class "arrow" of the button
             $(this).children(".arrow").toggleClass("rotate");
           });
         });
@@ -646,65 +691,100 @@
               }
             };
 
+            // Define a function called "updateInCartStatus" that updates the "inCart" property of items in the order array based on whether they are in the cart or not
             function updateInCartStatus() {
+              // Iterate over each item in the cart array
               $rootScope.cart.forEach((cartItem) => {
+                // Find the corresponding item in the order array based on its ID
                 const matchingItem = $scope.order.find(
                   (item) => item.Id === cartItem.Id
                 );
+
+                // If the matching item is found, set its "inCart" property to true
                 if (matchingItem) {
                   matchingItem.inCart = true;
                 }
               });
             }
 
+            // Define a function called "updatePrice" that updates the total price of items in the cart
             $scope.updatePrice = () => {
+              // Initialize the total price to 0
               $rootScope.total = 0;
+
+              // Iterate over each item in the cart array
               $rootScope.cart.forEach((element) => {
+                // Calculate the price of the item (by multiplying its Price property by its amount property) and add it to the total price
                 $rootScope.total =
                   +$rootScope.total + +element.Price * +element.amount;
               });
+
+              // Update the "hasItems" property on the $scope object based on whether there are items in the cart
               $scope.hasItems = $rootScope.cart.length > 0;
             };
+
             $scope.updatePrice();
 
+            // Define a function called "deleteItem" that deletes an item from the cart
             $scope.deleteItem = (event) => {
+              // Find the item to be deleted in the cart array based on its ID
               const deletedItem = $rootScope.cart.find(
                 (obj) => obj.Id == event.currentTarget.id
               );
+
+              // Get the index of the deleted item in the cart array
               const deletedIndex = $rootScope.cart.indexOf(deletedItem);
+
+              // Remove the deleted item from the cart array
               $rootScope.cart.splice(deletedIndex, 1);
 
-              // Update inCart property for the deleted item
+              // Update the "inCart" property of the deleted item in the order array to false
               const matchingItem = $scope.order.find(
                 (item) => item.Id === deletedItem.Id
               );
               if (matchingItem) {
                 matchingItem.inCart = false;
               }
+
+              // Update the total price of the items in the cart
               $scope.updatePrice();
             };
 
+            // Define a function called "decAmount" that decrements the amount of a specific item in the cart
             $scope.decAmount = (id) => {
+              // Find the item in the cart array based on its ID
               $scope.item = $rootScope.cart.find((element) => element.Id == id);
+
+              // If the amount is greater than 1, decrement it
               if ($scope.item.amount > 1) {
                 --$rootScope.cart[
                   $rootScope.cart.findIndex((element) => element.Id == id)
                 ].amount;
               }
+
+              // Update the total price of the items in the cart
               $scope.updatePrice();
             };
 
+            // Define a function called "incAmount" that increments the amount of a specific item in the cart
             $scope.incAmount = (id) => {
+              // Find the item in the cart array based on its ID
               $scope.item = $rootScope.cart.find((element) => element.Id == id);
+
+              // If the amount is less than 100, increment it
               if ($scope.item.amount < 100) {
                 ++$rootScope.cart[
                   $rootScope.cart.findIndex((element) => element.Id == id)
                 ].amount;
               }
+
+              // Update the total price of the items in the cart
               $scope.updatePrice();
             };
 
+            // Initialize an object called "orderDetails" on the $scope object
             $scope.orderDetails = {
+              // Initialize several properties on the orderDetails object to null
               firstName: null,
               lastName: null,
               phone: null,
@@ -714,7 +794,9 @@
               email: null,
             };
 
+            // Check if the user is logged in based on the "loggedIn" key in localStorage
             if (localStorage.getItem("loggedIn")) {
+              // If the user is logged in, retrieve their user data from localStorage and set the order details accordingly
               $scope.userData = JSON.parse(localStorage.getItem("userData"));
               $scope.orderDetails = {
                 email: $scope.userData["email"],
@@ -725,16 +807,23 @@
                 address: $scope.userData["address"],
                 paymentType: null,
               };
-              $scope.canEditEmail = false; // Set to false when user is logged in
+
+              // Set the "canEditEmail" property to false, since the user's email cannot be edited when they are logged in
+              $scope.canEditEmail = false;
             } else {
-              $scope.canEditEmail = true; // Set to true when user is logged out
+              // If the user is not logged in, set the "canEditEmail" property to true, since the user's email can be edited when they are not logged in
+              $scope.canEditEmail = true;
             }
 
+            // Define a function called "Payment" that sets the paymentType property of the orderDetails object
             $scope.Payment = (event) => {
+              // Set the paymentType property of the orderDetails object to the ID of the element that triggered the event
               $scope.orderDetails.paymentType = event.currentTarget.id;
             };
 
+            // Define a function called "completeOrder" that performs several actions when the user completes their order
             $scope.completeOrder = () => {
+              // Define a nested function called "hasNullValue" that checks whether an object contains any null values
               function hasNullValue(obj) {
                 for (const key in obj) {
                   if (obj[key] === null) {
@@ -744,9 +833,13 @@
                 return false;
               }
 
+              // Check if the user has any items in their cart
               if ($scope.hasItems) {
+                // Check if the user has selected a payment type
                 if ($scope.orderDetails.paymentType !== undefined) {
+                  // Check if the user has filled out all required order details
                   if (!hasNullValue($scope.orderDetails)) {
+                    // Send a POST request to the "get.php" script with an INSERT SQL statement to insert the user's order details into the "orders" table
                     http
                       .request({
                         url: "./php/get.php",
@@ -758,6 +851,7 @@
                         },
                       })
                       .then((data) => {
+                        // Generate a SQL query to insert the user's cart items into the "orderitems" table
                         $scope.cartQuery = `INSERT INTO orderitems(itemId, orderId, itemQuantity) VALUES `;
                         $rootScope.cart.forEach((element, index) => {
                           $scope.cartQuery += `(${element.Id},(SELECT orderId FROM orders ORDER BY orderId DESC LIMIT 1),${element.amount})`;
@@ -765,6 +859,8 @@
                             $scope.cartQuery += `, `;
                           }
                         });
+
+                        // Send a POST request to the "get.php" script with the generated SQL query to insert the user's cart items into the "orderitems" table
                         http
                           .request({
                             url: "./php/get.php",
@@ -776,11 +872,14 @@
                             },
                           })
                           .then(() => {
+                            // Set the "payment" property based on the selected payment type ("cash" or "card")
                             if ($scope.paymentType == "cash") {
                               $scope.payment = "Kézpénz";
                             } else {
                               $scope.payment = "Bankkártya";
                             }
+
+                            // Set the "CurrentDate" property to the current date and time
                             $scope.CurrentDate = new Date().toLocaleString(
                               "hu-HU",
                               {
@@ -793,9 +892,11 @@
                               }
                             );
 
+                            // Redirect the user to the home page and display a success message
                             $state.go("home");
                             alert("Rendelés leadása sikeres!");
 
+                            // Send a POST request to the "send_email.php" script with the user's email, subject, and message
                             http
                               .request({
                                 url: "./php/send_email.php",
@@ -804,90 +905,78 @@
                                   email: $scope.orderDetails.email,
                                   subject: `Kedves ${$scope.orderDetails.firstName} ${$scope.orderDetails.lastName}! Rögzítettük a ${$scope.CurrentDate} dátumú rendelését!`,
                                   message: `
-                                    <html>
-                                      <head>
-                                        <style>
-                                          body {
-                                            font-size: 25px;
-                                            font-family: Arial, sans-serif;
-                                          }
-                                          h1 {
-                                            font-size: 28px;
-                                            font-weight: bold;
-                                          }
-                                          table {
-                                            border-collapse: collapse;
-                                            width: 100%;
-                                          }
-                                          th, td {
-                                            text-align: left;
-                                            padding: 8px;
-                                            border-bottom: 1px solid #ddd;
-                                          }
-                                          th {
-                                            background-color: #f2f2f2;
-                                          }
-                                          p{
-                                            font-size: 25px;
-                                          }
-                                        </style>
-                                      </head>
-                                      <body>
-                                        <h1>Kedves ${
-                                          $scope.orderDetails.firstName
-                                        } ${$scope.orderDetails.lastName},</h1>
-                                        <p>Köszönjük rendelését! Az alábbi adatokkal rögzítettük a rendelést:</p>
-                                        <ul>
-                                          <li>Rendelés időpontja: ${
-                                            $scope.CurrentDate
-                                          }</li>
-                                          <li>Email: ${
-                                            $scope.orderDetails.email
-                                          }</li>
-                                          <li>Cím: ${
-                                            $scope.orderDetails.address
-                                          }</li>
-                                          <li>Irányítószám: ${
-                                            $scope.orderDetails.city
-                                          }</li>
-                                          <li>Telefonszám: ${
-                                            $scope.orderDetails.phone
-                                          }</li>
-                                          <li>Fizetési mód: ${
-                                            $scope.payment
-                                          } </li>
-                                          <li>Összesen fizetendő: ${
-                                            $rootScope.total
-                                          } Ft</li>
-                                        </ul>
-                                        <p>A rendelt termékek:</p>
-                                        <table>
-                                          <thead>
-                                            <tr>
-                                              <th>Termék neve</th>
-                                              <th>Mennyiség</th>
-                                              <th>Ár</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            ${$rootScope.cart
-                                              .map(
-                                                (item) => `
-                                                  <tr>
-                                                    <td>${item.Name}</td>
-                                                    <td>${item.amount}</td>
-                                                    <td>${item.Price} Ft</td>
-                                                  </tr>
-                                                `
-                                              )
-                                              .join("")}
-                                          </tbody>
-                                        </table>
-                                        <p>Kérjük, hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
-                                         <p>Köszönjük, hogy minket választott!</p>
-                                       </body>
-                                     </html>
-                                   `,
+                        <html>
+                          <head>
+                            <style>
+                              body {
+                                font-size: 25px;
+                                font-family: Arial, sans-serif;
+                              }
+                              h1 {
+                                font-size: 28px;
+                                font-weight: bold;
+                              }
+                              table {
+                                border-collapse: collapse;
+                                width: 100%;
+                              }
+                              th, td {
+                                text-align: left;
+                                padding: 8px;
+                                border-bottom: 1px solid #ddd;
+                              }
+                              th {
+                                background-color: #f2f2f2;
+                              }
+                              p{
+                                font-size: 25px;
+                              }
+                            </style>
+                          </head>
+                          <body>
+                            <h1>Kedves ${$scope.orderDetails.firstName} ${
+                                    $scope.orderDetails.lastName
+                                  },</h1>
+                            <p>Köszönjük rendelését! Az alábbi adatokkal rögzítettük a rendelést:</p>
+                            <ul>
+                              <li>Rendelés időpontja: ${$scope.CurrentDate}</li>
+                              <li>Email: ${$scope.orderDetails.email}</li>
+                              <li>Cím: ${$scope.orderDetails.address}</li>
+                              <li>Irányítószám: ${$scope.orderDetails.city}</li>
+                              <li>Telefonszám: ${$scope.orderDetails.phone}</li>
+                              <li>Fizetési mód: ${$scope.payment} </li>
+                              <li>Összesen fizetendő: ${
+                                $rootScope.total
+                              } Ft</li>
+                            </ul>
+                            <p>A rendelt termékek:</p>
+                            <table>
+                              <thead>
+                                <tr>
+                                  <th>Termék neve</th>
+                                  <th>Mennyiség</th>
+                                  <th>Ár</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                ${$rootScope.cart
+                                  .map(
+                                    (item) => `
+                                      <tr>
+                                        <td>${item.Name}</td>
+                                        <td>${item.amount}</td>
+                                        <td>${item.Price} Ft</td>
+                                      </tr>
+                                    `
+                                  )
+                                  .join("")}
+                              </tbody>
+                            </table>
+                            <p>Kérjük, hogy ellenőrizze adatait. A rendelés állapota folyamatosan követhető a weboldalon.</p>
+                            <p>Köszönjük, hogy minket választott!</p>
+                          </body>
+                        </html>
+                      `,
                                 },
                               })
                               .then(() => {
@@ -905,7 +994,7 @@
                   alert("Kérem válasszon fizetési módszert!");
                 }
               } else {
-                alert("Nincs semmi a korárban!");
+                alert("Nincs semmi a kosárban!");
               }
             };
           })

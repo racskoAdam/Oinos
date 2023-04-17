@@ -49,12 +49,14 @@
   </button>
   <!-- Order list: Displays existing orders to the user -->
   <div class="orders-list">
+    <!-- no-orders-message: This message is displayed when the user has not placed any orders yet -->
     <div class="no-orders-message fw-bold h1 text-center text-danger" ng-if="groupedOrders.length === 0">
       Ön még nem adott le rendelést.
       <button type="submit" class="btn btn-danger text-light rounded-0 orderBtn w-100 my-2" ui-sref="order">
         Rendelés
       </button>
     </div>
+    <!-- order-item: This is an individual order placed by the user -->
     <div class="order-item" ng-repeat="order in groupedOrders">
       <!-- order-header: This is the header for existing orders -->
       <div class="order-header">
@@ -70,6 +72,7 @@
           Részletek elrejtése
         </button>
       </div>
+      <!-- order-details: This section displays the details of the order -->
       <div class="order-details" ng-show="order.showDetails">
         <div class="order-details-header">
           <span class="item-name-header">Tétel neve</span>
