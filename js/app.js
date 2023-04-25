@@ -5,7 +5,8 @@
   angular
     .module("app", ["ui.router", "app.common", "angular.filter"])
 
-    // Application config
+
+    // Application configuration
     .config([
       "$stateProvider",
       "$urlRouterProvider",
