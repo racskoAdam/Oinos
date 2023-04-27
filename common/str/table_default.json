@@ -1,0 +1,103 @@
+{
+  "db": null,
+  "tbl": null,
+  "icon": null,
+  "title": null,
+  "view": "table",
+  "query": null,
+  "params": null,
+  "isAssoc": null,
+  "controls": {
+    "header": [
+      {"id":"refresh", "icon":"fas fa-sync", "tooltip": "refresh"},
+      {"id":"change_view", "icon":"fas fa-eye", "tooltip": "change_view"},
+      {"id":"minimize", "class":"d-none", "icon":"fas fa-window-minimize", "tooltip": "minimize"},
+      {"id":"restore", "icon":"fas fa-window-restore", "tooltip": "restore"},
+      {"id":"maximize", "icon":"fas fa-window-maximize", "tooltip": "maximize"},
+      {"id":"close", "class":"danger", "icon":"fas fa-times-circle", "tooltip": "close"}
+    ],
+    "footer": [
+      {"id": "search", "class":"d-none", "icon": "fas fa-search", "tooltip": "search"},
+      {"id": "filter", "class":"d-none", "icon": "fas fa-filter", "tooltip": "filter"},
+      {"id": "information", "class":"d-none", "icon": "fas fa-info-circle", "tooltip": "information"},
+      {"id": "list", "class":"d-none", "icon": "fas fa-list", "tooltip": "list"},
+      {"class":"d-none px-2", "disabled":true},
+      {"id": "end", "icon": "fas fa-step-forward fa-rotate-90", "tooltip": "end"},
+      {"id": "next", "icon": "fas fa-play fa-rotate-90", "tooltip": "next"},
+      {"id": "previous", "icon": "fas fa-play fa-rotate-270", "tooltip": "previous"},
+      {"id": "beginning", "icon": "fas fa-step-forward fa-rotate-270", "tooltip": "beginning"},
+      {"class":"px-2", "disabled":true},
+      {"id": "modify", "icon": "fas fas fa-edit", "tooltip": "modify"},
+      {"id": "new", "icon": "fas fa-plus-circle", "tooltip": "new"},
+      {"id": "copy", "icon": "fas fa-clone", "tooltip": "copy"},
+      {"id": "remove", "class":"danger", "icon": "fas fa-times-circle", "tooltip": "remove"}
+    ],
+    "edit": [
+      {"id": "save", "content": "save", "class":"btn-success", "icon": "fas fa-save me-1"},
+      {"id": "cancel", "content": "cancel", "class":"btn-danger", "icon": "fas fa-times-circle me-1"}
+    ],
+    "default": {"id":null, "content":null, "class":null, "icon":null, "tooltip":null, "disabled":false}
+  },
+  "field": {
+    "name": null,
+    "type": null,
+    "dataType": null,
+    "inputType": "text",
+    "length": null,
+    "order": null,
+    "isTemporary": false,
+    "isReadOnly": false,
+    "isRequired": false,
+    "isModified": true,
+    "isDuplicated": true,
+    "isAutoIncrement": false,
+    "defaultValue": null,
+    "relationship": {
+      "db": null,
+      "tbl": null,
+      "id": null,
+			"name": null,
+			"filter": null,
+			"order": null,
+      "isTranslate": false,
+      "isCapitalize": false,
+      "query": null
+    },
+    "label": {
+      "table": {
+        "content": null,
+				"order": null,
+        "isVisible": true,
+        "labelClass": "text-start",
+				"dataClass": "text-start",
+				"labelStyle": null,
+        "dataStyle": null,
+        "dataLangName": null,
+        "isLabelTranslate": false,
+        "isDataTranslate": false,
+        "isLabelCapitalize": true,
+				"isDataCapitalize": false
+      },
+      "page": {
+        "content": null,
+        "isColon": true,
+        "placeholder": null,
+				"isVisible": true,
+        "order": null,
+        "labelClass": "text-end",
+        "dataClass": "text-start",
+        "labelStyle": null,
+        "dataStyle": null,
+				"isLabelTranslate": false,
+        "isPlaceholderTranslate": true,
+				"isDataTranslate": false,
+        "isLabelCapitalize": true,
+        "isPlaceholderCapitalize": false,
+				"isDataCapitalize": false,
+        "dataName": null,
+        "isDataNameCapitalize": false,
+        "isDataNameTranslate": false
+      }
+    }
+  }
+}
