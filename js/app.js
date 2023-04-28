@@ -821,13 +821,19 @@
                   // Check if the user has filled out all required order details
                   if (!hasNullValue($scope.orderDetails)) {
                     // Send a POST request to the "get.php" script with an INSERT SQL statement to insert the user's order details into the "orders" table
+                    if($scope.orderDetails.zipcode == 6900){
+                      $scope.finalTotal =$rootScope.total;
+                    }
+                    else{
+                      $scope.finalTotal = $rootScope.total + 1000;
+                    }
                     http
                       .request({
                         url: "./php/get.php",
                         method: "POST",
                         data: {
                           db: "opd",
-                          query: `INSERT INTO orders(Email,Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice, state) VALUES ("${$scope.orderDetails.email}","${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$rootScope.total},"Rendelés leadva")`,
+                          query: `INSERT INTO orders(Email,Addresss, ZipCode, Phone, paymentMode, FirstName, LastName, totalPrice, state) VALUES ("${$scope.orderDetails.email}","${$scope.orderDetails.address}",${$scope.orderDetails.city},${$scope.orderDetails.phone},"${$scope.orderDetails.paymentType}","${$scope.orderDetails.firstName}","${$scope.orderDetails.lastName}",${$scope.finalTotal},"Rendelés leadva")`,
                           isAssoc: true,
                         },
                       })
@@ -927,7 +933,7 @@
                               <li>Telefonszám: ${$scope.orderDetails.phone}</li>
                               <li>Fizetési mód: ${$scope.payment} </li>
                               <li>Összesen fizetendő: ${
-                                $rootScope.total
+                                $scope.finalTotal
                               } Ft</li>
                             </ul>
                             <p>A rendelt termékek:</p>
