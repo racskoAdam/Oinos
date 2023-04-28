@@ -561,27 +561,7 @@
               console.log(e);
             });
 
-          /*
-          $http({
-            method: "POST", // Use HTTP POST method
-            url: "./php/submit-form.php", // URL to submit the form data to
-            data: $.param($scope.formData), // Convert the formData object to URL-encoded string
-            headers: { "Content-Type": "application/x-www-form-urlencoded" }, // Set header content type to application/x-www-form-urlencoded
-          }).then(function (data) {
-            if (
-              data.data ===
-              "A foglalás már létezik erre a telefonszámra és időpontra."
-            ) {
-              $("#reservationModalLabel").text("Error");
-              $(".modal-body").text(data.data);
-            } else {
-              $("#reservationModalLabel").text("Foglalás megerősítés");
-              $(".modal-body").text("Köszönjük a foglalást!");
-              $state.go("home");
-            }
-            $("#reservationModal").modal("show");
-          });
-          */
+          
         };
       },
     ])
