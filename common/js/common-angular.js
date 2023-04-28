@@ -2,6 +2,33 @@
 
   'use strict';
 
+  // Add class(es)
+  HTMLElement.prototype.addClass = (function(classList) {
+    if (Object.prototype.toString.call(classList) === '[object String]' ||
+                                       classList instanceof String) {
+      classList = [...new Set(classList.split(' ').map(s => s.trim()).filter(s => s.length))];
+      classList.forEach(c => this.classList.add(c));
+    }
+  });
+
+  // Remove class(es)
+  HTMLElement.prototype.removeClass = (function(classList) { 
+    if (Object.prototype.toString.call(classList) === '[object String]' ||
+                                       classList instanceof String) {
+      classList = [...new Set(classList.split(' ').map(s => s.trim()).filter(s => s.length))];
+      classList.forEach(c => this.classList.remove(c));
+    }
+  });
+
+  // Toogle class(es)
+  HTMLElement.prototype.toggleClass = (function(classList) { 
+    if (Object.prototype.toString.call(classList) === '[object String]' ||
+                                       classList instanceof String) {
+      classList = [...new Set(classList.split(' ').map(s => s.trim()).filter(s => s.length))];
+      classList.forEach(c => this.classList.toogle(c));
+    }
+  });
+
   // Application common module
   angular.module('app.common', [])
 
@@ -10,6 +37,8 @@
     'util', 
     (util) => {
       return (str, isAllowed=true) => {
+
+        // Check parameters
         if (!util.isString(str)) return str;
         str = str.trim();
         if (!util.isBoolean(isAllowed)) isAllowed = true;
@@ -19,25 +48,11 @@
     }
   ])
 
-  // Traslate
-  .filter('translate', [
-    'util', 
-    (util) => {
-      return (key, data=null, isAllowed=true) => {
-        if (!util.isString(key)) return key;
-        key = key.trim();
-        if (!util.isBoolean(isAllowed)) isAllowed = true;
-        if (!isAllowed || !util.isObjectHasKey(data, key)) return key;
-        return data[key];
-      }
-    }
-  ])
-
   // Number thousand separator
   .filter('numSep', [
     'util',
     function (util) {
-      return function(number, separator) {
+      return (number, separator) => {
       
 		  	// Check parameters
 		  	if (!util.isVarNumber(number)) number = 0;
@@ -54,8 +69,8 @@
   // Number leading zero
   .filter('numPad', [
     'util',
-    function (util) {
-      return function(number, len) {
+    (util) => {
+      return (number, len) => {
       
 		  	// Check parameters
 		  	if (!util.isNumber(number)) number = 0;
@@ -65,9 +80,20 @@
     }
   ])
 
+  // Add to number pixel property
+  .filter('pixel', [
+    'util',
+    (util) => {
+      return (number) => {
+        if (!util.isVarNumber(number)) number = 0;
+        return number + 'px';
+      };
+    }
+  ])
+
 	// Utilities factory
-  .factory('util', [ 
-    function() {
+  .factory('util', [
+    () => {
 
       // Set utilities
       let util = {
@@ -100,10 +126,14 @@
 							}
 					} else  return true;
 				},
-				isObjectHasKey: (checkedVar, key) => util.isObject(checkedVar) && util.isString(key) && key in checkedVar,
+				isObjectHasKey: (checkedVar, key) =>  util.isObject(checkedVar) && 
+                                              util.isString(key) && key in checkedVar,
 				objFilterByKeys: (obj, filter) => {
 						if (!util.isObject(obj)) return obj;
-						if (util.isString(filter)) filter = [filter];
+						if (util.isString(filter)) {
+              filter = filter.replaceAll(';', ',');
+              filter = filter.split(",");
+            }
 						if (util.isArray(filter) && filter.length) {
 										return  Object.assign({}, 
 														Object.keys(obj)
@@ -159,6 +189,8 @@
                                 /^([a-z0-9_.+-])+\@(([a-z0-9-])+\.)+([a-z0-9]{2,4})+$/i.test(checkedVar),
         isPassword: checkedVar => util.isString(checkedVar) &&
                                   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/.test(checkedVar),
+        isPhoneNumber: checkedVar => util.isString(checkedVar) &&
+                        /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,5}$/.test(checkedVar),
         upToLowHyphen: (str) => str.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase(),
         lowToUpHyphen: (str) => str.replace(/(-.)/g,function(x){return x[1].toUpperCase();}),
         capitalize: (str) => {
@@ -166,50 +198,11 @@
           else return str.charAt(0).toUpperCase() + 
                       str.substr(1).toLowerCase();
         },
-	      getTestCode: (codeLength) => {
-        
-	      	/* Check parameters */
-	      	if (!util.isNumber(codeLength) || codeLength < 5) codeLength = 5;
-	      	if (codeLength > 34) codeLength = 34;
-        
-	      	let letters		= 'ABCDEFGHJKMNPQRSTUVWXYZ'.split(''),
-	      			numbers		= '123456789'.split(''),
-	      			testCode	= [];
-        
-	      	let ind = Math.floor(Math.random()*letters.length);
-	      	testCode.push(letters[ind]);
-	      	letters.splice(ind, 1);
-        
-	      	ind = Math.floor(Math.random()*letters.length);
-	      	testCode.push(letters[ind].toLowerCase());
-	      	letters.splice(ind, 1);
-        
-	      	ind = Math.floor(Math.random()*numbers.length);
-	      	testCode.push(numbers[ind]);
-	      	numbers.splice(ind, 1);
-        
-	      	let merged	= [].concat.apply([], [numbers, numbers, letters])
-	      									.sort(function() {return 0.5-Math.random();}),
-	      										filter = function(a, c) {
-	      											return $.map(a, function(v) {if (v !== c) return v;});
-	      										};
-                          
-	      	if (testCode.length < codeLength) {
-	      		for (let i=testCode.length; i < codeLength; i++) {
-	      			ind = Math.floor(Math.random()*merged.length);
-	      			let c	= merged[ind];
-	      			testCode.push(c[Math.random() < 0.5 ? 'toLowerCase' : 'toUpperCase']());
-	      			merged = filter(merged, c);
-	      		}
-	      	}
-	      	return testCode.sort(function() {return 0.5-Math.random();})
-	      								 .join('').substring(0, codeLength);
-	      },
         getPageId: () => {
           let pageID = document.location.pathname;
           if (pageID[0] === '/') pageID = pageID.slice(1);
           if (pageID.slice(-1) === '/') pageID = pageID.slice(0, -1);
-          return pageID.replaceAll('/', '-');
+          return pageID;
         },
         isInViewport: (element, parent, type) => {
           if (!util.isNodeElement(element) ||
@@ -238,12 +231,14 @@
 
 	// Http request factory
 	.factory('http', [
+    '$http',
 		'util', 
-    function(util) {
+    ($http, util) => {
 
       return {
 
-				request: (options, method='fetch') => {
+        // Request
+				request: (options, method=null) => {
 
 					// Create promise
 					return new Promise(function (resolve, reject) {
@@ -268,7 +263,7 @@
                 // Check method property
                 if (!util.isString(method)) method = 'fetch';
                 method = method.trim().toLocaleLowerCase();
-                if (!['xml','fetch','ajax'].includes(method)) method = 'fetch';
+                if (!['http','xml','fetch','ajax'].includes(method)) method = 'fetch';
                 if (method === 'ajax' && !util.isJQuery()) method = 'fetch';
 
                 // Check response content type
@@ -303,7 +298,7 @@
 
                     // Check/Set data
                     if (util.isObjectHasKey(options, 'data') && 
-                        !util.isUndefined(options.data)) 
+                       !util.isUndefined(options.data)) 
                       options.data = "data=" + JSON.stringify(options.data);
 
                     // Merge with default
@@ -343,6 +338,22 @@
                       xhrFields   : undefined
                     }, options, true);
 
+                  case 'http':
+
+                    // Check/Set data
+                    if (util.isObjectHasKey(options, 'data') && 
+                        !util.isUndefined(options.data)) 
+                      options.data = {data: JSON.stringify(options.data)};
+
+                    // Merge with default
+                    return util.objMerge({
+                      url: undefined,
+                      method: 'GET',
+                      params: undefined,
+                      data: undefined,
+                      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    }, options, true);
+
                   // Fetch
                   default:
 
@@ -354,8 +365,10 @@
 
                     // Check/Set body
                     if (util.isObjectHasKey(options, 'body') && 
-                        !util.isUndefined(options.body)) 
-                      options.body = JSON.stringify(options.body);
+                       !util.isUndefined(options.body)) {
+                      options.body    = "data=" + JSON.stringify(options.body);
+                      options.method  = 'POST';
+                    }
 
                     // Merge with default
                     return util.objMerge({
@@ -372,8 +385,23 @@
                 } 
               },
 
+              // Http request
+              http: (options) => {
+
+                $http({ 
+                  url     : options.url, 
+                  method  : options.method,
+                  params  : options.params, 
+                  data    : options.data,
+                  headers : options.headers
+                })
+                .success(result => methods.check(result))
+                .error(e => reject(e.errorMsg()));
+              },
+
               // XML Http request
               xml: (options) => {
+
                 let xhr = new XMLHttpRequest();
                 xhr.open(options.method, options.url, true);
                 xhr.onload = () => {
@@ -408,18 +436,19 @@
 
               // AJAX jQuery Http request
               ajax: (options) => {
+
                 $.ajax({
-                  url     	: options.url,
-                  type    	: options.method,	                	
-	              	async   	: options.isAsync,
+                  url     	  : options.url,
+                  type    	  : options.method,	                	
+	              	async   	  : options.isAsync,
 	              	crossDomain : options.crossDomain,
-	              	timeout		: options.timeout,
+	              	timeout		  : options.timeout,
 	              	cache       : options.cache,
 	              	contentType : options.contentType,
 	              	processData : options.processData,
 	              	dataType    : options.dataType,
                   xhrFields   : options.xhrFields,
-                  data    	: options.data,
+                  data    	  : options.data,
                   success: result => methods.check(result),
                   error: (e) => reject(e.errorMsg())
                 });
@@ -447,115 +476,72 @@
     }
   ])
 
-  // Language factory
-  .factory('lang', [
+  // Transaction events factory
+  .factory('trans', [
+    '$transitions',
+    '$window',
+    '$state',
     '$rootScope',
-    '$timeout', 
-    'http',
-    'util', 
-    function($rootScope, $timeout, http, util) {
+    '$timeout',
+    'util',
+    ($transitions, $window, $state, $rootScope, $timeout, util) => {
+      return {
 
-      // Set service
-      let service = {
+        // Events
+        events: (baseStates=null, scrollTop=true) => {
 
-        // Initialize
-        init: () => {
-
-          // Get page identifier
-          if (!util.isObjectHasKey($rootScope, 'pageID'))
-            $rootScope.pageID = util.getPageId();
-
-          // Set language
-          $rootScope.lang = {
-            id:null, 
-            type:null, 
-            index:null,
-            rule: {
-              west:["prefix_name","first_name","middle_name","last_name","suffix_name"],
-              east:["prefix_name","last_name","middle_name","first_name","suffix_name"]
-            }, 
-            available:[], 
-            data:{}
+          // Define state properties
+          $rootScope.state = {
+            id        : null,
+            prev      : null,
+            base      : null,     
+            available : $state.get()
+                              .map(state => state.name.trim())
+                              .filter(name => name !== '')
           };
 
-          // Get available languages
-          http.request("./lang/available.json")
-          .then(data => {
-
-            // Check/Set available languages
-            $rootScope.lang.available = data;
-            if (!util.isArray($rootScope.lang.available) || 
-                             !$rootScope.lang.available.length) {
-              $rootScope.lang.available = [{
-                id    : "en",
-		            type  : "west",
-                name  : "english",
-                local : "english",
-                img   : "./image/countries/usa.png",
-                valid : true
-              }];
-            }
-
-            // Get/Check last language identifier
-            $rootScope.lang.id = localStorage.getItem($rootScope.pageID + "-lang-id");
-            if (!$rootScope.lang.id) $rootScope.lang.id = document.documentElement.lang;
-
-            // When language id is not in available languages, then set to first
-            $rootScope.lang.index = util.indexByKeyValue($rootScope.lang.available, 'id', $rootScope.lang.id);
-            if ($rootScope.lang.index === -1) {
-                $rootScope.lang.id    = $rootScope.lang.available[0];
-                $rootScope.lang.index = 0;
-            }
-
-            // Get language type
-            $rootScope.lang.type = $rootScope.lang.available[$rootScope.lang.index].type;
-
-            // Get data
-            service.get();
-          })
-          .catch(e => console.log(e));
-        },
-
-        // Set html language property
-        setHtml: () => {
-          localStorage.setItem($rootScope.pageID + "-lang-id", $rootScope.lang.id);
-          document.documentElement.lang = $rootScope.lang.id;
-          let title = document.getElementsByTagName("title");
-          if (title.length) {
-            let langKey = title[0].dataset.langKey;
-            if (util.isObjectHasKey($rootScope.lang.data, langKey)) 
-              document.title = util.capitalize($rootScope.lang.data[langKey]);
+          // Check parameter base state(s)
+          if (util.isString(baseStates)) {
+            baseStates = baseStates.replaceAll(';', ',').split(',');
+            baseStates = baseStates.map(name => name.trim()).filter(name => name !== '');
           }
-        },
+          if (util.isArray(baseStates))
+            baseStates = baseStates.filter(state => $rootScope.state.available.includes(state));
+          if (!util.isArray(baseStates))
+            baseStates = [];
+          baseStates.unshift($rootScope.state.available[0]);
+          $rootScope.state.base = [...new Set(baseStates)];
 
-        // Get language data
-        get: () => {
+          // Check parameter scroll to top
+          if (!util.isBoolean(scrollTop)) scrollTop = true;
+          
+          // On before transaction
+          $transitions.onBefore({}, (transition) => {
+            return $timeout(() => {
 
-          http.request("./lang/" + $rootScope.lang.id + ".json")
-          .then(data => {
-            $rootScope.lang.data = data;
-            service.setHtml();
-            $rootScope.$applyAsync();
-          })
-          .catch(e => console.log(e));
-        },
-
-        // Set language
-        set: (id) => {
-          $rootScope.lang.id  = id;
-          $rootScope.lang.index = util.indexByKeyValue($rootScope.lang.available, 'id', id);
-          $rootScope.lang.type = $rootScope.lang.available[$rootScope.lang.index].type;
-          service.get();
+              // Check is first time
+              if (util.isNull($rootScope.state.id)) {
+                if (!$rootScope.state.base.includes(transition.to().name))
+                  return transition.router.stateService.target($rootScope.state.base[0]);
+              }
+              $rootScope.state.prev = $rootScope.state.id;
+              $rootScope.state.id   = transition.to().name;
+              return true;
+            });
+          });
+        
+          // On success transaction
+          $transitions.onSuccess({}, (transition) => {
+            return $timeout(() => {
+              let element = document.querySelector('.page-container');
+              if (util.isNodeElement(element))
+                element.addClass($rootScope.state.id.concat(' ', 'show'));
+              if (scrollTop) $window.scrollTo(0, 0);
+              return true;
+            });
+          });
         }
-      };
-
-      // On language changed
-      $rootScope.changeLanguage = (event) => {
-        service.set(event.currentTarget.dataset.langId);
-      };
-
-      // Return service
-      return service;
+      }
     }
   ])
 
@@ -577,351 +563,183 @@
       };
   }])
 
-  // Change state
-  .directive('ngChangeState', [
-    'util',
-    '$state',
-    '$rootScope',
+  // Show bootstrap5 breakpoints
+	.directive('ngBreakpoints', [
     '$timeout',
-    function(util, $state, $rootScope, $timeout) {
-      return {
-        link: function(scope, element) {
+    ($timeout) => {
 
-          // Check exist
-          if (!util.isObjectHasKey($rootScope, 'state'))
-            $rootScope.state = {id:null, prev:null};
+			// Controller
+			let controller = [
+				'$scope',
+        '$element', 
+				($scope, $element) => {
 
-          // Set current, and previous state identifier
-          $rootScope.state = {
-            id  : $state.current.name,
-            prev: $rootScope.state.id
-          };
+          // Set methods
+          $scope.methods = {
 
-          // Reset asynchronity
-          $timeout(() => {
-            element.addClass('show');
-          });
-        }
-      };
-  }])
+            // Initialize
+            init: () => {
 
-  /* Clear icon */
-	.directive('ngClearIcon', [
-    '$compile',
-    '$timeout',
-    'util',
-    ($compile, $timeout, util) => {
-      return {
-        restrict: 'EA',
-        require: "ngModel",
-        link: (scope, element, attr, ngModel) => {
-          let icon = angular.element(`<span class="position-absolute text-primary cursor-pointer
-                                                   fw-bolder d-conditional btnClickEffect">x<span/>`);
-          let posTop;
-          if (element.hasClass('form-control-sm'))
-                posTop = '2px';
-          else  posTop = '5px';
-          icon.css({top:posTop, zIndex:101});
-          if (util.isJson(attr.ngClearIcon)) 
-                icon.css(JSON.parse(attr.ngClearIcon));
-          else  icon.css({right:'10px'});
-          element.css({paddingRight:'25px'});
-          element.parent().append(icon);
-          $compile(icon)(scope);
-          $timeout(() => {
-            icon[!util.isString(ngModel.$viewValue) || 
-                               !ngModel.$viewValue.length ? 
-                               'removeClass' : 'addClass']('show');
-            icon.on('click', () => {
-              icon.removeClass('show');
-              ngModel.$setViewValue(undefined);
-              ngModel.$render();
-              element.focus();
-            });
-            element.on('input', () => icon[!util.isString(ngModel.$viewValue) || 
-                                                         !ngModel.$viewValue.length ? 
-                                                         'removeClass' : 'addClass']('show'));
-            element.on('onInputChanged', (event,  isEmpty) => icon[isEmpty ? 'removeClass' : 'addClass']('show'));
-          }, 100);
-				}
-			}
-		}
-	])
+              // Set position when is visible
+              if ($scope.isVisible) 
+                  $scope.methods.position();
 
-  /* Checkmark */
-	.directive('ngCheckmark', [
-    '$compile',
-    'util',
-    ($compile, util) => {
-      return {
-        restrict: 'EA',
-        link: (scope, element, attr) => {
-          let icon = angular.element('<span class="position-absolute text-success fw-bolder d-conditional">&#10004;<span/>');
-          let posTop;
-          if (element.hasClass('form-control-sm'))
-                posTop = '2px';
-          else  posTop = '4px';
-          icon.css({top:posTop, zIndex:101});
-          if (util.isJson(attr.ngCheckmark)) 
-                icon.css(JSON.parse(attr.ngCheckmark));
-          else  icon.css({right:'-30px'});
-          element.parent().append(icon);
-          $compile(icon)(scope);
-          element.on('checkmarkShow', (event, isShow) => {
-            icon[isShow ? 'addClass' : 'removeClass']('show');
-          });
-				}
-			}
-		}
-	])
+              // Set Events
+              $scope.methods.events();
+            },
 
-  /* Show/Hide password */
-	.directive('ngDisplayPassword', [
-    () => {
-      return {
-        restrict: 'EA',
-        link: (scope, element, attr) => {
-          let skeleton = attr.ngDisplayPassword.trim();
-          if (!skeleton.length) skeleton = 'form';
-          let parent = element.closest(skeleton);
-          if (parent.length) {
-            let elements = parent.find('.input-password');
-            if (elements.length) {
-              element.on('change', () => 
-                angular.forEach(elements, (e) => 
-                  e.type = e.type === 'password' ? 'text' : 'password'));
-            }
-          }
-				}
-			}
-		}
-	])
+            // Events
+            events: () => {
 
-  /* Remove all white space */
-  .directive('ngWhiteSpace', [
-    'util',
-    (util) => {
-      return {
-        restrict: 'A',
-        require: "ngModel",
-        link: (scope, element, attr, ngModel) => {
-          element.bind("keyup", () => {
-            if (util.isString(ngModel.$viewValue)) {
-              let value = ngModel.$viewValue.trim().split(' ').join('');
-              if (ngModel.$viewValue !== value) {
-                ngModel.$setViewValue(value);
-                ngModel.$render();
-              }
-            }
-          });
-        }
-			}
-		}
-	])
-
-  /* Test code directive */
-	.directive('ngTestCode', [
-    '$timeout',
-    'util',
-    ($timeout, util) => {
-      return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-          ngModel: '=',
-          changeFn: '&',
-          type: '@'
-        },
-        template:  `<div class="row mb-3">
-                    	<h4 class="mb-2 text-start letter-spacing-2 content-testcode">
-                    		{{ngModel.code}}
-                    	</h4>
-                    	<div class="input-group input-row">
-                    		<div class="input-group-prepend">
-                    			<span class="input-group-text h-100">
-                    				<i class="fas fa-robot"></i>
-                    			</span>
-                    		</div>
-                    		<input id="{{type}}-testcode"
-                               type="text" 
-                    					 class="form-control input-testcode" 
-                    					 ng-model="ngModel.testcode" 
-                    					 ng-change="changeFn({type: type})"
-                    					 spellcheck="false" 
-                    					 autocomplete="off" 
-                    					 ng-trim="false"
-                    					 placeholder="code" 
-                    					 required
-                    					 maxlength="5" 
-                    					 style="min-width:120px !important;max-width:120px !important;"
-                    					 ng-clear-icon='{"left":"150px"}'
-                    					 ng-checkmark
-                    					 ng-keyup="testcodeInit($event)">
-                    		<div class="input-group-append">
-                    				<span class="input-group-text btnClickEffect cursor-pointer h-100" 
-                    							ng-click="testcodeRefresh()">
-                    					<i class="fas fa-sync-alt me-2"></i>
-                    					<span>Refresh</span>
-                    				</span>
-                    		</div>
-                    	</div>
-                    </div>`,
-        link: (scope, element) => {
-          
-          // Create/Set scope model keys
-          scope.ngModel.code      = util.getTestCode();
-          scope.ngModel.testcode  = null;
-
-          // Refresh testcode
-          scope.testcodeRefresh = () => {
-            scope.ngModel.code = util.getTestCode();
-            scope.ngModel.testcode = null;
-            scope.$applyAsync();
-            element[0].querySelector('input').focus();
-            $timeout(() => {
-              scope.changeFn({type: scope.type});
-            });
-          };
-        
-          // Testcode initialize
-          scope.testcodeInit = (event) => {
-            if (event.ctrlKey && event.altKey && event.key.toUpperCase() === 'C') {
-              scope.ngModel.testcode = null;
-              scope.$applyAsync();
-              $timeout(() => {
-                scope.ngModel.testcode = scope.ngModel.code;
-                scope.$applyAsync();
-                scope.changeFn({type: scope.type});
+              // Windows resize event
+              window.addEventListener('resize', (event) => {
+                event.preventDefault();
+                if ($scope.isVisible && !$scope.throttled) {
+                  $scope.throttled  = true;
+                  $scope.winWidth   = parseInt(window.innerWidth);
+                  $scope.methods.position();
+                  $timeout(() => {
+                    $scope.throttled = false;
+                  }, 200);
+                }
               });
+
+              // Keyboard up event 
+              document.addEventListener('keyup', (event) => {
+                event.preventDefault();
+                if (event.ctrlKey && event.altKey && event.key === 'b') {
+                  $element[0].classList.toggle('show');
+                  $scope.isVisible = $element[0].classList.contains('show');
+                  if (!$scope.isVisible) {
+                          $scope.pos = {left:-300, top:-300};
+                          $scope.$applyAsync();
+                  } else  $scope.methods.position();
+                }
+              });
+            },
+
+            // Position
+            position: () => {
+              $scope.pos.left = parseInt((window.innerWidth  - $element[0].offsetWidth)   / 2);
+              $scope.pos.top  = parseInt((window.innerHeight - $element[0].offsetHeight)  / 2);
+              $scope.$applyAsync();
             }
-          };
-        }
-			}
+          }
+				}
+			];
+
+      return {
+				restrict: 'EA',
+				replace: true,
+				scope: {},
+				controller: controller,
+				template:`<div class="display-1 w-auto position-fixed px-3 
+                       bg-dark-transparent text-white d-conditional"
+                       style="transition: all .2s ease 0s;"
+                       ng-style="{left:(pos.left|pixel),top:(pos.top|pixel)}">
+                    <span class="d-inline d-sm-none">XS</span>
+                    <span class="d-none d-sm-inline d-md-none">SM</span>
+                    <span class="d-none d-md-inline d-lg-none">MD</span>
+                    <span class="d-none d-lg-inline d-xl-none">LG</span>
+                    <span class="d-none d-xl-inline d-xxl-none">XL</span>
+                    <span class="d-none d-xxl-inline">XXL</span>
+                    <span class="ms-2 display-6">{{winWidth|pixel}}</span>
+                  </div>`,
+
+				// Compile 
+				compile: function() {
+					
+					return {
+						
+						// Pre-link
+						pre: function(scope, iElement) {
+              scope.pos = {left:-300, top:-300};
+							scope.winWidth  = parseInt(window.innerWidth);
+              scope.isVisible = iElement[0].classList.contains('show');
+              scope.throttled = false;
+						},
+
+						// Post-link
+						post: function(scope) {
+							$timeout(() => {
+                scope.methods.init();
+              });
+						}
+					};
+				}
+			};
 		}
 	])
 
-  // Resizable directive 
-  .directive('ngResizable', [
-    () => {
-      return {
-        restrict: 'A',
-        link: (scope, element, attr) => {
-          $(element).resizable({
-            isResizable: true,
-						minHeight: 320,
-						minWidth: 520,
-						containment: $(element).closest('.tables-container'),
-						grid: null,
-						handles: 'e,s,se'
-          });
-        }
-			}
-	  }
-  ])
-
-  // Draggable directive
-  .directive('ngDraggable', [
-    () => {
-      return {
-        restrict: 'A',
-        link: (scope, element, attr) => {
-          $(element).draggable({
-            handle: $(element).find('.table-header'),
-						containment: $(element).closest('.tables-container')
-          });
-        }
-			}
-	  }
-  ])
-
-  // Tooltip directive
-  .directive('ngTooltip', [
-    '$compile',
+  // Show bootstrap5 modal dialog
+	.directive('ngModalDialog', [
     '$timeout',
-    ($compile, $timeout) => {
-      return {
-        restrict: 'EA',
-        scope: false,
-        link: (scope, element, attr) => {
-          if (!scope.item.tooltip) {
-            element[0].removeAttribute("ng-tooltip");
-            return;
-          }
-          let showTimeout, cancelTimeout, trinagle,
-              tooltip = angular.element(
-                `<div class="tooltip-text position-absolute d-inline-block fs-sm lh-1 text-white bg-black py-1 px-3 rounded text-nowrap z-index-100 invisible">
-                  {{lang.data[item.tooltip] | capitalize}}
-                  <div class="tooltip-triangle"></div>
-                </div>`);
-          element.append(tooltip);
-          $compile(tooltip)(scope);
-          
-          let show = (event) => {
-            event.preventDefault();
-            element[0].classList.add('hovered');
-            showTimeout = $timeout(() => {
-              let trinagleLeft  = parseInt((tooltip[0].offsetWidth - trinagle.offsetWidth) / 2),
-                  maxWidth      = parseInt(Math.max(element[0].offsetWidth, tooltip[0].offsetWidth)),
-                  minWidth      = parseInt(Math.min(element[0].offsetWidth, tooltip[0].offsetWidth)),
-                  tooltipLeft   = -1 * parseInt((maxWidth - minWidth) / 2);
-              if (element[0].classList.contains('hovered')) {
-                trinagle.style.left = trinagleLeft + 'px';
-                tooltip[0].style.left = tooltipLeft + 'px';
-                tooltip[0].classList.remove('invisible');
-                cancelTimeout = $timeout(() => {
-                  element[0].classList.remove('hovered');
-                  tooltip[0].classList.add('invisible');
-                }, 3000);
-              }
-            }, 1000);
-          };
+    ($timeout) => {
 
-          let hide = (event) => {
-            event.preventDefault();
-            $timeout.cancel(showTimeout);
-            $timeout.cancel(cancelTimeout);
-            element[0].classList.remove('hovered');
-            tooltip[0].classList.add('invisible');
-          };
+			// Controller
+			let controller = [
+				'$scope',
+        '$element', 
+				($scope, $element) => {
 
-          $timeout(() => {
-            let tooltipTop, triangleTop;
-            trinagle = tooltip[0].querySelector(".tooltip-triangle");
-            if (attr.ngTooltip === 'top') {
-              tooltip[0].classList.add('tooltip-top');
-              tooltipTop  = -1 * parseInt(tooltip[0].offsetHeight + trinagle.offsetHeight);
-              triangleTop = parseInt(tooltip[0].offsetHeight);
-            } else  {
-              tooltip[0].classList.add('tooltip-botton');
-              tooltipTop  = parseInt(element[0].offsetHeight + trinagle.offsetHeight);
-              triangleTop = -1 * parseInt(trinagle.offsetHeight);
+          // Set methods
+          $scope.methods = {
+
+            // Initialize
+            init: () => {
+
+              // Set Events
+              $scope.methods.events();
+            },
+
+            // Events
+            events: () => {
+
+              
             }
-            tooltip[0].style.top  = tooltipTop + 'px';
-            trinagle.style.top    = triangleTop + 'px';
-            element[0].addEventListener('mouseover', show);
-            element[0].addEventListener('mouseleave', hide);
-            element[0].addEventListener('click', hide);
-          });
-        }
-			}
-	  }
-  ])
+          }
+				}
+			];
 
-  /* Language name directive */
-	.directive('ngLangName', [ 
-    () => {
       return {
-        restrict: 'EA',
-        scope: false,
-        template:`<span class="me-1"
-                        ng-repeat="field in lang.rule[lang.type]"
-                        ng-if="data.row[rowPointer][field]">
-                    {{data.row[rowPointer][field]}}
-                  </span>`,
-        link: (scope, element, attr) => {
-          scope.rowPointer = parseInt(element.parent().data('index'));
-        }
-			}
+				restrict: 'EA',
+				replace: true,
+				scope: {},
+				controller: controller,
+				template:`<div  class="modal fade" id="ng-modal" tabindex="-1" 
+                        aria-labelledby="modal-label" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="modal-label"></h5>
+                          <button type="button" class="btn-close" 
+                                  data-bs-dismiss="modal" aria-label="Close">
+                          </button>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-footer"></div>
+                      </div>
+                    </div>
+                  </div>`,
+
+				// Compile 
+				compile: function() {
+					
+					return {
+						
+						// Pre-link
+						pre: function(scope, iElement) {
+						},
+
+						// Post-link
+						post: function(scope) {
+							$timeout(() => {
+                scope.methods.init();
+              });
+						}
+					};
+				}
+			};
 		}
 	]);
 

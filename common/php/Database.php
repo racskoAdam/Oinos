@@ -1,34 +1,28 @@
 <?php
+
 /**
- * Connect to database
- * Execute transaction(s)
+ * Database
  */
 
-// Require transaction
-require_once("Transaction.php");
-
-// Database
 class Database {
-  
-  // Set properties
+
+	// Set properties
   private $db,
           $dbHandle,
           $options,
-          $data,
-          $error = null;
+          $conn;
 
-  // Constructor
+	// Constructor
   function __construct($db=null, $options=null) {
     $this->set_db($db);
     $this->set_options($options);
+    $this->set_connection();
     $this->connect();
   }
 
-  // Destructor
-  function __destruct() {
-
-    // Close connecton
-    $this->close();
+	// Destructor
+	function __destruct() {
+		$this->close();
   }
 
   // Set database
@@ -36,9 +30,9 @@ class Database {
     if (!is_string($db)) $db = "";
     $this->db = trim($db);
   }
-
+  
   // Get database
-  private function get_db() {
+  public function get_db() {
     return $this->db;
   }
 
@@ -46,206 +40,211 @@ class Database {
   private function set_options($options) {
     $this->options = Util::objMerge(
       array(
-        PDO::MYSQL_ATTR_INIT_COMMAND 	      => "SET NAMES 'utf8'",
-        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY	=> false,
-        PDO::ATTR_ERRMODE 						      => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE        => PDO::FETCH_ASSOC,
-        PDO::ATTR_ORACLE_NULLS				      => PDO::NULL_EMPTY_STRING,
-        PDO::ATTR_EMULATE_PREPARES		      => false,
-        PDO::ATTR_STRINGIFY_FETCHES         => false
+        PDO::MYSQL_ATTR_INIT_COMMAND        => "SET NAMES utf8",
+				PDO::MYSQL_ATTR_USE_BUFFERED_QUERY	=> false,
+				PDO::ATTR_ERRMODE 						      => PDO::ERRMODE_EXCEPTION,
+				PDO::ATTR_DEFAULT_FETCH_MODE        => PDO::FETCH_ASSOC,
+				PDO::ATTR_ORACLE_NULLS				      => PDO::NULL_EMPTY_STRING,
+				PDO::ATTR_EMULATE_PREPARES		      => false,
+				PDO::ATTR_STRINGIFY_FETCHES         => false
       ), $options
     );
   }
 
   // Get options
-  private function get_options() {
+  public function get_options() {
     return $this->options;
   }
 
-  // Set data result
-  private function set_data($id, $data, $count) {
-
-    // Check transactions count
-    if ($count > 1) {
-            if (is_null($id)) $id = count($this->data);
-            $this->data[$id]  = $data;
-    } else  $this->data       = $data;
+  // Get fetch mode
+  public function get_fetch_mode($isAssoc) {
+    $fetchMode = $this->options[PDO::ATTR_DEFAULT_FETCH_MODE];
+    if (is_bool($isAssoc))
+      $fetchMode = $isAssoc ? PDO::FETCH_ASSOC : PDO::FETCH_NUM;
+    return $fetchMode;
   }
 
-  // Get data result
-  public function get_data() {
-    return $this->data;
+	// Set connection details
+  private function set_connection() {
+
+    // When configuration file exist, then get connection details
+		$file = searchForFile('db_config.ini', 'db');
+    if (!is_null($file))
+          $conn = parse_ini_file($file, true);
+    else  $conn = null;
+    
+    // Merge with default
+    $this->conn = Util::objMerge(array(
+      "host"    	=> "localhost",
+      "dbname"  	=> "",
+      "user"    	=> "root",
+      "password"	=> ""
+    ), $conn, true);
+
+    // Set database name if not exist
+    if (empty($this->db))
+      $this->set_db($this->conn['dbname']);
+    unset($this->conn['dbname']);
   }
 
-  // Reset data result
-  private function reset_data() {
-    $this->data = array();
-  }
-  
-  // Connect to MySQL server
+	// Connect to MySQL server
   private function connect() {
-    try {
-      $this->dbHandle = new PDO('mysql:host=localhost;dbname='. $this->get_db(), 
-                                'root','', $this->get_options());
-    } catch (Exception $e) {
-      throw new Exception($e->getMessage());
-    }
-  }
+		try {
+			$this->dbHandle = new PDO("mysql:host={$this->conn['host']};
+																dbname={$this->db};
+																charset=utf8", 
+																$this->conn['user'], 
+																$this->conn['password'], 
+																$this->get_options());
+		} catch (Exception $e) {
+			throw new Exception($e->getMessage());
+		}
+	}
 
-  // Close connecton
-  public function close() {
-
-    // When is conected, then disconect from MySQL server
-    if ($this->is_connected())  $this->dbHandle = null;
-  }
-
-  // Check connection success
-  private function is_connected() {
+  // Check is connected
+  public function is_connected() {
     return $this->dbHandle instanceof PDO;
   }
 
-  // Set error message
-  public function set_error($error) {
-    $this->error = $error;
+	// Get query type
+	private function get_type($query) {
+		return strtoupper(strtok($query, " "));
+	}
+
+	// Close connection
+	public function close() {
+
+		// When is conected, then disconect from MySQL server
+    if ($this->is_connected())  $this->dbHandle = null;
+	}
+
+  // Prepare query and parameters for insert
+  private function prepare_insert(&$query, &$params) {
+
+    // Check parameters
+    if (strtoupper(substr(trim($query), -6)) !== 'VALUES') return;
+    if (!is_array($params) || empty($params)) return;
+
+    // Get fields count
+    $query  = trim($query);
+    $beg    = strpos($query, '(');
+    $end    = strpos($query, ')');
+    if ($beg === false || $end === false) return;
+    $fieldCount = count(explode(",", substr($query, $beg+1, $end-$beg-1)));
+    unset($beg, $end);
+
+    // Check parameters is associative array
+    if (Util::isAssocArray($params)) {
+
+      // Check is valid
+      if (count(($keys = array_keys($params))) !== $fieldCount)
+        throw new Exception("Invalid number of parameters compared to fields!");
+      
+      // Add colon to each keys, and prepare query
+      $keys   = array_map(function($key) {return ':'.$key;}, $keys); 
+      $query .= " (". implode(', ', $keys) . ");";
+      return;
+    }
+
+    // Check parameters is array of associative array
+    if (Util::isAssocArray($params[0])) {
+
+      // Convert to associative array to array of values
+      $values = array();
+	    foreach($params as $item) {
+
+        // Add to values item values
+        if (Util::isAssocArray($item))
+		          $values = array_merge($values, array_values($item));
+        else  $values = array_merge($values, $item);
+	    }
+
+      // Set params
+      $params = array_values($values);
+      unset($values, $item);
+    }
+    
+    // Check is valid
+    if(count($params) % $fieldCount !== 0)
+      throw new Exception("Invalid number of parameters compared to fields!");
+
+    // Prepare query
+    $qMark	= "(" . str_repeat("?,", $fieldCount);
+	  $qMark	= substr($qMark, 0, -1) . ")";
+	  $query .= " " . str_repeat($qMark.", ", count($params) / $fieldCount);
+	  $query	= substr($query, 0, -2) . ";";
   }
 
-  // Get error message
-  public function get_error() {
-    return $this->error;
-  }
+	// Execute
+	public function execute($query, $params=null, $isAssoc=null) {
+		
+		try {
 
-  // Check is error
-  public function is_error() {
-    return !is_null($this->error);
-  }
+      // Get query type
+			$type = $this->get_type($query);
 
-  // Execute transaction(s)
-  public function execute($transactions=null, $params=null, $isAssoc=null) {
+      // Check query type is INSERT
+      if ($type === "INSERT") {
 
-    // When parameters is not array, then convert to array
-    if (!is_array($transactions))
-      $transactions = array($transactions);
+        // Prepare query and parameters for insert
+        $this->prepare_insert($query, $params);
+      }
 
-    // Set start transaction(s)
-    if (!$this->dbHandle->beginTransaction()) {
+			// Prepare statement for execution and returns a statement object
+			$stmt = $this->dbHandle->prepare($query);
+
+			// Executes a prepared statement
+			$stmt->execute($params);
+
+			// Set result
+			$result = null;
+
+			// Check query type
+			switch($type) {
+
+				// SELECT
+				case "SELECT":
+					$result = $stmt->fetchAll($this->get_fetch_mode($isAssoc));
+          if (empty($result)) $result = null;
+					break;
+
+				// INSERT/UPDATE/DELETE
+				case "INSERT":
+        case "UPDATE":
+        case "DELETE":
+					$result["affectedRows"] = $stmt->rowCount();
+					if ($type === "INSERT" && $result["affectedRows"] > 0) {
+						$lastId = $this->dbHandle->lastInsertId();
+						if ($lastId !== false) {
+							$result["firsInsertId"] = intval($lastId);
+							$result["lastInsertId"] = $result["affectedRows"] + $lastId - 1;
+						}
+					}
+					break;
+			}
+
+			// Return result
+			return $result;
+
+		// Exception (close database, and throw error)
+		} catch (Exception $e) {
 
       // Close connection
-      $this->close();
+			$this->close();
 
-      // Set error
-      throw new Exception("Transaction(s) is not started!");
-    }
-
-    // Reset data result
-    $this->reset_data();
-
-    // Each transaction(s)
-    foreach($transactions as $transaction) {
-
-      // When is string, then try to create new tarnsaction
-      if (is_string($transaction) &&
-          !empty(($transaction = trim($transaction))))
-        $transaction = new Transaction(array(
-          "query"   => $transaction,
-          "params"  => $params
-        ), $isAssoc);
-
-      // When is object, then try to create new tarnsaction
-      elseif (is_array($transaction) && 
-              array_key_exists('query', $transaction) &&
-              is_string($transaction['query']) &&
-              !empty(($transaction['query'] = trim($transaction['query'])))) {
-        if (!array_key_exists('params', $transaction))
-          $transaction['params'] = $params;
-        $transaction = new Transaction($transaction, $isAssoc);
-      }
-
-      // When transaction is not valid, then set error, and break process
-      if (!($transaction instanceof Transaction) || 
-          !$transaction->is_valid()) {
-        $this->set_error("Invalid transction!");
-        break;
-      }
-
-      // Try
-      try {
-
-        // Prepares a statement for execution and returns a statement object
-        $stmt = $this->dbHandle->prepare($transaction->get_query());
-
-        // Executes a prepared statement
-        $stmt->execute($transaction->get_params());
-
-        // Get transaction type
-        $type = $transaction->get_type();
-
-        // Check transaction type
-        switch($type) {
-
-          // SELECT
-          case "SELECT":
-
-            // Set data result, and break
-            $this->set_data($transaction->get_id(), 
-                            $stmt->fetchAll($transaction->get_fetchMode()),
-                            count($transactions));
-            break;
-          
-          // INSERT/UPDATE/DELETE
-          case "INSERT":
-          case "UPDATE":
-          case "DELETE":
-
-            // Set data result
-            $data = array();
-
-            // When is transaction INSERT, then get last inserted identifier
-            if ($type === "INSERT") 
-              $data["lastInsertId"] = $this->dbHandle->lastInsertId();
-
-            // Get affected rows
-            $data["affectedRows"] = $stmt->rowCount();
-
-            // Set data result, and break
-            $this->set_data($transaction->get_id(), $data, count($transactions));
-            break;
-          
-          // UNDER CONSTRUCTION
-          case "CREATE":
-          case "ALTER":
-          case "DROP":
-          case "TRUNCATE":
-            
-            // Set data result, and break
-            $this->set_data($transaction->get_id(), true, count($transactions));
-            break;
-        }
-
-        // Check transaction has call back function
-        if ($transaction->is_callBack()) {
-
-          // Call transaction call back function
-          call_user_func($transaction->get_callBack(), $this);
-
-          // When is error, then break process
-          if ($this->is_error()) break; 
-        }
+      // Get/Convert error message
+      $message = explode(":", trim($e->getMessage()));
       
-      // Exception (set error, and break process)
-      } catch (Exception $e) {
-        $this->set_error($e->getMessage());
-        break;
-      }
-    }
+      // Set error
+			throw new Exception($message[count($message)-1]);
+		}
+	}
 
-    // When is error, then roll back, otherwise finalize
-    if ($this->is_error())
-          $this->dbHandle->rollBack();
-    else  $this->dbHandle->commit();
-  }
-
-  // Get table fields
+	// Get table fields
   public function get_fields($tbl, $db=null) {
+
+    // Check table exist
+    if (!is_string($tbl)) return null;
 
     // When database not exist, then get current
     if (!is_string($db)) $db = $this->get_db();
@@ -303,20 +302,17 @@ class Database {
                       `column_key`,
                       `extra` 
                       FROM  `information_schema`.`columns`
-                      WHERE `table_schema`='" . $db . "' AND 
-                            `table_name`='" . $tbl . "'
+                      WHERE `table_schema` = :db AND 
+                            `table_name` = :tbl
                       ORDER BY `order`;";
     
     // Execute query
-    $this->execute($query);
-
-    // When is error, then close connection, and throw error
-    if ($this->is_error()) {
-      $this->close();
-      throw new Exception($this->get_error());
-    }
+    $result = $this->execute($query, array(
+      'db'  => trim($db),
+      'tbl' => trim($tbl)
+    ));
 
     // Retur result
-    return $this->get_data();
+    return $result;
   }
 }

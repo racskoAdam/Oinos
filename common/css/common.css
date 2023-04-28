@@ -1,3 +1,8 @@
+:root {
+  --sm-font-size: 0.75rem;
+  --md-font-size: 0.8rem;
+}
+
 /* Box sizing */
 *, 
 *:before, 
@@ -5,18 +10,6 @@
   -webkit-box-sizing:border-box !important;
      -moz-box-sizing:border-box !important;
           box-sizing:border-box !important;
-}
-
-/* Top shadow */
-.top-shadow::before {
-  content: "";
-  position: fixed;
-  left: 0;
-  top: -2px;
-  width: 100vw;
-  height: 2px;
-  -webkit-box-shadow: 0 0 2px rgba(0,0,0,.8);
-          box-shadow: 0 0 2px rgba(0,0,0,.8);
 }
 
 /* User select */
@@ -58,9 +51,12 @@
           background-size: cover !important;
 }
 
-/* Conditional display */
+/* Conditional display/visibility */
 .d-conditional:not(.show) {
   display: none !important;
+}
+.d-hidden:not(.show) {
+  visibility: hidden !important
 }
 
 /* Curso pointer */
@@ -74,8 +70,8 @@
 }
 
 /* Text ident */
-.text-indent-4 {
-  text-indent: 40px !important
+.text-indent-3 {
+  text-indent: 30px !important
 }
 
 /* Letter spacing */
@@ -85,40 +81,43 @@
 
 /* Font size */
 .fs-sm {
-  font-size: 0.75rem  !important;
+  font-size: var(--sm-font-size) !important;
 }
 .fs-md {
-  font-size: 0.85rem  !important;
+  font-size: var(--md-font-size) !important;
 }
 
-/* Z-index */
-.z-index-auto {
-  z-index: auto !important;
+/* Background color transparent */
+.bg-dark-transparent {
+  background-color:rgba(0,0,0,.3);
 }
-.z-index-1 {
-  z-index: 1 !important;
-}
-.z-index-10 {
-  z-index: 10 !important;
-}
-.z-index-100 {
-  z-index: 100 !important;
-}
-.z-index-1000 {
-  z-index: 1000 !important;
+.bg-light-transparent {
+  background-color:rgba(255,255,255,.3);
 }
 
-/* Tooltip */
-.tooltip-text .tooltip-triangle {
-  position: absolute;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  height: 0;
-  width: 0;
+/* Breakpoints */
+@media (min-width: 576px) {
+	.w-sm-auto {
+		width: auto !important;
+	}
 }
-.tooltip-text.tooltip-botton .tooltip-triangle {
-  border-bottom: 5px solid black;
+@media (min-width: 768px) {
+	.w-md-auto {
+		width: auto !important;
+	}
 }
-.tooltip-text.tooltip-top .tooltip-triangle {
-  border-top: 5px solid black;
+@media (min-width: 992px) {
+	.w-lg-auto {
+		width: auto !important;
+	}
+}
+@media (min-width: 1200px) {
+	.w-xl-auto {
+		width: auto !important;
+	}
+}
+@media (min-width: 1400px) {
+	.w-xxl-auto {
+		width: auto !important;
+	}
 }
