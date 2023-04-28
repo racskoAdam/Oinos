@@ -1,7 +1,7 @@
 <?php
 
 // Require file
-require_once('../../../common/php/Database.php');
+require_once('../common/php/Database.php');
 
 // Set result
 $result = null;
