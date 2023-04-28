@@ -13,9 +13,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require '../../components/PHPMailer/src/PHPMailer.php';
-require '../../components/PHPMailer/src/Exception.php';
-require '../../components/PHPMailer/src/SMTP.php';
+require '../components/PHPMailer/src/PHPMailer.php';
+require '../components/PHPMailer/src/Exception.php';
+require '../components/PHPMailer/src/SMTP.php';
 
 // Define function to send email
 function send_email($to, $subject, $message) {
