@@ -83,7 +83,6 @@ To contribute to our website, follow these steps:
 We thoroughly tested our website to ensure that it functions as expected. We used a variety of testing methods, including:
 
 - Manual testing
-- Automated testing using Jest and Cypress
 - User testing with a focus group
 
 ## Troubleshooting
@@ -94,10 +93,6 @@ If you encounter any issues while using our website, please check the following:
 - Clear your browser cache and cookies
 - Try accessing the website from a different device or browser
 - Contact our support team for further assistance
-
-## License
-
-Our website is licensed under the MIT License. Please see the `LICENSE` file for more information.
 
 ## Conclusion
 
