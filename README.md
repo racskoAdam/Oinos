@@ -41,6 +41,7 @@ Our website includes the following features:
 ## Usage
 
 To use our website, simply visit our homepage and select the option that best suits your needs. You can place an order for fast food items or make a reservation for the fine dining section of our restaurant. If you choose to create an account, you can store your personal information for future orders and reservations.
+Also you can take a look at your past orders, delete your account, or even change your personal information.
 
 ## Future Development
 
@@ -60,10 +61,10 @@ To install and run our website, follow these steps:
 
 1. Clone the repository to your local machine using `git clone https://github.com/racskoAdam/Oinos.git`
 2. Open the project in your code editor of choice
-3. Install any necessary dependencies using `npm install`
-4. Run the project using `npm start` or `ng serve`
-5. Import the database using any external relational database management software.
-6. Run your web browser and open the website via local server.
+3. Import the database which can be found in the `db` folder using any external relational database management software. For example `XAMPP`
+4. Run your web browser and open the website via local server.
+5. If you wish to use the software for the workers, open the `Oinos.exe` which is in the `Release` folder.
+
 
 ## Development
 
