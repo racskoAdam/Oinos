@@ -24,15 +24,15 @@ function send_email($to, $subject, $message) {
     try {
         // Configure SMTP settings
         $mail->isSMTP();
-        $mail->Host = 'smtp.freemail.hu'; 
+        $mail->Host = 'smtp-mail.outlook.com'; 
         $mail->SMTPAuth = true;
-        $mail->Username = 'oinosetterem2023@freemail.hu';
+        $mail->Username = 'oinosetterem2023@outlook.com';
         $mail->Password = 'Futy132aSfhWeGG';
         $mail->SMTPSecure = 'STARTTLS';
         $mail->Port = 587;
 
         // Set 'from' and 'to' addresses, and email body
-        $mail->setFrom('oinosetterem2023@freemail.hu');
+        $mail->setFrom('oinosetterem2023@outlook.com');
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->Subject = $subject;
